@@ -34,11 +34,7 @@
     text-align: center;
 }
 
-#editorPlace{
-    border: 1px white solid;
-    display: none;
-    text-align: center;
-}
+
 
 #footer{
     background: rgb(161, 161, 211);
@@ -68,16 +64,21 @@
     font-family:Georgia, 'Times New Roman', Times, serif;
     font-size: 30pt;
     text-align: center;
-    
     border-radius: 20px;
     background-image: linear-gradient(135deg, rgb(240, 232, 128) 0%, lightgreen 70%);
-
     right: 20px;
-
     filter: drop-shadow(1px 1px 5px rgba(50,0,0,0.2));
 }
 
+#editorPlace{
+    border: 1px white solid;
+    display: none;
+    text-align: center;
+    width: 200px;
 
+    /* center */
+    margin: 0 auto;
+}
 
 
 table {
