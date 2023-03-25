@@ -3,7 +3,6 @@ window.onload = function() {
     loadLocalStorage();
 }
 
-
 function changeFirstTD() {
     console.log("CALL function " + arguments.callee.name);
     const fTD = document.getElementById("firstTD");
@@ -20,34 +19,26 @@ function changeFirstTD() {
 
 function addNewEvent() {
     console.log("CALL function " + arguments.callee.name);
-
     const editPl = document.getElementById("editorPlace");
-    const editMainPl = document.getElementById("editorMainPlace");
-    editPl.style.display = "block";
-}
 
-function eventOk() {
-    console.log("CALL function " + arguments.callee.name);
-
-    const editPl = document.getElementById("editorPlace");
-    editPl.style.display = "none";
+    if (editPl.style.display == "block"){
+        editPl.style.display = "none";
+    }
+    else {
+        editPl.style.display = "block";
+    } 
 }
 
 
 
 
-
-
-let stLocal = window.localStorage;
-const txtDate = document.getElementById("txtDate");
-const txtType = document.getElementById("txtType");
-const txtTime = document.getElementById("txtTime");
-
-const btnSave = document.getElementById("btnSave");
 
 function btnSaveLoc() { 
     console.log("CALL function " + arguments.callee.name);
-
+    let stLocal = window.localStorage;
+    const txtDate = document.getElementById("txtDate");
+    const txtType = document.getElementById("txtType");
+    const txtTime = document.getElementById("txtTime");
     if ((txtDate.value) && (txtType.value) && (txtTime.value)) {
         let dateType = txtDate.value + "_:_" + txtType.value;
         let newTime = "";
@@ -61,37 +52,23 @@ function btnSaveLoc() {
 
         
         stLocal.setItem(dateType, newTime);
+
+        const editPl = document.getElementById("editorPlace");
+        editPl.style.display = "none";
+        loadLocalStorage();
     //   btnLoad.disabled = false; 
     } 
 
 
 
 
-
-
-
-// var txtContent = document.getElementById("txtContent"); 
-// var btnLoad = document.getElementById("btnLoad"); 
-// btnLoad.disabled = !((stLocal.getItem("title")) && 
-//                      (stLocal.getItem("content"))); 
-
-// btnSave.addEventListener("click", function() { 
-//   if ((txtDate.value) && (txtContent.value)) { 
-//     stLocal.setItem("title", txtDate.value); 
-//     stLocal.setItem("content", txtContent.value); 
-//     btnLoad.disabled = false; 
-//   } 
-// }, false); 
-// btnLoad.addEventListener("click", function() { 
-//   txtDate.value = stLocal.getItem("title"); 
-//   txtContent.value = stLocal.getItem("content"); 
-// }, false); 
 }
 
 
 function loadLocalStorage() {
+    console.log("CALL function " + arguments.callee.name);
     const locStor = document.getElementById("locStor");
-    locStor.innerHTML = "инфорамция";
+    locStor.innerHTML = "информация";
 
     let stLocal = window.localStorage;
 

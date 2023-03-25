@@ -67,27 +67,18 @@
             <div id="locStor"></div>
 
             <p>
-                <a href="#" onclick="addNewEvent()">( + )</a>
+                <a href="#" onclick="addNewEvent()">( +/- )</a>
             </p>
             <div id="editorPlace">
-                <div id="editorMainPlace">
-
-
-                    <form> 
-                        <p>Дата<br> 
-                        <input type="text" id="txtDate"></p>
-                        <p>Тип события<br> 
-                        <input type="text" id="txtType"></p>
-                        <p>Минут<br> 
-                        <input type="text" id="txtTime"></p>
-                        <p><input type="button" id="btnSave" onclick="btnSaveLoc()" value="Сохранить"></p> 
-                      </form> 
-
-
-                </div>
-                <div id="editorOk">
-                    <a href="#" onclick="eventOk()">( Закрыть )</a>
-                </div>
+                <form> 
+                    <p>Дата<br> 
+                    <input type="date" id="txtDate"></p>
+                    <p>Тип события<br> 
+                    <input type="text" id="txtType"></p>
+                    <p>Минут<br> 
+                    <input type="number" id="txtTime"></p>
+                    <p><input type="button" id="btnSave" onclick="btnSaveLoc()" value="Сохранить"></p> 
+                    </form> 
             </div>
         </div>
         <div id="footer">2023, anton.source@gmail.com</div>
