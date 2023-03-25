@@ -1,14 +1,12 @@
 window.onload = function() {
     changeFirstTD();
+    loadLocalStorage();
 }
-
-
 
 
 function changeFirstTD() {
     console.log("CALL function " + arguments.callee.name);
-
-    var fTD = document.getElementById("firstTD");
+    const fTD = document.getElementById("firstTD");
     if (fTD.style.background == "aqua"){
         fTD.style.background = "red";
         console.log(fTD.clientWidth);
@@ -23,16 +21,15 @@ function changeFirstTD() {
 function addNewEvent() {
     console.log("CALL function " + arguments.callee.name);
 
-    let editPl = document.getElementById("editorPlace");
-    let editMainPl = document.getElementById("editorMainPlace");
+    const editPl = document.getElementById("editorPlace");
+    const editMainPl = document.getElementById("editorMainPlace");
     editPl.style.display = "block";
-    // editMainPl.innerHTML = "дата\nописание";
 }
 
 function eventOk() {
     console.log("CALL function " + arguments.callee.name);
 
-    let editPl = document.getElementById("editorPlace");
+    const editPl = document.getElementById("editorPlace");
     editPl.style.display = "none";
 }
 
@@ -42,11 +39,11 @@ function eventOk() {
 
 
 let stLocal = window.localStorage;
-let txtDate = document.getElementById("txtDate");
-let txtType = document.getElementById("txtType");
-let txtTime = document.getElementById("txtTime");
+const txtDate = document.getElementById("txtDate");
+const txtType = document.getElementById("txtType");
+const txtTime = document.getElementById("txtTime");
 
-let btnSave = document.getElementById("btnSave");
+const btnSave = document.getElementById("btnSave");
 
 function btnSaveLoc() { 
     console.log("CALL function " + arguments.callee.name);
@@ -60,12 +57,10 @@ function btnSaveLoc() {
         }
         else {
             newTime = txtTime.value;
-
         }
 
         
         stLocal.setItem(dateType, newTime);
-    //   stLocal.setItem("content", txtContent.value); 
     //   btnLoad.disabled = false; 
     } 
 
@@ -94,3 +89,15 @@ function btnSaveLoc() {
 }
 
 
+function loadLocalStorage() {
+    const locStor = document.getElementById("locStor");
+    locStor.innerHTML = "инфорамция";
+
+    let stLocal = window.localStorage;
+
+    for (let i = 0; i < stLocal.length; i++) {
+        const key = localStorage.key(i);
+        console.log(key);
+        locStor.innerHTML += "<br>" + key + " " + stLocal.getItem(key);
+    }
+}
