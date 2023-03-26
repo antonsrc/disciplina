@@ -1,21 +1,7 @@
 window.onload = function() {
-    // changeFirstTD();
     loadLocalStorage();
 }
 
-// function changeFirstTD() {
-//     console.log("CALL function " + arguments.callee.name);
-//     const fTD = document.getElementById("firstTD");
-//     if (fTD.style.background == "aqua"){
-//         fTD.style.background = "red";
-//         console.log(fTD.clientWidth);
-//         fTD.style.width = (fTD.clientWidth + 200) + "px";
-//     }
-//     else{
-//         fTD.style.background = "aqua";
-//         fTD.style.width = (fTD.clientWidth - 200) + "px";
-//     }
-// }
 
 function openAdderOfNewEvent() {
     console.log("CALL function " + arguments.callee.name);
@@ -30,24 +16,29 @@ function openAdderOfNewEvent() {
 }
 
 
-
-
-
 function btnSaveLoc() { 
     console.log("CALL function " + arguments.callee.name);
     let stLocal = window.localStorage;
     const txtDate = document.getElementById("txtDate");
     const txtType = document.getElementById("txtType");
-    const txtTime = document.getElementById("txtTime");
-    if ((txtDate.value) && (txtType.value) && (txtTime.value)) {
+    const txtTimeMin = document.getElementById("txtTimeMin");
+    const txtTimeHours = document.getElementById("txtTimeHours");
+    if ((txtDate.value) && (txtType.value) && ((txtTimeMin.value) || (txtTimeHours.value))) {
         let dateType = txtDate.value + "_:_" + txtType.value;
-        let newTime = "";
+        let comTime = 0;
+
+        if (txtTimeMin.value) {
+            comTime = Number(txtTimeMin.value);
+        }
+
+        if (txtTimeHours.value) {
+            comTime += Number(txtTimeHours.value)*60;
+        }
+
+        let newTime = Math.round(comTime*(90/1440));
         if (stLocal.getItem(dateType)) {
             console.log(stLocal.getItem(dateType));
-            newTime = Number(stLocal.getItem(dateType)) + Number(txtTime.value);
-        }
-        else {
-            newTime = txtTime.value;
+            newTime = Number(stLocal.getItem(dateType)) + Math.round(comTime*(90/1440));
         }
 
         
@@ -64,7 +55,6 @@ function btnSaveLoc() {
 
 function loadLocalStorage() {
     console.log("CALL function " + arguments.callee.name);
-    const locStor = document.getElementById("locStor"); 
 
     let stLocal = window.localStorage;
 
@@ -73,31 +63,28 @@ function loadLocalStorage() {
     for (let i = 0; i < stLocal.length; i++) {
         const key = localStorage.key(i);
         console.log(key);
-
-
-        // progMain.innerHTML += "<div><span class='Date'>" + key.split("_:_")[0] + "</span>";
         
         if(key.split("_:_")[1] == "red") {
-            
             progMain.innerHTML +=`<div class='Progress'><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Red'></span>`+"</div>";
             let idd = "d"+i;
-            document.getElementById(idd).style.width = stLocal.getItem(key) + "px";
+            document.getElementById(idd).style.width = stLocal.getItem(key) + "%";
         }
         else if(key.split("_:_")[1] == "blue") {
             progMain.innerHTML +=`<div class='Progress'><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Blue'></span>`+"</div>";
             let idd = "d"+i;
-            document.getElementById(idd).style.width = stLocal.getItem(key) + "px";
+            document.getElementById(idd).style.width = stLocal.getItem(key) + "%";
         }
         else if(key.split("_:_")[1] == "green") {
             progMain.innerHTML +=`<div class='Progress'><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Green'></span>`+"</div>";
             let idd = "d"+i;
-            document.getElementById(idd).style.width = stLocal.getItem(key) + "px";
+            document.getElementById(idd).style.width = stLocal.getItem(key) + "%";
         }
         
-
-
-
-
-        locStor.innerHTML += "<br>" + key + " " + stLocal.getItem(key);
     }
+}
+
+
+function clearLoc() {
+    window.localStorage.clear();
+    loadLocalStorage();
 }

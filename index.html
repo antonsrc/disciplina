@@ -12,14 +12,8 @@
             <div id="header2"><span>log<sup>v.0.2</sup></span></div>
         </div>
         <div id="main">
-            <!-- <a href="#" onclick="changeFirstTD()">Изменить цвет и ширину ячейки</a> -->
-
-
             <div id="ProgressMain">
-
-                
             </div>
-            <div id="locStor"></div>
 
             <p>
                 <a href="#" onclick="openAdderOfNewEvent()">( +/- )</a>
@@ -31,11 +25,15 @@
                     <p>Тип события<br> 
                     <input type="text" id="txtType"></p>
                     <p>Минут<br> 
-                    <input type="number" id="txtTime"></p>
+                    <input type="number" id="txtTimeMin"></p>
+                    <p>Часов<br> 
+                    <input type="number" id="txtTimeHours"></p>
                     <p><input type="button" id="btnSave" onclick="btnSaveLoc()" value="Сохранить"></p> 
                     </form> 
             </div>
+            <div><input type="button" id="clLoc" onclick="clearLoc()" value="Очистить localStorage"></div>
         </div>
+        
         <div id="footer">2023, anton.source@gmail.com</div>
     </div>
 </body>
