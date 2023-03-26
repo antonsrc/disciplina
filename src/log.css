@@ -81,7 +81,7 @@
 }
 
 
-table {
+/* table {
     width: 100%;
     border-spacing: 0;
     padding: 0;
@@ -106,7 +106,43 @@ table {
 #grayTD {
     width: 20%;
     background-color: gray;
+} */
+
+
+
+
+#ProgressMain {
+    width: 100%;
 }
+.Progress {
+    width: 100%;
+    display: flex;
+}
+.Date {
+    width: 100px;
+    display:inline-block;
+    background-color: pink;    
+    height: 20px;
+}
+.Red {
+    width: 20%;
+    display:inline-block;
+    background-color: red;    
+    height: 20px;
+}
+.Green {
+    width: 30%;
+    display:inline-block;
+    background-color: green;    
+    height: 20px;
+}
+.Blue {
+    width: 10%;
+    display:inline-block;
+    background-color: blue;    
+    height: 20px;
+}
+
 
 
 @media screen {
@@ -121,3 +157,4 @@ table {
         background: rgb(63, 236, 181);
     }
 }
+

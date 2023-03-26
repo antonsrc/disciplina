@@ -1,23 +1,23 @@
 window.onload = function() {
-    changeFirstTD();
+    // changeFirstTD();
     loadLocalStorage();
 }
 
-function changeFirstTD() {
-    console.log("CALL function " + arguments.callee.name);
-    const fTD = document.getElementById("firstTD");
-    if (fTD.style.background == "aqua"){
-        fTD.style.background = "red";
-        console.log(fTD.clientWidth);
-        fTD.style.width = (fTD.clientWidth + 200) + "px";
-    }
-    else{
-        fTD.style.background = "aqua";
-        fTD.style.width = (fTD.clientWidth - 200) + "px";
-    }
-}
+// function changeFirstTD() {
+//     console.log("CALL function " + arguments.callee.name);
+//     const fTD = document.getElementById("firstTD");
+//     if (fTD.style.background == "aqua"){
+//         fTD.style.background = "red";
+//         console.log(fTD.clientWidth);
+//         fTD.style.width = (fTD.clientWidth + 200) + "px";
+//     }
+//     else{
+//         fTD.style.background = "aqua";
+//         fTD.style.width = (fTD.clientWidth - 200) + "px";
+//     }
+// }
 
-function addNewEvent() {
+function openAdderOfNewEvent() {
     console.log("CALL function " + arguments.callee.name);
     const editPl = document.getElementById("editorPlace");
 
@@ -67,14 +67,40 @@ function btnSaveLoc() {
 
 function loadLocalStorage() {
     console.log("CALL function " + arguments.callee.name);
-    const locStor = document.getElementById("locStor");
-    locStor.innerHTML = "информация";
+    const locStor = document.getElementById("locStor"); 
 
     let stLocal = window.localStorage;
 
+    const progMain = document.getElementById("ProgressMain");
+    progMain.innerHTML = "";
     for (let i = 0; i < stLocal.length; i++) {
         const key = localStorage.key(i);
         console.log(key);
+
+
+        // progMain.innerHTML += "<div><span class='Date'>" + key.split("_:_")[0] + "</span>";
+        
+        if(key.split("_:_")[1] == "red") {
+            
+            progMain.innerHTML +=`<div><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Red'></span>`+"</div>";
+            let idd = "d"+i;
+            document.getElementById(idd).style.width = stLocal.getItem(key) + "px";
+        }
+        else if(key.split("_:_")[1] == "blue") {
+            progMain.innerHTML +=`<div><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Blue'></span>`+"</div>";
+            let idd = "d"+i;
+            document.getElementById(idd).style.width = stLocal.getItem(key) + "px";
+        }
+        else if(key.split("_:_")[1] == "green") {
+            progMain.innerHTML +=`<div><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Green'></span>`+"</div>";
+            let idd = "d"+i;
+            document.getElementById(idd).style.width = stLocal.getItem(key) + "px";
+        }
+        
+
+
+
+
         locStor.innerHTML += "<br>" + key + " " + stLocal.getItem(key);
     }
 }
