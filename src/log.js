@@ -59,9 +59,6 @@ function btnSaveLoc() {
     //   btnLoad.disabled = false; 
     } 
 
-
-
-
 }
 
 
@@ -82,17 +79,17 @@ function loadLocalStorage() {
         
         if(key.split("_:_")[1] == "red") {
             
-            progMain.innerHTML +=`<div><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Red'></span>`+"</div>";
+            progMain.innerHTML +=`<div class='Progress'><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Red'></span>`+"</div>";
             let idd = "d"+i;
             document.getElementById(idd).style.width = stLocal.getItem(key) + "px";
         }
         else if(key.split("_:_")[1] == "blue") {
-            progMain.innerHTML +=`<div><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Blue'></span>`+"</div>";
+            progMain.innerHTML +=`<div class='Progress'><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Blue'></span>`+"</div>";
             let idd = "d"+i;
             document.getElementById(idd).style.width = stLocal.getItem(key) + "px";
         }
         else if(key.split("_:_")[1] == "green") {
-            progMain.innerHTML +=`<div><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Green'></span>`+"</div>";
+            progMain.innerHTML +=`<div class='Progress'><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Green'></span>`+"</div>";
             let idd = "d"+i;
             document.getElementById(idd).style.width = stLocal.getItem(key) + "px";
         }

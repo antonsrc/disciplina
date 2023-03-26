@@ -7,13 +7,10 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    /* justify-content: flex-start;
-    align-content: flex-start; */
 }
 
 #mainFlex div{
     color: white;
-    /* width: 100%; */
 }
 
 #header{
@@ -81,66 +78,45 @@
 }
 
 
-/* table {
-    width: 100%;
-    border-spacing: 0;
-    padding: 0;
-    border: 0;
-}
-
-#firstTD {
-    width: 15%;
-    background-color:aqua;
-}
-
-#yellowTD {
-    width: 10%;
-    background-color: yellow;
-}
-
-.pinkTD {
-    width: 15%;
-    background-color: pink;
-}
-
-#grayTD {
-    width: 20%;
-    background-color: gray;
-} */
-
-
-
 
 #ProgressMain {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
+
 .Progress {
     width: 100%;
     display: flex;
+    flex-direction: row;
 }
+
 .Date {
     width: 100px;
-    display:inline-block;
-    background-color: pink;    
-    height: 20px;
+    display: inline-flex;
+    background-color: rgb(56, 110, 103);    
+    height: 30px;
+    align-items: center;
+    justify-content:center;
+
 }
 .Red {
-    width: 20%;
-    display:inline-block;
+    display: inline-flex;
     background-color: red;    
-    height: 20px;
+    height: 30px;
 }
 .Green {
-    width: 30%;
-    display:inline-block;
+    display: inline-flex;
     background-color: green;    
-    height: 20px;
+    height: 30px;
 }
 .Blue {
-    width: 10%;
-    display:inline-block;
+    display: inline-flex;
     background-color: blue;    
-    height: 20px;
+    height: 30px;
 }
 
 
