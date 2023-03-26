@@ -35,10 +35,11 @@ function btnSaveLoc() {
             comTime += Number(txtTimeHours.value)*60;
         }
 
-        let newTime = Math.round(comTime*(90/1440));
+        const toProc = 70/1440;
+        let newTime = Math.round(comTime*toProc);
         if (stLocal.getItem(dateType)) {
             console.log(stLocal.getItem(dateType));
-            newTime = Number(stLocal.getItem(dateType)) + Math.round(comTime*(90/1440));
+            newTime = Number(stLocal.getItem(dateType)) + Math.round(comTime*toProc);
         }
 
         
