@@ -42,13 +42,11 @@ function btnSaveLoc() {
             newTime = Number(stLocal.getItem(dateType)) + Math.round(comTime*toProc);
         }
 
-        
         stLocal.setItem(dateType, newTime);
 
         const editPl = document.getElementById("editorPlace");
         editPl.style.display = "none";
         loadLocalStorage();
-    //   btnLoad.disabled = false; 
     } 
 
 }
@@ -68,28 +66,22 @@ function loadLocalStorage() {
         arrSort.push(key);
     }
     arrSort.sort();
-    console.log(arrSort);
 
     for (let i = 0; i < stLocal.length; i++) {
         const key = arrSort[i];
         console.log(key);
         
-        if(key.split("_:_")[1] == "red") {
-            progMain.innerHTML +=`<div class='Progress'><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Red'></span>`+"</div>";
-            let idd = "d"+i;
-            document.getElementById(idd).style.width = stLocal.getItem(key) + "%";
+        const keyDate = key.split("_:_")[0];
+        const keyAction = key.split("_:_")[1];
+        if (document.getElementById(keyDate)){
+            const keyDateDiv = document.getElementById(keyDate);
+            keyDateDiv.innerHTML += `<span id='${key}' class='${keyAction}'></span>`;
+            document.getElementById(key).style.width = stLocal.getItem(key) + "%";
         }
-        else if(key.split("_:_")[1] == "blue") {
-            progMain.innerHTML +=`<div class='Progress'><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Blue'></span>`+"</div>";
-            let idd = "d"+i;
-            document.getElementById(idd).style.width = stLocal.getItem(key) + "%";
-        }
-        else if(key.split("_:_")[1] == "green") {
-            progMain.innerHTML +=`<div class='Progress'><span class='Date'>` + key.split("_:_")[0] + "</span>" + `<span id="d${i}" class='Green'></span>`+"</div>";
-            let idd = "d"+i;
-            document.getElementById(idd).style.width = stLocal.getItem(key) + "%";
-        }
-        
+        else{
+            progMain.innerHTML +=`<div id='${keyDate}' class='Progress'><span class='Date'>${keyDate}</span><span id='${key}' class='${keyAction}'></span></div>`;
+            document.getElementById(key).style.width = stLocal.getItem(key) + "%";
+        }  
     }
 }
 

@@ -103,17 +103,17 @@
     justify-content:center;
 
 }
-.Red {
+.red {
     display: inline-flex;
     background-color: red;    
     height: 30px;
 }
-.Green {
+.green {
     display: inline-flex;
     background-color: green;    
     height: 30px;
 }
-.Blue {
+.blue {
     display: inline-flex;
     background-color: blue;    
     height: 30px;
