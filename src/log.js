@@ -61,8 +61,17 @@ function loadLocalStorage() {
 
     const progMain = document.getElementById("ProgressMain");
     progMain.innerHTML = "";
+
+    let arrSort = [];
     for (let i = 0; i < stLocal.length; i++) {
         const key = localStorage.key(i);
+        arrSort.push(key);
+    }
+    arrSort.sort();
+    console.log(arrSort);
+
+    for (let i = 0; i < stLocal.length; i++) {
+        const key = arrSort[i];
         console.log(key);
         
         if(key.split("_:_")[1] == "red") {
@@ -89,3 +98,5 @@ function clearLoc() {
     window.localStorage.clear();
     loadLocalStorage();
 }
+
+
