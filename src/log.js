@@ -20,11 +20,18 @@ function btnSaveLoc() {
     console.log("CALL function " + arguments.callee.name);
     let stLocal = window.localStorage;
     const txtDate = document.getElementById("txtDate");
-    const txtType = document.getElementById("txtType");
+    const selectEvent = document.getElementById("selectEvent");
+    const obj = selectEvent.selectedOptions;
+    let selEv = "";
+    for (let i = 0; i < obj.length; i++) {
+        selEv += obj[i].value;
+    }
+
+
     const txtTimeMin = document.getElementById("txtTimeMin");
     const txtTimeHours = document.getElementById("txtTimeHours");
-    if ((txtDate.value) && (txtType.value) && ((txtTimeMin.value) || (txtTimeHours.value))) {
-        let dateType = txtDate.value + "_:_" + txtType.value;
+    if ((txtDate.value) && (selEv) && ((txtTimeMin.value) || (txtTimeHours.value))) {
+        let dateType = txtDate.value + "_:_" + selEv;
         let comTime = 0;
 
         if (txtTimeMin.value) {

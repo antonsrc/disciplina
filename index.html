@@ -20,16 +20,19 @@
             </p>
             <div id="editorPlace">
                 <form> 
-                    <p>Дата<br> 
-                    <input type="date" id="txtDate"></p>
-                    <p>Тип события<br> 
-                    <input type="text" id="txtType"></p>
-                    <p>Минут<br> 
-                    <input type="number" id="txtTimeMin"></p>
-                    <p>Часов<br> 
-                    <input type="number" id="txtTimeHours"></p>
+                    <p>Дата: <input type="date" id="txtDate"></p>
+                    <!-- <p>Тип события: <input type="text" id="txtType"></p> -->
+                    <p>Тип действия: <select name="selectEvent" id="selectEvent" size="1">
+                            <option value="0" selected>Выберите действие</option>
+                            <option value="red">red</option>
+                            <option value="blue">blue</option>
+                            <option value="green">green</option>
+                        </select>
+                    </p>
+                    <p>Минут: <input type="number" id="txtTimeMin"></p>
+                    <p>Часов: <input type="number" id="txtTimeHours"></p>
                     <p><input type="button" id="btnSave" onclick="btnSaveLoc()" value="Сохранить"></p> 
-                    </form> 
+                </form> 
             </div>
             <div><input type="button" id="clLoc" onclick="clearLoc()" value="Очистить localStorage"></div>
         </div>
