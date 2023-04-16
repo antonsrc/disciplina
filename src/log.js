@@ -2,12 +2,23 @@ window.onload = function() {
     loadLocalStorage();
 }
 
+const btnOpenAdd = document.getElementById("btnopenadd");
+btnOpenAdd.onclick = addEvent;
 
-function openAdderOfNewEvent() {
-    console.log("CALL function " + arguments.callee.name);
+const btnSave = document.getElementById("btnSave");
+btnSave.onclick = saveToLocStor;
+
+const btnClLoc = document.getElementById("btnclloc");
+btnClLoc.onclick = clearLoc;
+
+function clearLoc() {
+    window.localStorage.clear();
+    loadLocalStorage();
+}
+
+function addEvent() {
     const editPl = document.getElementById("editorPlace");
-
-    if (editPl.style.display == "block"){
+    if (editPl.style.display == "block") {
         editPl.style.display = "none";
     }
     else {
@@ -15,87 +26,91 @@ function openAdderOfNewEvent() {
     } 
 }
 
-
-function btnSaveLoc() { 
-    console.log("CALL function " + arguments.callee.name);
-    let stLocal = window.localStorage;
-    const txtDate = document.getElementById("txtDate");
-    const selectEvent = document.getElementById("selectEvent");
-    const obj = selectEvent.selectedOptions;
-    let selEv = "";
-    for (let i = 0; i < obj.length; i++) {
-        selEv += obj[i].value;
-    }
-
-
-    const txtTimeMin = document.getElementById("txtTimeMin");
-    const txtTimeHours = document.getElementById("txtTimeHours");
-    if ((txtDate.value) && (selEv) && ((txtTimeMin.value) || (txtTimeHours.value))) {
-        let dateType = txtDate.value + "_:_" + selEv;
-        let comTime = 0;
-
-        if (txtTimeMin.value) {
-            comTime = Number(txtTimeMin.value);
-        }
-
-        if (txtTimeHours.value) {
-            comTime += Number(txtTimeHours.value)*60;
-        }
-
-        const toProc = 70/1440;
-        let newTime = Math.round(comTime*toProc);
-        if (stLocal.getItem(dateType)) {
-            console.log(stLocal.getItem(dateType));
-            newTime = Number(stLocal.getItem(dateType)) + Math.round(comTime*toProc);
-        }
-
-        stLocal.setItem(dateType, newTime);
-
-        const editPl = document.getElementById("editorPlace");
-        editPl.style.display = "none";
-        loadLocalStorage();
-    } 
-
+function closeElem(elemId) {
+    const elem = document.getElementById(elemId);
+    elem.style.display = "none";
 }
 
+function saveToLocStor() { 
+    const storLocal = window.localStorage;
 
-function loadLocalStorage() {
-    console.log("CALL function " + arguments.callee.name);
+    const inputDate = document.getElementById("inputdate");
+    const inputEvent = document.getElementById("inputevent");
+    const inputTimeMin = document.getElementById("inputtimemin");
+    const inputTimeHours = document.getElementById("inputtimehours");
 
-    let stLocal = window.localStorage;
+    const inpDate = inputDate.value;
+    const inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
+    const inpTimeMin = inputTimeMin.value;
+    const inpTimeHours = inputTimeHours.value;
 
-    const progMain = document.getElementById("ProgressMain");
-    progMain.innerHTML = "";
+    const inpTime = (inpTimeMin || inpTimeHours);
 
-    let arrSort = [];
-    for (let i = 0; i < stLocal.length; i++) {
-        const key = localStorage.key(i);
-        arrSort.push(key);
-    }
-    arrSort.sort();
+    if (inpDate && inpEvent && inpTime) {
+        let totalTime = 0;
+        if (inpTimeMin) {
+            totalTime += Number(inpTimeMin);
+        }
+        if (inpTimeHours) {
+            totalTime += Number(inpTimeHours)*60;
+        }
+        const toProc = 70/1440; // разобраться потом и с процентами
+        let newTime = Math.round(totalTime*toProc); // разобраться потом и с процентами
 
-    for (let i = 0; i < stLocal.length; i++) {
-        const key = arrSort[i];
-        console.log(key);
-        
-        const keyDate = key.split("_:_")[0];
-        const keyAction = key.split("_:_")[1];
-        if (document.getElementById(keyDate)){
-            const keyDateDiv = document.getElementById(keyDate);
-            keyDateDiv.innerHTML += `<span id='${key}' class='${keyAction}'></span>`;
-            document.getElementById(key).style.width = stLocal.getItem(key) + "%";
+        let storLocValues;
+        if (storLocal.getItem(inpDate)) {
+            storLocValues = JSON.parse(storLocal.getItem(inpDate));
+            if (inpEvent in storLocValues) {
+                storLocValues[inpEvent] += newTime;
+            }
+            else{
+                storLocValues[inpEvent] = newTime;
+            }  
         }
         else{
-            progMain.innerHTML +=`<div id='${keyDate}' class='Progress'><span class='Date'>${keyDate}</span><span id='${key}' class='${keyAction}'></span></div>`;
-            document.getElementById(key).style.width = stLocal.getItem(key) + "%";
-        }  
-    }
+            storLocValues = {};
+            storLocValues[inpEvent] = newTime;
+        }
+        
+        storLocal.setItem(inpDate, JSON.stringify(storLocValues));
+        closeElem("editorPlace");
+        loadLocalStorage();
+    } 
 }
 
+function locStorToArr(locStor) {
+    let arr = [];
+    for (let i = 0; i < locStor.length; i++) {
+        const locKey = localStorage.key(i);
+        arr.push(locKey);
+    }
+    return arr;
+}
 
-function clearLoc() {
-    window.localStorage.clear();
-    loadLocalStorage();
+function loadLocalStorage() {
+    let storLocal = window.localStorage;
+
+    const progMain = document.getElementById("progress_bar_lines");
+    progMain.innerHTML = "";
+
+    let arr = locStorToArr(storLocal);
+    arr.sort();
+
+    for (let i = 0; i < storLocal.length; i++) {
+        const keyDate = arr[i];
+        progMain.innerHTML +=`<div id='${keyDate}' class='Progress'></div>`;
+
+        const dateId = document.getElementById(`${keyDate}`);
+        dateId.innerHTML += `<span class='Date'>${keyDate}</span>`;
+
+        let eventsValues = JSON.parse(storLocal.getItem(keyDate));
+        for (ev in eventsValues) {
+            const keyDateDiv = document.getElementById(keyDate);
+            let eventId = keyDate + ev + "";
+            keyDateDiv.innerHTML += `<span id='${eventId}' class='${ev}'></span>`;
+            document.getElementById(eventId).style.width = eventsValues[ev] + "%";
+        }
+    }
 }
 
 
