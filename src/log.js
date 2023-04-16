@@ -44,6 +44,13 @@ function saveToLocStor() {
     const inpTimeMin = inputTimeMin.value;
     const inpTimeHours = inputTimeHours.value;
 
+
+    // функци с проверкой, верны ли данные, если верны то можно записывать в 
+    // локалСторадж и отображать на странице
+
+
+
+
     const inpTime = (inpTimeMin || inpTimeHours);
 
     if (inpDate && inpEvent && inpTime) {
@@ -54,22 +61,30 @@ function saveToLocStor() {
         if (inpTimeHours) {
             totalTime += Number(inpTimeHours)*60;
         }
-        const toProc = 70/1440; // разобраться потом и с процентами
-        let newTime = Math.round(totalTime*toProc); // разобраться потом и с процентами
+
 
         let storLocValues;
         if (storLocal.getItem(inpDate)) {
             storLocValues = JSON.parse(storLocal.getItem(inpDate));
+
+            // if(storLocValues["freeTime"] - totalTime < 0) {
+            //     document.getElementById("btnSave").disabled = true;
+            // } else {
+            //     document.getElementById("btnSave").disabled = false;
+            // }
+
             if (inpEvent in storLocValues) {
-                storLocValues[inpEvent] += newTime;
+                storLocValues[inpEvent] += totalTime;
             }
             else{
-                storLocValues[inpEvent] = newTime;
-            }  
+                storLocValues[inpEvent] = totalTime;
+            }
+            // storLocValues["freeTime"] = storLocValues["freeTime"] - totalTime;
         }
         else{
             storLocValues = {};
-            storLocValues[inpEvent] = newTime;
+            storLocValues[inpEvent] = totalTime;
+            storLocValues["freeTime"] = 1440 - totalTime;
         }
         
         storLocal.setItem(inpDate, JSON.stringify(storLocValues));
@@ -96,6 +111,8 @@ function loadLocalStorage() {
     let arr = locStorToArr(storLocal);
     arr.sort();
 
+    const toProc = 70/1440;
+
     for (let i = 0; i < storLocal.length; i++) {
         const keyDate = arr[i];
         progMain.innerHTML +=`<div id='${keyDate}' class='Progress'></div>`;
@@ -105,10 +122,14 @@ function loadLocalStorage() {
 
         let eventsValues = JSON.parse(storLocal.getItem(keyDate));
         for (ev in eventsValues) {
+            if (ev == "freeTime"){
+                continue;
+            }
             const keyDateDiv = document.getElementById(keyDate);
             let eventId = keyDate + ev + "";
             keyDateDiv.innerHTML += `<span id='${eventId}' class='${ev}'></span>`;
-            document.getElementById(eventId).style.width = eventsValues[ev] + "%";
+            const time = Math.round(Number(eventsValues[ev])*toProc)
+            document.getElementById(eventId).style.width = time + "%";
         }
     }
 }
