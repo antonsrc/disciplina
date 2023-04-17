@@ -1,15 +1,23 @@
-window.onload = function() {
+"use strict"
+
+window.addEventListener('load', function() {
     loadLocalStorage();
-}
+});
 
 const btnOpenAdd = document.getElementById("btnopenadd");
-btnOpenAdd.onclick = addEvent;
+btnOpenAdd.addEventListener('click', function() {
+    addEvent();
+});
 
 const btnSave = document.getElementById("btnSave");
-btnSave.onclick = saveToLocStor;
+btnSave.addEventListener('click', function() {
+    saveToLocStor();
+});
 
 const btnClLoc = document.getElementById("btnclloc");
-btnClLoc.onclick = clearLoc;
+btnClLoc.addEventListener('click', function() {
+    clearLoc();
+});
 
 function clearLoc() {
     window.localStorage.clear();
@@ -121,7 +129,7 @@ function loadLocalStorage() {
         dateId.innerHTML += `<span class='Date'>${keyDate}</span>`;
 
         let eventsValues = JSON.parse(storLocal.getItem(keyDate));
-        for (ev in eventsValues) {
+        for (let ev in eventsValues) {
             if (ev == "freeTime"){
                 continue;
             }
