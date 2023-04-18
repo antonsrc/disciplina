@@ -53,16 +53,25 @@ function saveToLocStor() {
     const inpTimeHours = inputTimeHours.value;
 
 
-    // функци с проверкой, верны ли данные, если верны то можно записывать в 
-    // локалСторадж и отображать на странице
+    let showWrong = false;
+    const wrongPlace = document.getElementById("wrongPlace");
+    wrongPlace.innerHTML = "";
 
+    if (inpDate == "") {
+        wrongPlace.innerHTML += "Выберите дату";
+        showWrong = true;
+    }
 
+    if ( (inpEvent == "") || (inpEvent == "0") ) {
+        wrongPlace.innerHTML += "<br>Выберите событие";
+        showWrong = true;
+    }
 
-
-    const inpTime = (inpTimeMin || inpTimeHours);
-
-    if (inpDate && inpEvent && inpTime) {
-        let totalTime = 0;
+    let totalTime = 0;
+    if ((inpTimeMin == "") && (inpTimeHours == "") ) {
+        wrongPlace.innerHTML += "<br>Введите время";
+        showWrong = true;
+    } else {
         if (inpTimeMin) {
             totalTime += Number(inpTimeMin);
         }
@@ -70,33 +79,42 @@ function saveToLocStor() {
             totalTime += Number(inpTimeHours)*60;
         }
 
+        if ( (storLocal.getItem(inpDate) === null) && (totalTime >= 1440) ) {
+            wrongPlace.innerHTML += "<br>Введите время меньшее чем 24 ч";
+            showWrong = true;
+        } else if (storLocal.getItem(inpDate)) {
+            let storLocValues = JSON.parse(storLocal.getItem(inpDate));
+            if (Number(storLocValues["freeTime"]) - totalTime < 0) {
+                wrongPlace.innerHTML += `<br>Свободного времени осталось ${storLocValues["freeTime"]} мин`;
+                showWrong = true;
+            }
+        }
+    }
 
+    
+    if (showWrong){
+        wrongPlace.style.display = "block";
+    } else {
         let storLocValues;
         if (storLocal.getItem(inpDate)) {
             storLocValues = JSON.parse(storLocal.getItem(inpDate));
-
-            // if(storLocValues["freeTime"] - totalTime < 0) {
-            //     document.getElementById("btnSave").disabled = true;
-            // } else {
-            //     document.getElementById("btnSave").disabled = false;
-            // }
-
+    
             if (inpEvent in storLocValues) {
                 storLocValues[inpEvent] += totalTime;
             }
             else{
                 storLocValues[inpEvent] = totalTime;
             }
-            // storLocValues["freeTime"] = storLocValues["freeTime"] - totalTime;
         }
         else{
             storLocValues = {};
             storLocValues[inpEvent] = totalTime;
             storLocValues["freeTime"] = 1440 - totalTime;
         }
-        
+
         storLocal.setItem(inpDate, JSON.stringify(storLocValues));
         closeElem("editorPlace");
+        closeElem("wrongPlace");
         loadLocalStorage();
     } 
 }

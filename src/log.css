@@ -77,7 +77,18 @@
     margin: 0 auto;
 }
 
+#wrongPlace{
+    border: 3px rgb(255, 0, 0) solid;
+    background: rgb(255, 234, 151);
+    display: none;
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    width: 400px;
 
+    /* center */
+    margin: 0 auto;
+}
 
 #ProgressMain {
     width: 100%;
