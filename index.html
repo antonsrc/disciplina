@@ -22,13 +22,18 @@
                 <form> 
                     <p>Дата: <input type="date" id="inputdate"></p>
                     <!-- <p>Тип события: <input type="text" id="txtType"></p> -->
-                    <p>Тип действия: <select name="inputevent" id="inputevent" size="1">
-                            <option value="0" selected>Выберите действие</option>
-                            <option value="red">red</option>
+                    <br>
+                    <p>Действие: <select name="inputevent" id="inputevent" size="1">
+                            <!-- <option value="0" selected>Выберите действие</option> -->
+
+                            <!-- <option value="red">red</option>
                             <option value="blue">blue</option>
-                            <option value="green">green</option>
+                            <option value="green">green</option> -->
                         </select>
                     </p>
+                    <p>Или введите новое действие: <input type="inputnewevent" id="inputnewevent"></p>
+                    <p>Цвет для нового действия: <input type="color" id="inputcolor" name="inputcolor" value="#ff0000"></p>
+                    <br>
                     <p>Минут: <input type="number" id="inputtimemin"></p>
                     <p>Часов: <input type="number" id="inputtimehours"></p>
                     <p><input type="button" id="btnSave" value="Сохранить"></p>

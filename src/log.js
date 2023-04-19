@@ -44,14 +44,16 @@ function saveToLocStor() {
 
     const inputDate = document.getElementById("inputdate");
     const inputEvent = document.getElementById("inputevent");
+    const inputNewEvent = document.getElementById("inputnewevent");
+    const inputColor = document.getElementById("inputcolor");
     const inputTimeMin = document.getElementById("inputtimemin");
     const inputTimeHours = document.getElementById("inputtimehours");
 
     const inpDate = inputDate.value;
-    const inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
+    const inpEvent = ( inputNewEvent.value || inputEvent.options[inputEvent.selectedIndex].value );
+    const inpColor = inputColor.value;
     const inpTimeMin = inputTimeMin.value;
     const inpTimeHours = inputTimeHours.value;
-
 
     let showWrong = false;
     const wrongPlace = document.getElementById("wrongPlace");
@@ -63,9 +65,11 @@ function saveToLocStor() {
     }
 
     if ( (inpEvent == "") || (inpEvent == "0") ) {
-        wrongPlace.innerHTML += "<br>Выберите событие";
+        wrongPlace.innerHTML += "<br>Выберите или введите событие";
         showWrong = true;
-    }
+    } 
+
+
 
     let totalTime = 0;
     if ((inpTimeMin == "") && (inpTimeHours == "") ) {
@@ -99,19 +103,31 @@ function saveToLocStor() {
         if (storLocal.getItem(inpDate)) {
             storLocValues = JSON.parse(storLocal.getItem(inpDate));
     
+
+
             if (inpEvent in storLocValues) {
                 storLocValues[inpEvent] += totalTime;
             }
             else{
                 storLocValues[inpEvent] = totalTime;
             }
-        }
-        else{
+        } else {
             storLocValues = {};
             storLocValues[inpEvent] = totalTime;
             storLocValues["freeTime"] = 1440 - totalTime;
         }
 
+        let evColorValues;
+        if (storLocal.getItem("eventColors")) {
+            evColorValues = JSON.parse(storLocal.getItem("eventColors"));
+            evColorValues[inpEvent] = inpColor;
+        } else {
+            evColorValues = {};
+            evColorValues[inpEvent] = inpColor;
+        }
+        
+
+        storLocal.setItem("eventColors", JSON.stringify(evColorValues));
         storLocal.setItem(inpDate, JSON.stringify(storLocValues));
         closeElem("editorPlace");
         closeElem("wrongPlace");
@@ -123,6 +139,7 @@ function locStorToArr(locStor) {
     let arr = [];
     for (let i = 0; i < locStor.length; i++) {
         const locKey = localStorage.key(i);
+        if (locKey == "eventColors") continue;
         arr.push(locKey);
     }
     return arr;
@@ -139,7 +156,7 @@ function loadLocalStorage() {
 
     const toProc = 70/1440;
 
-    for (let i = 0; i < storLocal.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         const keyDate = arr[i];
         progMain.innerHTML +=`<div id='${keyDate}' class='Progress'></div>`;
 
@@ -147,17 +164,31 @@ function loadLocalStorage() {
         dateId.innerHTML += `<span class='Date'>${keyDate}</span>`;
 
         let eventsValues = JSON.parse(storLocal.getItem(keyDate));
+        let colorsValues = JSON.parse(storLocal.getItem("eventColors"))
         for (let ev in eventsValues) {
             if (ev == "freeTime"){
                 continue;
             }
             const keyDateDiv = document.getElementById(keyDate);
             let eventId = keyDate + ev + "";
-            keyDateDiv.innerHTML += `<span id='${eventId}' class='${ev}'></span>`;
+            keyDateDiv.innerHTML += `<span id='${eventId}' class='common'></span>`;
+            document.getElementById(eventId).style.backgroundColor = colorsValues[ev];
             const time = Math.round(Number(eventsValues[ev])*toProc)
             document.getElementById(eventId).style.width = time + "%";
         }
     }
+
+    const inpEv = document.getElementById("inputevent");
+    let colorsValues = JSON.parse(storLocal.getItem("eventColors"));
+    inpEv.innerHTML = `<option value="0" selected>Выберите действие</option>`;
+    
+    for (let co in colorsValues) {
+        // console.log(co + " = " + colorsValues[co]);
+        inpEv.innerHTML += `<option value="${co}">${co}</option>`;
+        
+    }
+    
+
 }
 
 
