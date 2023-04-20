@@ -77,6 +77,19 @@
     margin: 0 auto;
 }
 
+#newEventPlace{
+    border: 2px rgb(89, 158, 231) solid;
+    background: rgb(113, 229, 152);
+    display: none;
+    text-align: center;
+    width: 380px;
+
+    /* center */
+    margin: 0 auto;
+}
+
+
+
 #wrongPlace{
     border: 3px rgb(255, 0, 0) solid;
     background: rgb(255, 234, 151);
@@ -106,14 +119,28 @@
 }
 
 .Date {
-    width: 30%;
+    width: 25%;
     display: inline-flex;
     background-color: rgb(56, 110, 103);    
     height: 30px;
     align-items: center;
     justify-content:center;
+    margin: 1px 0px;
 
 }
+
+.btnRem {
+    width: 5%;
+    display: inline-flex;
+    background-color: rgb(243, 83, 51);    
+    height: 30px;
+    align-items: center;
+    justify-content:center;
+    margin: 1px 0px;
+
+}
+
+
 .red {
     display: inline-flex;
     background-color: red;    
@@ -133,6 +160,7 @@
 .common {
     display: inline-flex;  
     height: 30px;
+    margin: 1px 0px;
 }
 
 
@@ -141,6 +169,7 @@
     body{
         margin: 10px;
         background: rgb(191, 191, 248);
+        
     } 
 }
 

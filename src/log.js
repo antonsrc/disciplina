@@ -9,6 +9,55 @@ btnOpenAdd.addEventListener('click', function() {
     addEvent();
 });
 
+
+
+function ff2(ee) {
+    localStorage.removeItem(ee);
+    loadLocalStorage();
+}
+
+
+
+const btnNewEv = document.getElementById("btnNewEv");
+btnNewEv.addEventListener('click', function() {
+    const newEventPlace = document.getElementById("newEventPlace");
+    newEventPlace.style.display = "block";
+});
+
+
+const btnNewEvOk = document.getElementById("btnNewEvOk");
+btnNewEvOk.addEventListener('click', function() {
+    const inputNewEvent = document.getElementById("inputnewevent");
+    const inputColor = document.getElementById("inputcolor");
+    const inpEvent = inputNewEvent.value;
+    const inpColor = inputColor.value;
+
+    if (inpEvent != "") {
+        let evColorValues;
+        const storLocal = window.localStorage;
+        if (storLocal.getItem("eventColors")) {
+            evColorValues = JSON.parse(storLocal.getItem("eventColors"));
+            evColorValues[inpEvent] = inpColor;
+        } else {
+            evColorValues = {};
+            evColorValues[inpEvent] = inpColor;
+        }
+        storLocal.setItem("eventColors", JSON.stringify(evColorValues));
+    } 
+
+    const inpEv = document.getElementById("inputevent");
+    inpEv.innerHTML += `<option value="${inpEvent}" selected>${inpEvent}</option>`;
+
+    closeElem("newEventPlace");
+});
+
+
+const btnNewEvCancel = document.getElementById("btnNewEvCancel");
+btnNewEvCancel.addEventListener('click', function() {
+    closeElem("newEventPlace");
+});
+
+
 const btnSave = document.getElementById("btnSave");
 btnSave.addEventListener('click', function() {
     saveToLocStor();
@@ -44,16 +93,14 @@ function saveToLocStor() {
 
     const inputDate = document.getElementById("inputdate");
     const inputEvent = document.getElementById("inputevent");
-    const inputNewEvent = document.getElementById("inputnewevent");
-    const inputColor = document.getElementById("inputcolor");
     const inputTimeMin = document.getElementById("inputtimemin");
     const inputTimeHours = document.getElementById("inputtimehours");
 
     const inpDate = inputDate.value;
-    const inpEvent = ( inputNewEvent.value || inputEvent.options[inputEvent.selectedIndex].value );
-    const inpColor = inputColor.value;
+    const inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
     const inpTimeMin = inputTimeMin.value;
     const inpTimeHours = inputTimeHours.value;
+
 
     let showWrong = false;
     const wrongPlace = document.getElementById("wrongPlace");
@@ -117,17 +164,6 @@ function saveToLocStor() {
             storLocValues["freeTime"] = 1440 - totalTime;
         }
 
-        let evColorValues;
-        if (storLocal.getItem("eventColors")) {
-            evColorValues = JSON.parse(storLocal.getItem("eventColors"));
-            evColorValues[inpEvent] = inpColor;
-        } else {
-            evColorValues = {};
-            evColorValues[inpEvent] = inpColor;
-        }
-        
-
-        storLocal.setItem("eventColors", JSON.stringify(evColorValues));
         storLocal.setItem(inpDate, JSON.stringify(storLocValues));
         closeElem("editorPlace");
         closeElem("wrongPlace");
@@ -161,7 +197,7 @@ function loadLocalStorage() {
         progMain.innerHTML +=`<div id='${keyDate}' class='Progress'></div>`;
 
         const dateId = document.getElementById(`${keyDate}`);
-        dateId.innerHTML += `<span class='Date'>${keyDate}</span>`;
+        dateId.innerHTML += `<span class='Date'>${keyDate}</span><p class='btnRem'><a href="#" id="btnRemove${keyDate}" onclick="ff2('${keyDate}')"> x </a></p>`;
 
         let eventsValues = JSON.parse(storLocal.getItem(keyDate));
         let colorsValues = JSON.parse(storLocal.getItem("eventColors"))
@@ -183,7 +219,6 @@ function loadLocalStorage() {
     inpEv.innerHTML = `<option value="0" selected>Выберите действие</option>`;
     
     for (let co in colorsValues) {
-        // console.log(co + " = " + colorsValues[co]);
         inpEv.innerHTML += `<option value="${co}">${co}</option>`;
         
     }
