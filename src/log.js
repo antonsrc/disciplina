@@ -192,6 +192,14 @@ function loadLocalStorage() {
 
     const toProc = 70/1440;
 
+
+
+
+
+
+    let mapEv = new Map();
+
+
     for (let i = 0; i < arr.length; i++) {
         const keyDate = arr[i];
         progMain.innerHTML +=`<div id='${keyDate}' class='Progress'></div>`;
@@ -205,6 +213,7 @@ function loadLocalStorage() {
             if (ev == "freeTime"){
                 continue;
             }
+            mapEv.set(ev, colorsValues[ev]);
             const keyDateDiv = document.getElementById(keyDate);
             let eventId = keyDate + ev + "";
             keyDateDiv.innerHTML += `<span id='${eventId}' class='common'></span>`;
@@ -215,14 +224,14 @@ function loadLocalStorage() {
     }
 
     const inpEv = document.getElementById("inputevent");
-    let colorsValues = JSON.parse(storLocal.getItem("eventColors"));
+    const legend = document.getElementById("legend");
     inpEv.innerHTML = `<option value="0" selected>Выберите действие</option>`;
-    
-    for (let co in colorsValues) {
-        inpEv.innerHTML += `<option value="${co}">${co}</option>`;
-        
+    legend.innerHTML = `<p>`;
+    for (let s of mapEv.keys()) {
+        inpEv.innerHTML += `<option value="${s}">${s}</option>`;
+        legend.innerHTML += `<span style='background: ${mapEv.get(s)}; font-size: 20pt;'>${s}</span><br>`;
     }
-    
+    legend.innerHTML += `</p>`;
 
 }
 

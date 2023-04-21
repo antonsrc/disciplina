@@ -9,7 +9,7 @@
     flex-wrap: wrap;
 }
 
-#mainFlex div{
+#mainFlex #progress_bar_lines{
     color: white;
 }
 
@@ -27,9 +27,9 @@
     flex-shrink: 1;
 }
 
-#main p{
+/* #main p{
     text-align: center;
-}
+} */
 
 
 
@@ -89,6 +89,13 @@
 }
 
 
+#legend{
+
+    /* display: none; */
+    color: black;
+    margin: 0 auto;
+}
+
 
 #wrongPlace{
     border: 3px rgb(255, 0, 0) solid;
@@ -102,6 +109,9 @@
     /* center */
     margin: 0 auto;
 }
+
+
+
 
 #ProgressMain {
     width: 100%;
