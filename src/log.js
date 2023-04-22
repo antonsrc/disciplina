@@ -9,20 +9,29 @@ btnOpenAdd.addEventListener('click', function() {
     addEvent();
 });
 
-
-
 function ff2(ee) {
     localStorage.removeItem(ee);
     loadLocalStorage();
 }
 
-
-
 const btnNewEv = document.getElementById("btnNewEv");
 btnNewEv.addEventListener('click', function() {
-    const newEventPlace = document.getElementById("newEventPlace");
-    newEventPlace.style.display = "block";
+    // const newEventPlace = document.getElementById("newEventPlace");
+    // newEventPlace.style.display = "block";
+
+
+    const modalWindow = document.getElementById("modalWindow");
+    modalWindow.showModal();
+
 });
+
+
+const btnNewEvCancel = document.getElementById("btnNewEvCancel");
+btnNewEvCancel.addEventListener('click', function() {
+    const modalWindow = document.getElementById("modalWindow");
+    modalWindow.close();
+});
+
 
 
 const btnNewEvOk = document.getElementById("btnNewEvOk");
@@ -48,14 +57,11 @@ btnNewEvOk.addEventListener('click', function() {
     const inpEv = document.getElementById("inputevent");
     inpEv.innerHTML += `<option value="${inpEvent}" selected>${inpEvent}</option>`;
 
-    closeElem("newEventPlace");
+    document.getElementById("modalWindow").close();
 });
 
 
-const btnNewEvCancel = document.getElementById("btnNewEvCancel");
-btnNewEvCancel.addEventListener('click', function() {
-    closeElem("newEventPlace");
-});
+
 
 
 const btnSave = document.getElementById("btnSave");
