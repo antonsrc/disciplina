@@ -9,34 +9,36 @@
 <body>
     <div id="mainFlex">
         <div id="header">
-            <div id="header2"><span>log<sup>v.0.2</sup></span></div>
+            <div id="header2"><span>log<sup>v.0.3</sup></span></div>
         </div>
         <div id="main">
             <div id="progress_bar_lines"></div>
             <div id="legend"></div>
-            <h1 style="text-align: center"><a href="#" id="btnAddEvent">( + )</a></h1>
-
-
-
+            <button type="button" id="btnAddEvent" style="height:50px;width:50px;"><h3>+</h3></button>
             <dialog id="modalSetEvent">
                 <form> 
-                    <p>Дата: <input type="date" id="inputdate"></p>
-                    <p><select name="inputevent" id="inputevent" size="1"></select>
-                    или
-                    <input type="button" id="btnNewEv" value="добавьте новое"></p>
+                    <label for="inputDate">Дата: </label><input type="date" id="inputDate">
+                    <br>
+                    <p>
+                        <select name="inputEvent" id="inputEvent" size="1"></select>
+                        или
+                        <button type="button" id="btnNewEv">Добавьте новое</button>
+                    </p>
 
                     <dialog id="modalNewEvent">
-                        <p>Название действия: <input type="inputnewevent" id="inputnewevent"></p>
-                        <p>Цвет действия: <input type="color" id="inputcolor" name="inputcolor" value="#ff0000"></p>
-                        <input type="button" id="btnNewEvOk" value="Добавить">
-                        <input type="button" id="btnNewEvCancel" value="Отмена">
+                        <label for="inputNewEvent">Название: </label><input type="text" name="inputNewEvent" id="inputNewEvent">
+                        <br><br>
+                        <label for="inputcolor">Цвет: </label><input type="color" id="inputcolor" name="inputcolor" value="#ff0000">
+                        <br><br>
+                        <button type="button" id="btnNewEvOk">Добавить</button>
+                        <button type="button" id="btnNewEvCancel">Отмена</button>
                     </dialog>
 
-                   
-                    
-                    <p>Часов: <input type="number" id="inputtimehours" style="width:60px">  Минут: <input type="number" id="inputtimemin" style="width:60px"></p>
-                    <input type="button" id="btnSave" value="Сохранить">
-                    <input type="button" id="btnCancel" value="Отмена">
+                    <label for="inputTime">Времени затрачено: </label>
+                    <input type="time" id="inputTime" name="inputTime" value="00:00">
+                    <br><br>
+                    <button type="button" id="btnSave">Сохранить</button>
+                    <button type="button" id="btnCancel">Отмена</button>
                 </form>
             </dialog>
 
@@ -45,7 +47,7 @@
 
 
             <div><p id="wrongPlace"></p></div>
-            <div><input type="button" id="btnclloc" value="Очистить localStorage"></div>
+            <div><button type="button" id="btnclloc">Очистить localStorage</button></div>
         </div>
         
         <div id="footer">2023, anton.source@gmail.com</div>

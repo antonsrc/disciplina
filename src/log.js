@@ -47,10 +47,11 @@ btnNewEvCancel.addEventListener('click', function() {
 
 const btnNewEvOk = document.getElementById("btnNewEvOk");
 btnNewEvOk.addEventListener('click', function() {
-    const inputNewEvent = document.getElementById("inputnewevent");
+    const inputNewEvent = document.getElementById("inputNewEvent");
     const inputColor = document.getElementById("inputcolor");
     const inpEvent = inputNewEvent.value;
     const inpColor = inputColor.value;
+
 
     if (inpEvent != "") {
         let evColorValues;
@@ -65,7 +66,7 @@ btnNewEvOk.addEventListener('click', function() {
         storLocal.setItem("eventColors", JSON.stringify(evColorValues));
     } 
 
-    const inpEv = document.getElementById("inputevent");
+    const inpEv = document.getElementById("inputEvent");
     inpEv.innerHTML += `<option value="${inpEvent}" selected>${inpEvent}</option>`;
 
     document.getElementById("modalNewEvent").close();
@@ -106,15 +107,23 @@ function closeElem(elemId) {
 function saveToLocStor() { 
     const storLocal = window.localStorage;
 
-    const inputDate = document.getElementById("inputdate");
-    const inputEvent = document.getElementById("inputevent");
-    const inputTimeMin = document.getElementById("inputtimemin");
-    const inputTimeHours = document.getElementById("inputtimehours");
-
+    const inputDate = document.getElementById("inputDate");
+    const inputEvent = document.getElementById("inputEvent");
     const inpDate = inputDate.value;
     const inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
-    const inpTimeMin = inputTimeMin.value;
-    const inpTimeHours = inputTimeHours.value;
+    const inpTime = document.getElementById("inputTime").value.split(":");
+
+    if (!inpTime[0]) {
+        inpTime[0] = 0;
+    }
+    if (!inpTime[1]) {
+        inpTime[1] = 0;
+    }
+
+
+    const inpTimeHours = +inpTime[0];
+    const inpTimeMin = +inpTime[1];
+
 
 
     let showWrong = false;
@@ -134,7 +143,7 @@ function saveToLocStor() {
 
 
     let totalTime = 0;
-    if ((inpTimeMin == "") && (inpTimeHours == "") ) {
+    if ((inpTimeMin == 0) && (inpTimeHours == 0) ) {
         wrongPlace.innerHTML += "<br>Введите время";
         showWrong = true;
     } else {
@@ -173,6 +182,7 @@ function saveToLocStor() {
             else{
                 storLocValues[inpEvent] = totalTime;
             }
+            storLocValues["freeTime"] -= totalTime;
         } else {
             storLocValues = {};
             storLocValues[inpEvent] = totalTime;
@@ -237,7 +247,7 @@ function loadLocalStorage() {
         }
     }
 
-    const inpEv = document.getElementById("inputevent");
+    const inpEv = document.getElementById("inputEvent");
     const legend = document.getElementById("legend");
     inpEv.innerHTML = `<option value="0" selected>Выберите действие</option>`;
     legend.innerHTML = `<p>`;
