@@ -14,45 +14,36 @@
         <div id="main">
             <div id="progress_bar_lines"></div>
             <div id="legend"></div>
-            <p style="text-align: center">
-                <a href="#" id="btnopenadd" >( +/- )</a>
-            </p>
-            <div id="editorPlace">
+            <h1 style="text-align: center"><a href="#" id="btnAddEvent">( + )</a></h1>
+
+
+
+            <dialog id="modalSetEvent">
                 <form> 
                     <p>Дата: <input type="date" id="inputdate"></p>
                     <p><select name="inputevent" id="inputevent" size="1"></select>
                     или
                     <input type="button" id="btnNewEv" value="добавьте новое"></p>
 
-
-
-
-
-                    <!-- <div id="newEventPlace"> -->
-                        <!-- <p>Название действия: <input type="inputnewevent" id="inputnewevent"></p>
-                        <p>Цвет действия: <input type="color" id="inputcolor" name="inputcolor" value="#ff0000"></p>
-                        <input type="button" id="btnNewEvOk" value="Добавить">
-                        <input type="button" id="btnNewEvCancel" value="Отмена"> -->
-                    <!-- </div> -->
-
-
-
-                    <dialog id="modalWindow">
-                      
+                    <dialog id="modalNewEvent">
                         <p>Название действия: <input type="inputnewevent" id="inputnewevent"></p>
                         <p>Цвет действия: <input type="color" id="inputcolor" name="inputcolor" value="#ff0000"></p>
                         <input type="button" id="btnNewEvOk" value="Добавить">
                         <input type="button" id="btnNewEvCancel" value="Отмена">
-
-
                     </dialog>
 
                    
                     
                     <p>Часов: <input type="number" id="inputtimehours" style="width:60px">  Минут: <input type="number" id="inputtimemin" style="width:60px"></p>
-                    <p><input type="button" id="btnSave" value="Сохранить"></p>
+                    <input type="button" id="btnSave" value="Сохранить">
+                    <input type="button" id="btnCancel" value="Отмена">
                 </form>
-            </div>
+            </dialog>
+
+
+
+
+
             <div><p id="wrongPlace"></p></div>
             <div><input type="button" id="btnclloc" value="Очистить localStorage"></div>
         </div>

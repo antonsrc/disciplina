@@ -4,10 +4,25 @@ window.addEventListener('load', function() {
     loadLocalStorage();
 });
 
-const btnOpenAdd = document.getElementById("btnopenadd");
-btnOpenAdd.addEventListener('click', function() {
+const btnAddEvent = document.getElementById("btnAddEvent");
+btnAddEvent.addEventListener('click', function() {
     addEvent();
 });
+
+const btnSave = document.getElementById("btnSave");
+btnSave.addEventListener('click', function() {
+    saveToLocStor();
+    document.getElementById("modalSetEvent").close();
+});
+
+const btnCancel = document.getElementById("btnCancel");
+btnCancel.addEventListener('click', function() {
+    document.getElementById("modalSetEvent").close();
+});
+
+
+
+
 
 function ff2(ee) {
     localStorage.removeItem(ee);
@@ -16,20 +31,16 @@ function ff2(ee) {
 
 const btnNewEv = document.getElementById("btnNewEv");
 btnNewEv.addEventListener('click', function() {
-    // const newEventPlace = document.getElementById("newEventPlace");
-    // newEventPlace.style.display = "block";
-
-
-    const modalWindow = document.getElementById("modalWindow");
-    modalWindow.showModal();
+    const modalNewEvent = document.getElementById("modalNewEvent");
+    modalNewEvent.showModal();
 
 });
 
 
 const btnNewEvCancel = document.getElementById("btnNewEvCancel");
 btnNewEvCancel.addEventListener('click', function() {
-    const modalWindow = document.getElementById("modalWindow");
-    modalWindow.close();
+    const modalNewEvent = document.getElementById("modalNewEvent");
+    modalNewEvent.close();
 });
 
 
@@ -57,17 +68,14 @@ btnNewEvOk.addEventListener('click', function() {
     const inpEv = document.getElementById("inputevent");
     inpEv.innerHTML += `<option value="${inpEvent}" selected>${inpEvent}</option>`;
 
-    document.getElementById("modalWindow").close();
+    document.getElementById("modalNewEvent").close();
 });
 
 
 
 
 
-const btnSave = document.getElementById("btnSave");
-btnSave.addEventListener('click', function() {
-    saveToLocStor();
-});
+
 
 const btnClLoc = document.getElementById("btnclloc");
 btnClLoc.addEventListener('click', function() {
@@ -80,14 +88,15 @@ function clearLoc() {
 }
 
 function addEvent() {
-    const editPl = document.getElementById("editorPlace");
-    if (editPl.style.display == "block") {
-        editPl.style.display = "none";
-    }
-    else {
-        editPl.style.display = "block";
-    } 
+    const editPl = document.getElementById("modalSetEvent");
+    editPl.showModal();
 }
+
+
+
+
+
+
 
 function closeElem(elemId) {
     const elem = document.getElementById(elemId);
@@ -171,7 +180,6 @@ function saveToLocStor() {
         }
 
         storLocal.setItem(inpDate, JSON.stringify(storLocValues));
-        closeElem("editorPlace");
         closeElem("wrongPlace");
         loadLocalStorage();
     } 

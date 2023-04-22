@@ -27,11 +27,6 @@
     flex-shrink: 1;
 }
 
-/* #main p{
-    text-align: center;
-} */
-
-
 
 #footer{
     background: rgb(161, 161, 211);
@@ -67,14 +62,10 @@
     filter: drop-shadow(1px 1px 5px rgba(50,0,0,0.2));
 }
 
-#editorPlace{
+#modalSetEvent{
     border: 1px white solid;
-    display: none;
     text-align: center;
     width: 400px;
-
-    /* center */
-    margin: 0 auto;
 }
 
 #newEventPlace{
