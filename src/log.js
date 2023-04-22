@@ -48,7 +48,7 @@ btnNewEvCancel.addEventListener('click', function() {
 const btnNewEvOk = document.getElementById("btnNewEvOk");
 btnNewEvOk.addEventListener('click', function() {
     const inputNewEvent = document.getElementById("inputNewEvent");
-    const inputColor = document.getElementById("inputcolor");
+    const inputColor = document.getElementById("inputColor");
     const inpEvent = inputNewEvent.value;
     const inpColor = inputColor.value;
 
