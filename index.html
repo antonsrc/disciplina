@@ -12,7 +12,7 @@
             <div id="header2"><span>log<sup>v.0.3</sup></span></div>
         </div>
         <div id="main">
-            <div id="progress_bar_lines"></div>
+            <div id="progressBarLines"></div>
             <div id="legend"></div>
             <button type="button" id="btnAddEvent" style="height:50px; width:50px;"><h3>+</h3></button>
             <dialog id="modalSetEvent">
@@ -23,7 +23,7 @@
                     <p>
                         <select name="inputEvent" id="inputEvent" size="1"></select>
                         или
-                        <button type="button" id="btnNewEv">Добавьте новое</button>
+                        <button type="button" id="btnNewEvent">Добавьте новое</button>
                     </p>
                     <dialog id="modalNewEvent">
                         <label for="inputNewEvent">Название: </label>
@@ -32,8 +32,8 @@
                         <label for="inputColor">Цвет: </label>
                         <input type="color" id="inputColor" name="inputColor" value="#ff0000">
                         <br><br>
-                        <button type="button" id="btnNewEvOk">Добавить</button>
-                        <button type="button" id="btnNewEvCancel">Отмена</button>
+                        <button type="button" id="btnNewEventOk">Добавить</button>
+                        <button type="button" id="btnNewEventCancel">Отмена</button>
                     </dialog>
                     <label for="inputTime">Времени затрачено: </label>
                     <input type="time" id="inputTime" name="inputTime" value="00:00">
@@ -43,13 +43,9 @@
                 </form>
                 <div><p id="wrongPlace"></p></div>
             </dialog>
-
-
-            
             <br>
-            <div><button type="button" id="btnclloc">Очистить localStorage</button></div>
+            <div><button type="button" id="btnClearLocStor">Очистить localStorage</button></div>
         </div>
-        
         <div id="footer">2023, anton.source@gmail.com</div>
     </div>
 </body>

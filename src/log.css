@@ -9,7 +9,7 @@
     flex-wrap: wrap;
 }
 
-#mainFlex #progress_bar_lines{
+#mainFlex #progressBarLines{
     color: white;
 }
 
@@ -28,12 +28,6 @@
     text-align: center;
 }
 
-
-
-
-
-
-
 #footer{
     background: rgb(161, 161, 211);
     text-align: center;
@@ -41,12 +35,7 @@
     flex-basis: 50px;
 }
 
-
-
-
-
-
-#header2 {
+#header2{
     float: right;
     padding: 10px;
     height: 80px;
@@ -74,25 +63,11 @@
     width: 400px;
 }
 
-#newEventPlace{
-    border: 2px rgb(89, 158, 231) solid;
-    background: rgb(113, 229, 152);
-    display: none;
-    text-align: center;
-    width: 380px;
-
-    /* center */
-    margin: 0 auto;
-}
-
-
 #legend{
-
     /* display: none; */
     color: black;
     margin: 0 auto;
 }
-
 
 #wrongPlace{
     border: 3px rgb(255, 0, 0) solid;
@@ -107,25 +82,13 @@
     margin: 0 auto;
 }
 
-
-
-
-#ProgressMain {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
-.Progress {
+.Progress{
     width: 100%;
     display: flex;
     flex-direction: row;
 }
 
-.Date {
+.Date{
     width: 25%;
     display: inline-flex;
     background-color: rgb(56, 110, 103);    
@@ -133,10 +96,9 @@
     align-items: center;
     justify-content:center;
     margin: 1px 0px;
-
 }
 
-.btnRem {
+.btnRem{
     width: 5%;
     display: inline-flex;
     background-color: rgb(243, 83, 51);    
@@ -147,42 +109,21 @@
 
 }
 
-
-.red {
-    display: inline-flex;
-    background-color: red;    
-    height: 30px;
-}
-.green {
-    display: inline-flex;
-    background-color: green;    
-    height: 30px;
-}
-.blue {
-    display: inline-flex;
-    background-color: blue;    
-    height: 30px;
-}
-
-.common {
+.common{
     display: inline-flex;  
     height: 30px;
     margin: 1px 0px;
 }
 
-
-
-@media screen {
+@media screen{
     body{
         margin: 10px;
         background: rgb(191, 191, 248);
-        
     } 
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 600px){
     body{
         background: rgb(63, 236, 181);
     }
 }
-

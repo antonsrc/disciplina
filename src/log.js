@@ -1,113 +1,118 @@
 "use strict"
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function(){
     loadLocalStorage();
 });
 
+const modalSetEvent = document.getElementById("modalSetEvent");
 const btnAddEvent = document.getElementById("btnAddEvent");
-btnAddEvent.addEventListener('click', function() {
-    addEvent();
+btnAddEvent.addEventListener('click', function(){
+    modalSetEvent.showModal();
 });
 
 const btnSave = document.getElementById("btnSave");
-btnSave.addEventListener('click', function() {
+btnSave.addEventListener('click', function(){
     if(saveToLocStor()){
-        document.getElementById("modalSetEvent").close();
+        modalSetEvent.close();
+    }
+    else{
+        // вызов функции с предупреждением
     }
 });
 
 const btnCancel = document.getElementById("btnCancel");
-btnCancel.addEventListener('click', function() {
-    document.getElementById("modalSetEvent").close();
+btnCancel.addEventListener('click', function(){
+    modalSetEvent.close();
 });
 
-
-
-
-
-function ff2(ee) {
-    localStorage.removeItem(ee);
-    loadLocalStorage();
-}
-
-const btnNewEv = document.getElementById("btnNewEv");
-btnNewEv.addEventListener('click', function() {
-    const modalNewEvent = document.getElementById("modalNewEvent");
+const modalNewEvent = document.getElementById("modalNewEvent");
+const btnNewEvent = document.getElementById("btnNewEvent");
+btnNewEvent.addEventListener('click', function(){
     modalNewEvent.showModal();
-
 });
 
-
-const btnNewEvCancel = document.getElementById("btnNewEvCancel");
-btnNewEvCancel.addEventListener('click', function() {
-    const modalNewEvent = document.getElementById("modalNewEvent");
+const btnNewEventCancel = document.getElementById("btnNewEventCancel");
+btnNewEventCancel.addEventListener('click', function(){
     modalNewEvent.close();
 });
 
-
-
-const btnNewEvOk = document.getElementById("btnNewEvOk");
-btnNewEvOk.addEventListener('click', function() {
-    const inputNewEvent = document.getElementById("inputNewEvent");
-    const inputColor = document.getElementById("inputColor");
-    const inpEvent = inputNewEvent.value;
-    const inpColor = inputColor.value;
-
-    if (inpEvent != "") {
-        let evColorValues;
-        const storLocal = window.localStorage;
-        if (storLocal.getItem("eventColors")) {
-            evColorValues = JSON.parse(storLocal.getItem("eventColors"));
-            evColorValues[inpEvent] = inpColor;
-        } else {
-            evColorValues = {};
-            evColorValues[inpEvent] = inpColor;
-        }
-        storLocal.setItem("eventColors", JSON.stringify(evColorValues));
-
-        const inpEv = document.getElementById("inputEvent");
-        inpEv.innerHTML += `<option value="${inpEvent}" selected>${inpEvent}</option>`;
-    } 
-
-    
-
-    document.getElementById("modalNewEvent").close();
+const btnNewEventOk = document.getElementById("btnNewEventOk");
+btnNewEventOk.addEventListener('click', function(){
+    if(addNewEvent()){
+        modalNewEvent.close();
+    }
+    else{
+        // вызов функции с предупреждением
+    }
 });
 
-
-
-
-
-
-
-const btnClLoc = document.getElementById("btnclloc");
-btnClLoc.addEventListener('click', function() {
+const btnClearLocStor = document.getElementById("btnClearLocStor");
+btnClearLocStor.addEventListener('click', function(){
     clearLoc();
 });
 
-function clearLoc() {
+function clearLoc(){
     window.localStorage.clear();
     loadLocalStorage();
 }
 
-function addEvent() {
-    const editPl = document.getElementById("modalSetEvent");
-    editPl.showModal();
+function removeItemInLocStor(e){
+    localStorage.removeItem(e);
+    loadLocalStorage();
 }
 
-
-
-
-
-
-
-function closeElem(elemId) {
+function hideElement(elemId){
     const elem = document.getElementById(elemId);
     elem.style.display = "none";
 }
 
-function saveToLocStor() { 
-    const storLocal = window.localStorage;
+function addNewEvent(){
+    const locStor = window.localStorage;
+    const inputNewEvent = document.getElementById("inputNewEvent");
+    const inpEvent = document.getElementById("inputEvent");
+    const inputColor = document.getElementById("inputColor");
+    const inpNewEvent = inputNewEvent.value;
+
+    if (inpNewEvent != ""){
+        let eventColors = (locStor.getItem("allEvents")) ? JSON.parse(locStor.getItem("allEvents")) : {};
+        if(eventColors[inpNewEvent]){
+            document.getElementById('inputEvent').value = inpNewEvent;
+        } else {
+            inpEvent.innerHTML += `<option value="${inpNewEvent}" selected>${inpNewEvent}</option>`;
+        }
+        eventColors[inpNewEvent] = inputColor.value;
+        locStor.setItem("allEvents", JSON.stringify(eventColors));
+        return true;
+    } 
+    else{
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function saveToLocStor(){ 
+    const locStor = window.localStorage;
 
     const inputDate = document.getElementById("inputDate");
     const inputEvent = document.getElementById("inputEvent");
@@ -115,10 +120,10 @@ function saveToLocStor() {
     const inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
     const inpTime = document.getElementById("inputTime").value.split(":");
 
-    if (!inpTime[0]) {
+    if (!inpTime[0]){
         inpTime[0] = 0;
     }
-    if (!inpTime[1]) {
+    if (!inpTime[1]){
         inpTime[1] = 0;
     }
 
@@ -132,12 +137,12 @@ function saveToLocStor() {
     const wrongPlace = document.getElementById("wrongPlace");
     wrongPlace.innerHTML = "";
 
-    if (inpDate == "") {
+    if (inpDate == ""){
         wrongPlace.innerHTML += "Выберите дату";
         showWrong = true;
     }
 
-    if ( (inpEvent == "") || (inpEvent == "0") ) {
+    if ( (inpEvent == "") || (inpEvent == "0") ){
         wrongPlace.innerHTML += "<br>Выберите или введите событие";
         showWrong = true;
     } 
@@ -145,23 +150,23 @@ function saveToLocStor() {
 
 
     let totalTime = 0;
-    if ((inpTimeMin == 0) && (inpTimeHours == 0) ) {
+    if ((inpTimeMin == 0) && (inpTimeHours == 0) ){
         wrongPlace.innerHTML += "<br>Введите время";
         showWrong = true;
     } else {
-        if (inpTimeMin) {
+        if (inpTimeMin){
             totalTime += Number(inpTimeMin);
         }
-        if (inpTimeHours) {
+        if (inpTimeHours){
             totalTime += Number(inpTimeHours)*60;
         }
 
-        if ( (storLocal.getItem(inpDate) === null) && (totalTime >= 1440) ) {
+        if ( (locStor.getItem(inpDate) === null) && (totalTime >= 1440) ){
             wrongPlace.innerHTML += "<br>Введите время меньшее чем 24 ч";
             showWrong = true;
-        } else if (storLocal.getItem(inpDate)) {
-            let storLocValues = JSON.parse(storLocal.getItem(inpDate));
-            if (Number(storLocValues["freeTime"]) - totalTime < 0) {
+        } else if (locStor.getItem(inpDate)){
+            let storLocValues = JSON.parse(locStor.getItem(inpDate));
+            if (Number(storLocValues["freeTime"]) - totalTime < 0){
                 wrongPlace.innerHTML += `<br>Свободного времени осталось ${storLocValues["freeTime"]} мин`;
                 showWrong = true;
             }
@@ -174,12 +179,12 @@ function saveToLocStor() {
         return false;
     } else {
         let storLocValues;
-        if (storLocal.getItem(inpDate)) {
-            storLocValues = JSON.parse(storLocal.getItem(inpDate));
+        if (locStor.getItem(inpDate)){
+            storLocValues = JSON.parse(locStor.getItem(inpDate));
     
 
 
-            if (inpEvent in storLocValues) {
+            if (inpEvent in storLocValues){
                 storLocValues[inpEvent] += totalTime;
             }
             else{
@@ -192,30 +197,30 @@ function saveToLocStor() {
             storLocValues["freeTime"] = 1440 - totalTime;
         }
 
-        storLocal.setItem(inpDate, JSON.stringify(storLocValues));
-        closeElem("wrongPlace");
+        locStor.setItem(inpDate, JSON.stringify(storLocValues));
+        hideElement("wrongPlace");
         loadLocalStorage();
         return true;
     } 
 }
 
-function locStorToArr(locStor) {
+function locStorToArr(locSt){
     let arr = [];
-    for (let i = 0; i < locStor.length; i++) {
+    for (let i = 0; i < locSt.length; i++){
         const locKey = localStorage.key(i);
-        if (locKey == "eventColors") continue;
+        if (locKey == "allEvents") continue;
         arr.push(locKey);
     }
     return arr;
 }
 
-function loadLocalStorage() {
-    let storLocal = window.localStorage;
+function loadLocalStorage(){
+    let locStor = window.localStorage;
 
-    const progMain = document.getElementById("progress_bar_lines");
+    const progMain = document.getElementById("progressBarLines");
     progMain.innerHTML = "";
 
-    let arr = locStorToArr(storLocal);
+    let arr = locStorToArr(locStor);
     arr.sort();
 
     const toProc = 70/1440;
@@ -228,16 +233,17 @@ function loadLocalStorage() {
     let mapEv = new Map();
 
 
-    for (let i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++){
         const keyDate = arr[i];
         progMain.innerHTML +=`<div id='${keyDate}' class='Progress'></div>`;
 
         const dateId = document.getElementById(`${keyDate}`);
-        dateId.innerHTML += `<span class='Date'>${keyDate}</span><p class='btnRem'><a href="#" id="btnRemove${keyDate}" onclick="ff2('${keyDate}')"> x </a></p>`;
+        dateId.innerHTML += `<span class='Date'>${keyDate}</span>`
+        dateId.innerHTML += `<span class='btnRem'><a href="#" onclick="removeItemInLocStor('${keyDate}')"> x </a></span>`;
 
-        let eventsValues = JSON.parse(storLocal.getItem(keyDate));
-        let colorsValues = JSON.parse(storLocal.getItem("eventColors"))
-        for (let ev in eventsValues) {
+        let eventsValues = JSON.parse(locStor.getItem(keyDate));
+        let colorsValues = JSON.parse(locStor.getItem("allEvents"))
+        for (let ev in eventsValues){
             if (ev == "freeTime"){
                 continue;
             }
@@ -255,9 +261,9 @@ function loadLocalStorage() {
     const legend = document.getElementById("legend");
     inpEv.innerHTML = `<option value="0" selected>Выберите действие</option>`;
     legend.innerHTML = `<p>`;
-    for (let s of mapEv.keys()) {
+    for (let s of mapEv.keys()){
         inpEv.innerHTML += `<option value="${s}">${s}</option>`;
-        legend.innerHTML += `<span style='background: ${mapEv.get(s)}; font-size: 20pt;'>${s}</span><br>`;
+        legend.innerHTML += `<span style='background: ${mapEv.get(s)}; font-size: 20pt; padding: 8px; margin: 3px; border-radius: 15px;'>${s}</span>`;
     }
     legend.innerHTML += `</p>`;
 
