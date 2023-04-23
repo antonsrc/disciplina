@@ -17,32 +17,35 @@
             <button type="button" id="btnAddEvent" style="height:50px; width:50px;"><h3>+</h3></button>
             <dialog id="modalSetEvent">
                 <form> 
-                    <label for="inputDate">Дата: </label><input type="date" id="inputDate">
+                    <label for="inputDate">Дата: </label>
+                    <input type="date" id="inputDate">
                     <br>
                     <p>
                         <select name="inputEvent" id="inputEvent" size="1"></select>
                         или
                         <button type="button" id="btnNewEv">Добавьте новое</button>
                     </p>
-
                     <dialog id="modalNewEvent">
-                        <label for="inputNewEvent">Название: </label><input type="text" name="inputNewEvent" id="inputNewEvent">
+                        <label for="inputNewEvent">Название: </label>
+                        <input type="text" name="inputNewEvent" id="inputNewEvent">
                         <br><br>
-                        <label for="inputColor">Цвет: </label><input type="color" id="inputColor" name="inputColor" value="#ff0000">
+                        <label for="inputColor">Цвет: </label>
+                        <input type="color" id="inputColor" name="inputColor" value="#ff0000">
                         <br><br>
                         <button type="button" id="btnNewEvOk">Добавить</button>
                         <button type="button" id="btnNewEvCancel">Отмена</button>
                     </dialog>
-
                     <label for="inputTime">Времени затрачено: </label>
                     <input type="time" id="inputTime" name="inputTime" value="00:00">
                     <br><br>
                     <button type="button" id="btnSave">Сохранить</button>
                     <button type="button" id="btnCancel">Отмена</button>
                 </form>
+                <div><p id="wrongPlace"></p></div>
             </dialog>
 
-            <div><p id="wrongPlace"></p></div>
+
+            
             <br>
             <div><button type="button" id="btnclloc">Очистить localStorage</button></div>
         </div>

@@ -11,8 +11,9 @@ btnAddEvent.addEventListener('click', function() {
 
 const btnSave = document.getElementById("btnSave");
 btnSave.addEventListener('click', function() {
-    saveToLocStor();
-    document.getElementById("modalSetEvent").close();
+    if(saveToLocStor()){
+        document.getElementById("modalSetEvent").close();
+    }
 });
 
 const btnCancel = document.getElementById("btnCancel");
@@ -52,7 +53,6 @@ btnNewEvOk.addEventListener('click', function() {
     const inpEvent = inputNewEvent.value;
     const inpColor = inputColor.value;
 
-
     if (inpEvent != "") {
         let evColorValues;
         const storLocal = window.localStorage;
@@ -64,10 +64,12 @@ btnNewEvOk.addEventListener('click', function() {
             evColorValues[inpEvent] = inpColor;
         }
         storLocal.setItem("eventColors", JSON.stringify(evColorValues));
+
+        const inpEv = document.getElementById("inputEvent");
+        inpEv.innerHTML += `<option value="${inpEvent}" selected>${inpEvent}</option>`;
     } 
 
-    const inpEv = document.getElementById("inputEvent");
-    inpEv.innerHTML += `<option value="${inpEvent}" selected>${inpEvent}</option>`;
+    
 
     document.getElementById("modalNewEvent").close();
 });
@@ -169,6 +171,7 @@ function saveToLocStor() {
     
     if (showWrong){
         wrongPlace.style.display = "block";
+        return false;
     } else {
         let storLocValues;
         if (storLocal.getItem(inpDate)) {
@@ -192,6 +195,7 @@ function saveToLocStor() {
         storLocal.setItem(inpDate, JSON.stringify(storLocValues));
         closeElem("wrongPlace");
         loadLocalStorage();
+        return true;
     } 
 }
 
