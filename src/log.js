@@ -263,7 +263,7 @@ function loadLocalStorage(){
     legend.innerHTML = `<p>`;
     for (let s of mapEv.keys()){
         inpEv.innerHTML += `<option value="${s}">${s}</option>`;
-        legend.innerHTML += `<span style='background: ${mapEv.get(s)}; font-size: 20pt; padding: 8px; margin: 3px; border-radius: 15px;'>${s}</span>`;
+        legend.innerHTML += `<span style='background: ${mapEv.get(s)}; padding: 8px; margin: 3px; border-radius: 15px;'>${s}</span>`;
     }
     legend.innerHTML += `</p>`;
 
