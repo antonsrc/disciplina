@@ -69,7 +69,7 @@
     margin: 0 auto;
 }
 
-#wrongPlace{
+#errorMessage{
     border: 3px rgb(255, 0, 0) solid;
     background: rgb(255, 234, 151);
     display: none;

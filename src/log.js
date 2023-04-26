@@ -51,43 +51,7 @@ btnClearLocStor.addEventListener('click', function(){
     clearLoc();
 });
 
-function clearLoc(){
-    window.localStorage.clear();
-    loadLocalStorage();
-}
 
-function removeItemInLocStor(e){
-    localStorage.removeItem(e);
-    loadLocalStorage();
-}
-
-function hideElement(elemId){
-    const elem = document.getElementById(elemId);
-    elem.style.display = "none";
-}
-
-function addNewEvent(){
-    const locStor = window.localStorage;
-    const inputNewEvent = document.getElementById("inputNewEvent");
-    const inpEvent = document.getElementById("inputEvent");
-    const inputColor = document.getElementById("inputColor");
-    const inpNewEvent = inputNewEvent.value;
-
-    if (inpNewEvent != ""){
-        let eventColors = (locStor.getItem("allEvents")) ? JSON.parse(locStor.getItem("allEvents")) : {};
-        if(eventColors[inpNewEvent]){
-            document.getElementById('inputEvent').value = inpNewEvent;
-        } else {
-            inpEvent.innerHTML += `<option value="${inpNewEvent}" selected>${inpNewEvent}</option>`;
-        }
-        eventColors[inpNewEvent] = inputColor.value;
-        locStor.setItem("allEvents", JSON.stringify(eventColors));
-        return true;
-    } 
-    else{
-        return false;
-    }
-}
 
 
 
@@ -113,69 +77,60 @@ function addNewEvent(){
 
 function saveToLocStor(){ 
     const locStor = window.localStorage;
-
-    const inputDate = document.getElementById("inputDate");
     const inputEvent = document.getElementById("inputEvent");
-    const inpDate = inputDate.value;
+    const inpDate = document.getElementById("inputDate").value;
     const inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
-    const inpTime = document.getElementById("inputTime").value.split(":");
-
-    if (!inpTime[0]){
-        inpTime[0] = 0;
-    }
-    if (!inpTime[1]){
-        inpTime[1] = 0;
-    }
-
-
-    const inpTimeHours = +inpTime[0];
-    const inpTimeMin = +inpTime[1];
+    let inpTime = document.getElementById("inputTime").value.split(":");
+    
+    inpTime = validTimeValues(inpTime);
+    const inpHours = +inpTime[0];
+    const inpMins = +inpTime[1];
 
 
 
-    let showWrong = false;
-    const wrongPlace = document.getElementById("wrongPlace");
-    wrongPlace.innerHTML = "";
+    let inputError = false;
+    const errorMessage = document.getElementById("errorMessage");
+    errorMessage.innerHTML = "";
 
     if (inpDate == ""){
-        wrongPlace.innerHTML += "Выберите дату";
-        showWrong = true;
+        errorMessage.innerHTML += "Выберите дату";
+        inputError = true;
     }
 
     if ( (inpEvent == "") || (inpEvent == "0") ){
-        wrongPlace.innerHTML += "<br>Выберите или введите событие";
-        showWrong = true;
+        errorMessage.innerHTML += "<br>Выберите или введите событие";
+        inputError = true;
     } 
 
 
 
     let totalTime = 0;
-    if ((inpTimeMin == 0) && (inpTimeHours == 0) ){
-        wrongPlace.innerHTML += "<br>Введите время";
-        showWrong = true;
+    if ((inpMins == 0) && (inpHours == 0) ){
+        errorMessage.innerHTML += "<br>Введите время";
+        inputError = true;
     } else {
-        if (inpTimeMin){
-            totalTime += Number(inpTimeMin);
+        if (inpMins){
+            totalTime += Number(inpMins);
         }
-        if (inpTimeHours){
-            totalTime += Number(inpTimeHours)*60;
+        if (inpHours){
+            totalTime += Number(inpHours)*60;
         }
 
         if ( (locStor.getItem(inpDate) === null) && (totalTime >= 1440) ){
-            wrongPlace.innerHTML += "<br>Введите время меньшее чем 24 ч";
-            showWrong = true;
+            errorMessage.innerHTML += "<br>Введите время меньшее чем 24 ч";
+            inputError = true;
         } else if (locStor.getItem(inpDate)){
             let storLocValues = JSON.parse(locStor.getItem(inpDate));
             if (Number(storLocValues["freeTime"]) - totalTime < 0){
-                wrongPlace.innerHTML += `<br>Свободного времени осталось ${storLocValues["freeTime"]} мин`;
-                showWrong = true;
+                errorMessage.innerHTML += `<br>Свободного времени осталось ${storLocValues["freeTime"]} мин`;
+                inputError = true;
             }
         }
     }
 
     
-    if (showWrong){
-        wrongPlace.style.display = "block";
+    if (inputError){
+        errorMessage.style.display = "block";
         return false;
     } else {
         let storLocValues;
@@ -198,11 +153,15 @@ function saveToLocStor(){
         }
 
         locStor.setItem(inpDate, JSON.stringify(storLocValues));
-        hideElement("wrongPlace");
+        hideElement("errorMessage");
         loadLocalStorage();
         return true;
     } 
 }
+
+
+
+
 
 function locStorToArr(locSt){
     let arr = [];
@@ -213,6 +172,10 @@ function locStorToArr(locSt){
     }
     return arr;
 }
+
+
+
+
 
 function loadLocalStorage(){
     let locStor = window.localStorage;
@@ -270,3 +233,55 @@ function loadLocalStorage(){
 }
 
 
+
+
+
+
+function validTimeValues(time){
+    let hours = time[0];
+    let mins = time[1];
+    if (!hours){
+        hours = 0;
+    }
+    if (!mins){
+        mins = 0;
+    }
+    return [hours, mins];
+}
+
+function clearLoc(){
+    window.localStorage.clear();
+    loadLocalStorage();
+}
+
+function removeItemInLocStor(e){
+    localStorage.removeItem(e);
+    loadLocalStorage();
+}
+
+function hideElement(elemId){
+    const elem = document.getElementById(elemId);
+    elem.style.display = "none";
+}
+
+function addNewEvent(){
+    const locStor = window.localStorage;
+    const inpEvent = document.getElementById("inputEvent");
+    const inpColor = document.getElementById("inputColor").value;
+    const inpNewEvent = document.getElementById("inputNewEvent").value;
+
+    if (inpNewEvent != ""){
+        let eventColors = (locStor.getItem("allEvents")) ? JSON.parse(locStor.getItem("allEvents")) : {};
+        if(eventColors[inpNewEvent]){
+            document.getElementById('inputEvent').value = inpNewEvent;
+        } else {
+            inpEvent.innerHTML += `<option value="${inpNewEvent}" selected>${inpNewEvent}</option>`;
+        }
+        eventColors[inpNewEvent] = inpColor;
+        locStor.setItem("allEvents", JSON.stringify(eventColors));
+        return true;
+    } 
+    else{
+        return false;
+    }
+}
