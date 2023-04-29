@@ -58,20 +58,19 @@ function loadLocalStorage() {
 
     let colorsEvents = JSON.parse(locStor.getItem("allEvents"))
     for (let keyDate of arrDates) {
+        let dayEvents = JSON.parse(locStor.getItem(keyDate));
         progMain.innerHTML +=`<div id='${keyDate}' class='Progress'></div>`;
         const dateId = document.getElementById(keyDate);
-        dateId.innerHTML += `<span class='Date'>${keyDate}</span>
+        dateId.innerHTML += `<span class='Date'>${dayEvents["localDate"]}</span>
                             <span class='btnRem'>
                                 <a href="#" onclick="removeItemInLocStor('${keyDate}')"> X </a>
                             </span>`;
-
-        let dayEvents = JSON.parse(locStor.getItem(keyDate));
         for (let ev in dayEvents) {
-            if (ev == "freeTime") {
+            if (ev == "freeTime" || ev == "localDate") {
                 continue;
             }
             mapEvents.set(ev, colorsEvents[ev]);
-            const eventIdName = String(keyDate) + ev;
+            const eventIdName = dayEvents["localDate"] + ev;
             dateId.innerHTML += `<span id='${eventIdName}' class='common'></span>`;
             const eventId =  document.getElementById(eventIdName);
             eventId.style.backgroundColor = colorsEvents[ev];
@@ -164,9 +163,10 @@ function saveToLocStor() {
     const locStor = window.localStorage;
     const inputEvent = document.getElementById("inputEvent");
     const inpDate = document.getElementById("inputDate").value;
+    const inpDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
+    // inpDate = inpDate.getDay() + "." + inpDate.getMonth() + "." + inpDate.getYear();
     const inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
     let inpTime = document.getElementById("inputTime").value.split(":");
-    
     inpTime = validTimeValues(inpTime);
 
     const inpHours = Number(inpTime[0]);
@@ -190,7 +190,7 @@ function saveToLocStor() {
             dayEvents[inpEvent] = totalMins;
             dayEvents["freeTime"] = 1440 - totalMins;
         }
-
+        dayEvents["localDate"] = inpDateLocal;
         locStor.setItem(inpDate, JSON.stringify(dayEvents));
         hideElement("errorMessage");
         loadLocalStorage();
