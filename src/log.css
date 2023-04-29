@@ -63,6 +63,14 @@
     width: 400px;
 }
 
+#modalChangeEventsOfDay {
+    border: 1px whitesmoke solid;
+    text-align: left;
+    width: 500px;
+}
+
+
+
 #legend{
     /* display: none; */
     color: black;
@@ -99,14 +107,13 @@
 }
 
 .btnRem{
-    width: 5%;
+    /* width: 5%; */
     display: inline-flex;
     background-color: rgb(243, 83, 51);    
     height: 30px;
     align-items: center;
     justify-content:center;
     margin: 1px 0px;
-
 }
 
 .common{
