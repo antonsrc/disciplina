@@ -66,22 +66,28 @@ function openDataChanger(e) {
 
     // modalChangeEventsOfDay.innerHTML = "";
     modalChangeEventsOfDay.innerHTML = `<span>${dayEvents["localDate"]}</span><br><br>`;
-
+    
+    modalChangeEventsOfDay.innerHTML = `<div id="${e}modal"></div>`;
+    const modId2 = document.getElementById(e + 'modal');
     let colorsEvents = JSON.parse(locStor.getItem("allEvents"))
     for (let ev in dayEvents) {
         if (ev == "freeTime" || ev == "localDate") {
             continue;
         }
+        
+        modId2.innerHTML += `<p id="${ev}mod"></p>`;
+        const modId = document.getElementById(ev + 'mod');
+
 
         const eventIdName = dayEvents["changeDate"] + ev + "_";
-        modalChangeEventsOfDay.innerHTML += `<span id='${eventIdName}' class='common'></span><span> ${dayEvents[ev]} мин  <b>${ev}</b></span>`;
+        modId.innerHTML += `<span id='${eventIdName}' class='common3'></span><span class='common4'> ${dayEvents[ev]} мин  <b>${ev}</b></span>`;
         const eventId = document.getElementById(eventIdName);
         eventId.style.backgroundColor = colorsEvents[ev];
-        const TO_PROC2 = 100/1440;
-        const time = Math.round(Number(dayEvents[ev])*TO_PROC2);
+        const TO_PROC2 = 80/1440;
+        const time = Number(dayEvents[ev])*TO_PROC2;
         eventId.style.width = time + "%";
 
-        modalChangeEventsOfDay.innerHTML += `<span class='btnRem'>
+        modId.innerHTML += `<span class='btnRem2'>
         <a href="#" onclick="removeEvent('${e}', '${ev}')"> X </a></span><br>`;
     }
 
@@ -89,14 +95,12 @@ function openDataChanger(e) {
         <a href="#" onclick="removeItemInLocStor('${e}')"> Удалить все события дня </a>
     </span>`;
 
-    modalChangeEventsOfDay.innerHTML += `<br><button type="button" id="btnDataChangerCancel" onclick="cancelDataChange()">Отмена</button>`;
+    modalChangeEventsOfDay.innerHTML += `<br><button type="button" id="btnDataChangerCancel" onclick="cancelDataChange()">Закрыть</button>`;
 
     // loadLocalStorage();
 }
 
 function removeEvent(d, ev) {
-    console.log(d);
-    console.log(ev);
     const locStor = window.localStorage;
 
     let dayEvents = JSON.parse(locStor.getItem(d));
@@ -122,7 +126,7 @@ function removeEvent(d, ev) {
 
 function loadLocalStorage() {
     const locStor = window.localStorage;
-    const TO_PROC = 70/1440;
+    const TO_PROC = 100/1440;
     const progMain = document.getElementById("progressBarLines");
     progMain.innerHTML = "";
 
@@ -136,17 +140,21 @@ function loadLocalStorage() {
         let dayEvents = JSON.parse(locStor.getItem(keyDate));
         progMain.innerHTML +=`<div id='${keyDate}' class='Progress'></div>`;
         const dateId = document.getElementById(keyDate);
-        dateId.innerHTML += `<span class='Date'><a href="#" onclick="openDataChanger('${keyDate}')"> ${dayEvents["localDate"]} </a></span>`;
+        dateId.innerHTML += `<p class='Date'><a href="#" onclick="openDataChanger('${keyDate}')"> ${dayEvents["localDate"]} </a></p>`;
+        dateId.innerHTML += `<p id='${keyDate}prog' class='common2'></p>`;
+        
         for (let ev in dayEvents) {
             if (ev == "freeTime" || ev == "localDate") {
                 continue;
             }
             mapEvents.set(ev, colorsEvents[ev]);
             const eventIdName = dayEvents["localDate"] + ev;
-            dateId.innerHTML += `<span id='${eventIdName}' class='common'></span>`;
+            const eventsId =  document.getElementById(keyDate + 'prog');
+
+            eventsId.innerHTML += `<span id='${eventIdName}' class='common'></span>`;
             const eventId =  document.getElementById(eventIdName);
             eventId.style.backgroundColor = colorsEvents[ev];
-            const time = Math.round(Number(dayEvents[ev])*TO_PROC);
+            const time = Number(dayEvents[ev])*TO_PROC;
             eventId.style.width = time + "%";
         }
     }
@@ -166,8 +174,6 @@ function loadLocalStorage() {
     
     }
     legend.innerHTML += '</p>';
-
-    console.log(updEventColors);
 
     locStor.setItem("allEvents", JSON.stringify(updEventColors));
 }
@@ -213,7 +219,6 @@ function addNewEvent() {
     if (inpNewEvent != "") {
         let eventColors = (locStor.getItem("allEvents")) ? JSON.parse(locStor.getItem("allEvents")) : {};
         if(eventColors[inpNewEvent]) {
-            console.log(inpNewEvent + "--");
             document.getElementById('inputEvent').value = inpNewEvent;
             // inpEvent.innerHTML = `<option value="${inpNewEvent}" selected>${inpNewEvent}</option>`;
         } else {

@@ -66,7 +66,7 @@
 #modalChangeEventsOfDay {
     border: 1px whitesmoke solid;
     text-align: left;
-    width: 500px;
+    width: 80%;
 }
 
 
@@ -97,7 +97,7 @@
 }
 
 .Date{
-    width: 25%;
+    /* width: 30%; */
     display: inline-flex;
     background-color: rgb(56, 110, 103);    
     height: 30px;
@@ -116,10 +116,52 @@
     margin: 1px 0px;
 }
 
+.common3{
+    /* width: 50%; */
+    
+    display: inline-flex;
+  
+    height: 30px;
+    align-items: center;
+    margin: 1px 0px;
+
+}
+
+.common4{
+    /* width: 40%; */
+    display: inline-flex;
+  
+    height: 30px;
+    align-items: center;
+    margin: 1px 0px;
+
+}
+
+.btnRem2{
+    /* width: 10%; */
+    display: inline-flex;
+    background-color: rgb(243, 83, 51);    
+    height: 30px;
+    align-items: center;
+    justify-content:center;
+    margin: 1px 0px;
+}
+
 .common{
     display: inline-flex;  
     height: 30px;
     margin: 1px 0px;
+    
+}
+
+.common2{
+    width: 100%;
+    display: inline-flex;
+  
+    height: 30px;
+    align-items: center;
+    margin: 1px 0px;
+
 }
 
 @media screen{
