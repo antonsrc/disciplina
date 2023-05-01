@@ -4,39 +4,37 @@ window.addEventListener('load', function() {
     loadLocalStorage();
 });
 
-const modalSetEvent = document.getElementById("modalSetEvent");
 const btnAddEvent = document.getElementById("btnAddEvent");
 btnAddEvent.addEventListener('click', function() {
-    modalSetEvent.showModal();
+    document.getElementById("modalSetEvent").showModal();
 });
 
 const btnSave = document.getElementById("btnSave");
 btnSave.addEventListener('click', function() {
     if(saveToLocStor()) {
-        modalSetEvent.close();
+        document.getElementById("modalSetEvent").close();
     }
 });
 
 const btnCancel = document.getElementById("btnCancel");
 btnCancel.addEventListener('click', function() {
-    modalSetEvent.close();
+    document.getElementById("modalSetEvent").close();
 });
 
-const modalNewEvent = document.getElementById("modalNewEvent");
-const btnNewEvent = document.getElementById("btnNewEvent");
-btnNewEvent.addEventListener('click', function() {
-    modalNewEvent.showModal();
+const btnCreateEvent = document.getElementById("btnCreateEvent");
+btnCreateEvent.addEventListener('click', function() {
+    document.getElementById("modalCreateEvent").showModal();
 });
 
-const btnNewEventCancel = document.getElementById("btnNewEventCancel");
-btnNewEventCancel.addEventListener('click', function() {
-    modalNewEvent.close();
+const btnCreateEventCancel = document.getElementById("btnCreateEventCancel");
+btnCreateEventCancel.addEventListener('click', function() {
+    document.getElementById("modalCreateEvent").close();
 });
 
-const btnNewEventOk = document.getElementById("btnNewEventOk");
-btnNewEventOk.addEventListener('click', function() {
+const btnCreateEventOk = document.getElementById("btnCreateEventOk");
+btnCreateEventOk.addEventListener('click', function() {
     if(addNewEvent()) {
-        modalNewEvent.close();
+        document.getElementById("modalCreateEvent").close();
     }
 });
 
@@ -50,12 +48,6 @@ btnClearLocStor.addEventListener('click', function() {
 
 
 
-function cancelDataChange() {
-    const modalChangeEventsOfDay = document.getElementById("modalChangeEventsOfDay");
-    modalChangeEventsOfDay.close();
-}
-
-
 
 
 function openDataChanger(e) {
@@ -64,7 +56,6 @@ function openDataChanger(e) {
     const locStor = window.localStorage;
     let dayEvents = JSON.parse(locStor.getItem(e));
 
-    // modalChangeEventsOfDay.innerHTML = "";
     modalChangeEventsOfDay.innerHTML = `<span>${dayEvents["localDate"]}</span><br><br>`;
     
     modalChangeEventsOfDay.innerHTML = `<div id="${e}modal"></div>`;
@@ -95,9 +86,7 @@ function openDataChanger(e) {
         <a href="#" onclick="removeItemInLocStor('${e}')"> Удалить все события дня </a>
     </span>`;
 
-    modalChangeEventsOfDay.innerHTML += `<br><button type="button" id="btnDataChangerCancel" onclick="cancelDataChange()">Закрыть</button>`;
-
-    // loadLocalStorage();
+    modalChangeEventsOfDay.innerHTML += `<br><button type="button" onclick="modalChangeEventsOfDay.close()">Закрыть</button>`;
 }
 
 function removeEvent(d, ev) {
