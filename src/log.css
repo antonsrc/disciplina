@@ -7,55 +7,44 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-}
 
-#mainFlex #progressBarLines{
-    color: white;
+
+
+
+
+
 }
 
 #header{
-    background: rgb(238, 149, 149);
+    background: white;
     order: 1;
-    flex-basis: 100px;
-    position: relative;
 }
 
 #main{
     background: rgb(163, 214, 163);
     order: 2;
-    flex-basis: calc(100vh - 100px - 50px - 22px);
+    flex-basis: 100vh;
     flex-shrink: 1;
     text-align: center;
+
+
+
 }
 
 #footer{
-    background: rgb(161, 161, 211);
+    background: rgb(255, 229, 33);
     text-align: center;
-    order: 3;
-    flex-basis: 50px;
+    position: fixed;
+    bottom: 0;
+    left: 10px;
+    
+    border: 1px rgb(255, 229, 33) solid;
+    width: calc(100% - 20px);  /* margin -10px */
+
+
+    
 }
 
-#header2{
-    float: right;
-    padding: 10px;
-    height: 80px;
-    display: flex;
-    align-items:center;
-    justify-content:center;
-    width: 200px;
-    transform: rotate(10deg);
-    position: absolute;
-    top: 20px;
-    color:white;
-    font-weight: bold;
-    font-family:Georgia, 'Times New Roman', Times, serif;
-    font-size: 30pt;
-    text-align: center;
-    border-radius: 20px;
-    background-image: linear-gradient(135deg, rgb(240, 232, 128) 0%, lightgreen 70%);
-    right: 20px;
-    filter: drop-shadow(1px 1px 5px rgba(50,0,0,0.2));
-}
 
 #modalSetEvent{
     border: 1px white solid;

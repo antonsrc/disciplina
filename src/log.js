@@ -4,10 +4,6 @@ window.addEventListener('load', function() {
     loadLocalStorage();
 });
 
-document.addEventListener('touchmove', function (event) {
-    if (event.scale !== 1) { event.preventDefault(); }
-}, false);
-
 const btnAddEvent = document.getElementById("btnAddEvent");
 btnAddEvent.addEventListener('click', function() {
     document.getElementById("modalSetEvent").showModal();
@@ -162,7 +158,7 @@ function loadLocalStorage() {
 
     for (let s of mapEvents.keys()) {
         inpEv.innerHTML += `<option value="${s}">${s}</option>`;
-        legend.innerHTML += `<span style='background: ${mapEvents.get(s)}; padding: 8px; margin: 3px; border-radius: 15px;'>${s}</span>`;
+        legend.innerHTML += `<span style='background: ${mapEvents.get(s)}; padding: 5px; margin: 2px; border-radius: 10px;'>${s}</span>`;
         updEventColors[s] = mapEvents.get(s);
     
     }
