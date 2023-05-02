@@ -4,6 +4,10 @@ window.addEventListener('load', function() {
     loadLocalStorage();
 });
 
+document.addEventListener('touchmove', function (event) {
+    if (event.scale !== 1) { event.preventDefault(); }
+}, false);
+
 const btnAddEvent = document.getElementById("btnAddEvent");
 btnAddEvent.addEventListener('click', function() {
     document.getElementById("modalSetEvent").showModal();
