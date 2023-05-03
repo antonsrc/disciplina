@@ -151,18 +151,18 @@ function loadLocalStorage() {
     const inpEv = document.getElementById("inputEvent");
     const legend = document.getElementById("legend");
     inpEv.innerHTML = '<option value="0" selected>Выберите событие</option>';
-    legend.innerHTML = '<p>';
+    legend.innerHTML = '<p></p>';
 
     let eventColors = locStor.getItem("allEvents");
     let updEventColors = {};
 
     for (let s of mapEvents.keys()) {
         inpEv.innerHTML += `<option value="${s}">${s}</option>`;
-        legend.innerHTML += `<span style='background: ${mapEvents.get(s)}; padding: 5px; margin: 2px; border-radius: 10px;'>${s}</span>`;
+        legend.innerHTML += `<span style='background: ${mapEvents.get(s)}; padding: 3px; margin: 1px; border-radius: 10px;'>${s}</span>`;
         updEventColors[s] = mapEvents.get(s);
     
     }
-    legend.innerHTML += '</p>';
+
 
     locStor.setItem("allEvents", JSON.stringify(updEventColors));
 }

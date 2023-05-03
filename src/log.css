@@ -37,6 +37,7 @@
     position: fixed;
     bottom: 0;
     left: 10px;
+    height: 5rem;
     
     border: 1px rgb(255, 229, 33) solid;
     width: calc(100% - 20px);  /* margin -10px */
