@@ -40,10 +40,11 @@
     
     border: 1px rgb(255, 229, 33) solid;
     width: calc(100% - 20px);  /* margin -10px */
-
-
-    
+    margin-bottom: env(safe-area-inset-bottom);
 }
+
+
+
 
 
 #modalSetEvent{
