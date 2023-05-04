@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" charset="UTF-8">
+    <meta name="viewport">
+    <meta content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="./src/log.css">
     <title>log</title>
     <script src="./src/log.js" defer></script>
 </head>
 <body>
-    <div id="mainFlex">
+    <div id="container">
 
-        <div id="header">log v.0.4.2</div>
+        <div id="header">log v.0.4.3</div>
 
         <div id="main">
             <div id="progressBarLines"></div>
@@ -45,12 +47,19 @@
             </dialog>
             
         </div>
-        <div id="footer">
-            <div id="legend"></div>
-            <button type="button" id="btnAddEvent" style="margin-top: 10px; height:30px; width:30px;">+</button>
-            <button type="button" id="btnClearLocStor">Очистить locStor</button>
 
-            2023, anton.source@gmail.com
+        <div id="footer">
+            <div><button type="button" id="btnAddEvent" style="margin-top: 10px; height:30px; width:30px;">+</button>
+                <button type="button" id="btnClearLocStor">Очистить locStor</button>
+                2023, anton.source@gmail.com
+            </div>
+
+            <div id="legend">
+                <div id="legendMain"></div>
+                <div id="legendContinue"><button type="button" id="btnLegend">...</button></div>
+            </div>
+
+            
         </div>
     </div>
 </body>

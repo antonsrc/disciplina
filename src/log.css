@@ -1,34 +1,30 @@
-#mainFlex{
-    position: relative;
-    height: 100%;
-    width: 100%;
-    border: 1px white solid;
-    
+#container{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
 
-
-
-
-
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border: 1px white solid;
 
 }
 
 #header{
     background: white;
     order: 1;
+    width: 100%;
 }
 
 #main{
     background: rgb(163, 214, 163);
     order: 2;
-    flex-basis: 100vh;
-    flex-shrink: 1;
+    /* flex-basis: 100vh;
+    flex-shrink: 1; */
+    width: 100%;
     text-align: center;
-
-
-
+    padding-bottom: 100px;  /* heigh of footer */
+    
 }
 
 #footer{
@@ -37,15 +33,41 @@
     position: fixed;
     bottom: 0;
     left: 10px;
-    height: 5rem;
+    height: 20%;
     
     border: 1px rgb(255, 229, 33) solid;
-    width: calc(100% - 20px);  /* margin -10px */
-    margin-bottom: env(safe-area-inset-bottom);
+    
+    /* margin -10px */
+    width: calc(100% - 20px);
+
+    display: flex;
+    flex-direction: column;
+
+
+    /* margin-bottom: env(safe-area-inset-bottom); */
 }
 
 
+#legend{
+    display: flex;
+    flex-direction: row;
+    width: calc(100% - 20px);
+    color: black;
+    margin: 0 auto;
+}
 
+
+#legendMain{
+    display: flex;
+    width: 90%;
+    flex-wrap: wrap;
+
+}
+
+#legendContinue{
+    width: 10%;
+
+}
 
 
 #modalSetEvent{
@@ -62,11 +84,7 @@
 
 
 
-#legend{
-    /* display: none; */
-    color: black;
-    margin: 0 auto;
-}
+
 
 #errorMessage{
     border: 3px rgb(255, 0, 0) solid;

@@ -43,7 +43,17 @@ btnClearLocStor.addEventListener('click', function() {
     clearLoc();
 });
 
-
+const btnLegend = document.getElementById("btnLegend");
+btnLegend.addEventListener('click', function() {
+    let legend = document.getElementById("footer");
+    if (legend.style.height == "auto") {
+        legend.style.height = "20%";
+    }
+    else {
+        legend.style.height = "auto";
+    }
+    
+});
 
 
 
@@ -149,16 +159,15 @@ function loadLocalStorage() {
     }
 
     const inpEv = document.getElementById("inputEvent");
-    const legend = document.getElementById("legend");
+    const legend = document.getElementById("legendMain");
     inpEv.innerHTML = '<option value="0" selected>Выберите событие</option>';
-    legend.innerHTML = '<p></p>';
 
     let eventColors = locStor.getItem("allEvents");
     let updEventColors = {};
 
     for (let s of mapEvents.keys()) {
         inpEv.innerHTML += `<option value="${s}">${s}</option>`;
-        legend.innerHTML += `<span style='background: ${mapEvents.get(s)}; padding: 3px; margin: 1px; border-radius: 10px;'>${s}</span>`;
+        legend.innerHTML += `<div style='background: ${mapEvents.get(s)}; padding: 3px; margin: 1px; border-radius: 10px;'>${s}</div>`;
         updEventColors[s] = mapEvents.get(s);
     
     }
