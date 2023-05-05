@@ -164,7 +164,7 @@ function loadLocalStorage() {
 
     let eventColors = locStor.getItem("allEvents");
     let updEventColors = {};
-
+    legend.innerHTML = '';
     for (let s of mapEvents.keys()) {
         inpEv.innerHTML += `<option value="${s}">${s}</option>`;
         legend.innerHTML += `<div style='background: ${mapEvents.get(s)}; padding: 3px; margin: 1px; border-radius: 10px;'>${s}</div>`;
