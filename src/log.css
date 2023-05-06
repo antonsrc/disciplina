@@ -28,10 +28,16 @@
 }
 
 #footer{
-    background: rgb(255, 229, 33);
+    /* background: rgb(255, 229, 33); */
     text-align: center;
     position: fixed;
     bottom: 0;
+
+
+    display: flex;
+    flex-direction: column;
+
+
     left: 10px;
     height: 20%;
     
@@ -40,18 +46,24 @@
     /* margin -10px */
     width: calc(100% - 20px);
 
-    display: flex;
-    flex-direction: column;
-
 
     /* margin-bottom: env(safe-area-inset-bottom); */
 }
 
+#addEvent{
+    text-align: center;
+    width: calc(100% - 20px);
+
+    /* margin: 0 auto; */
+
+}
+
 
 #legend{
+    background: rgb(255, 229, 33);
     display: flex;
     flex-direction: row;
-    width: calc(100% - 20px);
+    width: 100%;
     color: black;
     margin: 0 auto;
 }
@@ -59,15 +71,38 @@
 
 #legendMain{
     display: flex;
-    width: 90%;
+    width: 80%;
     flex-wrap: wrap;
 
 }
 
 #legendContinue{
     width: 10%;
+}
+
+#buterClick{
+    width: 10%;
+    background: rgb(252, 174, 134);
+}
+
+
+
+#buter{
+    background: rgb(162, 214, 208);
+    text-align: center;
+    position: fixed;
+    top: 0;
+    right: 9px;
+    height: 90%;
+    
+    width: auto;
+
+    display: none;
+    flex-direction: column;
 
 }
+
+
 
 
 #modalSetEvent{

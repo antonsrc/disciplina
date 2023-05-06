@@ -48,12 +48,40 @@ btnLegend.addEventListener('click', function() {
     let legend = document.getElementById("footer");
     if (legend.style.height == "auto") {
         legend.style.height = "20%";
+        btnLegend.innerHTML = "...";
     }
     else {
         legend.style.height = "auto";
+        btnLegend.innerHTML = "x";
+
     }
     
 });
+
+
+
+const btnButer = document.getElementById("btnButer");
+btnButer.addEventListener('click', function() {
+    let buter = document.getElementById("buter");
+    if (buter.style.display == "flex") {
+        buter.style.display = 'none';
+        btnButer.innerHTML = "///";
+    }
+    else {
+        buter.style.width = "auto";
+        buter.style.display = 'flex';
+        btnButer.innerHTML = "x";
+
+    }
+    
+});
+
+
+
+
+
+
+
 
 
 
