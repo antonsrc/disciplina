@@ -23,7 +23,7 @@
     flex-shrink: 1; */
     width: 100%;
     text-align: center;
-    padding-bottom: 20vh;  /* heigh of footer */
+    padding-bottom: 100px;  /* heigh of footer */
     
 }
 
@@ -39,7 +39,7 @@
 
 
     left: 10px;
-    height: 20%;
+    height: 100px;
     
     border: 1px rgb(255, 229, 33) solid;
     
@@ -53,8 +53,8 @@
 #addEvent{
     text-align: center;
     width: calc(100% - 20px);
+    height: 70px;
 
-    /* margin: 0 auto; */
 
 }
 
@@ -66,6 +66,8 @@
     width: 100%;
     color: black;
     margin: 0 auto;
+    height: 30px;
+    align-items: center;
 }
 
 
@@ -73,6 +75,10 @@
     display: flex;
     width: 80%;
     flex-wrap: wrap;
+    flex-direction: row;
+
+    overflow: hidden;
+    height: 30px;
 
 }
 
@@ -83,7 +89,11 @@
 #buterClick{
     width: 10%;
     background: rgb(252, 174, 134);
+    
+    /* height: 100%; */
 }
+
+
 
 
 
@@ -143,7 +153,7 @@
 .Date{
     /* width: 30%; */
     display: inline-flex;
-    background-color: rgb(56, 110, 103);    
+    background-color: rgb(214, 235, 198);    
     height: 30px;
     align-items: center;
     justify-content:center;

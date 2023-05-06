@@ -45,17 +45,19 @@ btnClearLocStor.addEventListener('click', function() {
 
 const btnLegend = document.getElementById("btnLegend");
 btnLegend.addEventListener('click', function() {
-    let legend = document.getElementById("footer");
-    if (legend.style.height == "auto") {
-        legend.style.height = "20%";
+    let legend = document.getElementById("legend");
+    if (legend.style.height == "fit-content") {
+        legend.style.height = "30px";
+        document.getElementById("footer").style.height = "100px";
+        document.getElementById("legendMain").style.height = "30px";
         btnLegend.innerHTML = "...";
     }
     else {
-        legend.style.height = "auto";
+        legend.style.height = "fit-content";
+        document.getElementById("footer").style.height = "fit-content";
+        document.getElementById("legendMain").style.height = "fit-content";
         btnLegend.innerHTML = "x";
-
     }
-    
 });
 
 
@@ -71,9 +73,7 @@ btnButer.addEventListener('click', function() {
         buter.style.width = "auto";
         buter.style.display = 'flex';
         btnButer.innerHTML = "x";
-
     }
-    
 });
 
 
@@ -96,7 +96,7 @@ function openDataChanger(e) {
 
     modalChangeEventsOfDay.innerHTML = `<span>${dayEvents["localDate"]}</span><br><br>`;
     
-    modalChangeEventsOfDay.innerHTML = `<div id="${e}modal"></div>`;
+    modalChangeEventsOfDay.innerHTML += `<div id="${e}modal"></div>`;
     const modId2 = document.getElementById(e + 'modal');
     let colorsEvents = JSON.parse(locStor.getItem("allEvents"))
     for (let ev in dayEvents) {
