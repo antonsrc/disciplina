@@ -39,7 +39,7 @@
 
 
     left: 10px;
-    height: 100px;
+    height: fit-content;
     
     border: 1px rgb(255, 229, 33) solid;
     
@@ -53,7 +53,7 @@
 #addEvent{
     text-align: center;
     width: calc(100% - 20px);
-    height: 70px;
+    height: fit-content;
 
 
 }
@@ -66,7 +66,7 @@
     width: 100%;
     color: black;
     margin: 0 auto;
-    height: 30px;
+    height: fit-content;
     align-items: center;
 }
 
@@ -78,7 +78,7 @@
     flex-direction: row;
 
     overflow: hidden;
-    height: 30px;
+    height: 25px;
 
 }
 
@@ -89,12 +89,16 @@
 #buterClick{
     width: 10%;
     background: rgb(252, 174, 134);
-    
-    /* height: 100%; */
+    align-self: stretch;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
-
+#btnButer{
+    vertical-align: middle;
+}
 
 
 #buter{

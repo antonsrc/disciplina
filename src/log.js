@@ -45,17 +45,13 @@ btnClearLocStor.addEventListener('click', function() {
 
 const btnLegend = document.getElementById("btnLegend");
 btnLegend.addEventListener('click', function() {
-    let legend = document.getElementById("legend");
+    let legend = document.getElementById("legendMain");
     if (legend.style.height == "fit-content") {
-        legend.style.height = "30px";
-        document.getElementById("footer").style.height = "100px";
-        document.getElementById("legendMain").style.height = "30px";
+        legend.style.height = "25px";
         btnLegend.innerHTML = "...";
     }
     else {
         legend.style.height = "fit-content";
-        document.getElementById("footer").style.height = "fit-content";
-        document.getElementById("legendMain").style.height = "fit-content";
         btnLegend.innerHTML = "x";
     }
 });
