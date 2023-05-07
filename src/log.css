@@ -19,34 +19,23 @@
 #main{
     background: rgb(163, 214, 163);
     order: 2;
-    /* flex-basis: 100vh;
-    flex-shrink: 1; */
     width: 100%;
     text-align: center;
-    padding-bottom: 100px;  /* heigh of footer */
+    padding-bottom: 100px;  /* height of footer */
     
 }
 
 #footer{
-    /* background: rgb(255, 229, 33); */
     text-align: center;
     position: fixed;
     bottom: 0;
-
-
     display: flex;
     flex-direction: column;
-
-
     left: 10px;
     height: fit-content;
-    
-    border: 1px rgb(255, 229, 33) solid;
-    
-    /* margin -10px */
-    width: calc(100% - 20px);
+    width: calc(100% - 20px); /* margin -10px */
 
-
+    /* border: 1px rgb(255, 229, 33) solid; */
     /* margin-bottom: env(safe-area-inset-bottom); */
 }
 
@@ -154,6 +143,11 @@
     flex-direction: row;
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
 .Date{
     /* width: 30%; */
     display: inline-flex;
@@ -162,6 +156,9 @@
     align-items: center;
     justify-content:center;
     margin: 1px 0px;
+
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .btnRem{
@@ -174,26 +171,7 @@
     margin: 1px 0px;
 }
 
-.common3{
-    /* width: 50%; */
-    
-    display: inline-flex;
-  
-    height: 30px;
-    align-items: center;
-    margin: 1px 0px;
 
-}
-
-.common4{
-    /* width: 40%; */
-    display: inline-flex;
-  
-    height: 30px;
-    align-items: center;
-    margin: 1px 0px;
-
-}
 
 .btnRem2{
     /* width: 10%; */
@@ -206,21 +184,23 @@
 }
 
 .common{
-    display: inline-flex;  
+    display: inline-flex;
     height: 30px;
+    align-items: center;
     margin: 1px 0px;
-    
 }
 
 .common2{
-    width: 100%;
     display: inline-flex;
-  
     height: 30px;
+    width: 100%;
     align-items: center;
     margin: 1px 0px;
 
 }
+
+
+
 
 @media screen{
     body{

@@ -1,7 +1,8 @@
 "use strict"
 
 window.addEventListener('load', function() {
-    loadLocalStorage();
+    const locStor = window.localStorage;
+    loadData(locStor);
 });
 
 const btnAddEvent = document.getElementById("btnAddEvent");
@@ -45,32 +46,113 @@ btnClearLocStor.addEventListener('click', function() {
 
 const btnLegend = document.getElementById("btnLegend");
 btnLegend.addEventListener('click', function() {
-    let legend = document.getElementById("legendMain");
-    if (legend.style.height == "fit-content") {
-        legend.style.height = "25px";
+    const legendMain = document.getElementById("legendMain");
+    if (legendMain.style.height == "fit-content") {
+        legendMain.style.height = "25px";
         btnLegend.innerHTML = "...";
-    }
-    else {
-        legend.style.height = "fit-content";
+    } else {
+        legendMain.style.height = "fit-content";
         btnLegend.innerHTML = "x";
     }
 });
 
-
-
 const btnButer = document.getElementById("btnButer");
 btnButer.addEventListener('click', function() {
-    let buter = document.getElementById("buter");
+    const buter = document.getElementById("buter");
     if (buter.style.display == "flex") {
         buter.style.display = 'none';
         btnButer.innerHTML = "///";
-    }
-    else {
+    } else {
         buter.style.width = "auto";
         buter.style.display = 'flex';
         btnButer.innerHTML = "x";
     }
 });
+
+
+
+
+
+
+function loadData(inpData) {
+    let arrDates = locStorToArr(inpData);
+    arrDates.sort();
+
+    let progressBarLines = document.getElementById("progressBarLines");
+    progressBarLines.innerHTML = "";
+
+
+    let mapEvents = new Map();
+
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
+
+
+    for (let day of arrDates) {
+        let dayEvents = JSON.parse(inpData.getItem(day));
+
+        let dayDiv = document.createElement('div');
+        dayDiv.className = 'Progress';
+        dayDiv.id = day;
+        progressBarLines.append(dayDiv);
+
+        let dayP = document.createElement('p');
+        dayP.className = 'Date';
+        dayDiv.append(dayP);
+
+        let dayA = document.createElement('a');
+        dayA.href = '#';
+        dayA.setAttribute('onclick', `openDataChanger("${day}")`);
+        dayA.textContent = dayEvents["localDate"];
+        dayP.append(dayA);
+
+        let eventP = document.createElement('p');
+        eventP.className = 'common2';
+        eventP.id = day + 'prog';
+        dayDiv.append(eventP);
+
+
+
+        
+
+        
+        for (let ev in dayEvents) {
+            if (ev == "freeTime" || ev == "localDate") {
+                continue;
+            }
+            mapEvents.set(ev, allEvents[ev]);
+            const eventIdName = dayEvents["localDate"] + ev;
+
+            let eventSpan = document.createElement('span');
+            eventSpan.className = 'common';
+            eventSpan.id = eventIdName;
+            eventSpan.style.backgroundColor = allEvents[ev];
+            const time = Number(dayEvents[ev]) * (100/1440);
+            eventSpan.style.width = time + "%";
+            eventP.append(eventSpan);
+
+        }
+    }
+
+    const inpEv = document.getElementById("inputEvent");
+    const legend = document.getElementById("legendMain");
+    inpEv.innerHTML = '<option value="0" selected>Выберите событие</option>';
+
+    let updEventColors = {};
+    legend.innerHTML = '';
+    for (let s of mapEvents.keys()) {
+        inpEv.innerHTML += `<option value="${s}">${s}</option>`;
+        legend.innerHTML += `<div style='background: ${mapEvents.get(s)}; padding: 3px; margin: 1px; border-radius: 10px;'>${s}</div>`;
+        updEventColors[s] = mapEvents.get(s);
+    
+    }
+
+
+    inpData.setItem("allEvents", JSON.stringify(updEventColors));
+}
+
+
+
+
 
 
 
@@ -86,7 +168,28 @@ btnButer.addEventListener('click', function() {
 
 function openDataChanger(e) {
     const modalChangeEventsOfDay = document.getElementById("modalChangeEventsOfDay");
+
+    console.log(modalChangeEventsOfDay.getBoundingClientRect());
+
     modalChangeEventsOfDay.showModal();
+    console.log(modalChangeEventsOfDay.getBoundingClientRect().top);
+    
+
+    window.scrollTo(0, 1000);   //////// поместить после закрытия диалога
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
     const locStor = window.localStorage;
     let dayEvents = JSON.parse(locStor.getItem(e));
 
@@ -94,7 +197,7 @@ function openDataChanger(e) {
     
     modalChangeEventsOfDay.innerHTML += `<div id="${e}modal"></div>`;
     const modId2 = document.getElementById(e + 'modal');
-    let colorsEvents = JSON.parse(locStor.getItem("allEvents"))
+    let allEvents = JSON.parse(locStor.getItem("allEvents"))
     for (let ev in dayEvents) {
         if (ev == "freeTime" || ev == "localDate") {
             continue;
@@ -105,9 +208,9 @@ function openDataChanger(e) {
 
 
         const eventIdName = dayEvents["changeDate"] + ev + "_";
-        modId.innerHTML += `<span id='${eventIdName}' class='common3'></span><span class='common4'> ${dayEvents[ev]} мин  <b>${ev}</b></span>`;
+        modId.innerHTML += `<span id='${eventIdName}' class='common'></span><span class='common'> ${dayEvents[ev]} мин  <b>${ev}</b></span>`;
         const eventId = document.getElementById(eventIdName);
-        eventId.style.backgroundColor = colorsEvents[ev];
+        eventId.style.backgroundColor = allEvents[ev];
         const TO_PROC2 = 80/1440;
         const time = Number(dayEvents[ev])*TO_PROC2;
         eventId.style.width = time + "%";
@@ -121,7 +224,13 @@ function openDataChanger(e) {
     </span>`;
 
     modalChangeEventsOfDay.innerHTML += `<br><button type="button" onclick="modalChangeEventsOfDay.close()">Закрыть</button>`;
+    
+
 }
+
+
+
+
 
 function removeEvent(d, ev) {
     const locStor = window.localStorage;
@@ -138,7 +247,9 @@ function removeEvent(d, ev) {
     eventId.remove();
 
     locStor.setItem(d, JSON.stringify(dayEvents));
-    loadLocalStorage();
+
+    
+    loadData(locStor);
     
 }
 
@@ -147,58 +258,7 @@ function removeEvent(d, ev) {
 
 
 
-function loadLocalStorage() {
-    const locStor = window.localStorage;
-    const TO_PROC = 100/1440;
-    const progMain = document.getElementById("progressBarLines");
-    progMain.innerHTML = "";
 
-    let arrDates = locStorToArr(locStor);
-    arrDates.sort();
-
-    let mapEvents = new Map();
-
-    let colorsEvents = JSON.parse(locStor.getItem("allEvents"))
-    for (let keyDate of arrDates) {
-        let dayEvents = JSON.parse(locStor.getItem(keyDate));
-        progMain.innerHTML +=`<div id='${keyDate}' class='Progress'></div>`;
-        const dateId = document.getElementById(keyDate);
-        dateId.innerHTML += `<p class='Date'><a href="#" onclick="openDataChanger('${keyDate}')"> ${dayEvents["localDate"]} </a></p>`;
-        dateId.innerHTML += `<p id='${keyDate}prog' class='common2'></p>`;
-        
-        for (let ev in dayEvents) {
-            if (ev == "freeTime" || ev == "localDate") {
-                continue;
-            }
-            mapEvents.set(ev, colorsEvents[ev]);
-            const eventIdName = dayEvents["localDate"] + ev;
-            const eventsId =  document.getElementById(keyDate + 'prog');
-
-            eventsId.innerHTML += `<span id='${eventIdName}' class='common'></span>`;
-            const eventId =  document.getElementById(eventIdName);
-            eventId.style.backgroundColor = colorsEvents[ev];
-            const time = Number(dayEvents[ev])*TO_PROC;
-            eventId.style.width = time + "%";
-        }
-    }
-
-    const inpEv = document.getElementById("inputEvent");
-    const legend = document.getElementById("legendMain");
-    inpEv.innerHTML = '<option value="0" selected>Выберите событие</option>';
-
-    let eventColors = locStor.getItem("allEvents");
-    let updEventColors = {};
-    legend.innerHTML = '';
-    for (let s of mapEvents.keys()) {
-        inpEv.innerHTML += `<option value="${s}">${s}</option>`;
-        legend.innerHTML += `<div style='background: ${mapEvents.get(s)}; padding: 3px; margin: 1px; border-radius: 10px;'>${s}</div>`;
-        updEventColors[s] = mapEvents.get(s);
-    
-    }
-
-
-    locStor.setItem("allEvents", JSON.stringify(updEventColors));
-}
 
 function validTimeValues(time) {
     let hours = time[0];
@@ -214,7 +274,9 @@ function validTimeValues(time) {
 
 function clearLoc() {
     window.localStorage.clear();
-    loadLocalStorage();
+
+    const locStor = window.localStorage;
+    loadData(locStor);
 }
 
 
@@ -222,7 +284,9 @@ function removeItemInLocStor(e) {
     localStorage.removeItem(e);
     const modalChangeEventsOfDay = document.getElementById("modalChangeEventsOfDay");
     modalChangeEventsOfDay.close();
-    loadLocalStorage();
+
+    const locStor = window.localStorage;
+    loadData(locStor);
 }
 
 function hideElement(elemId) {
@@ -309,7 +373,9 @@ function saveToLocStor() {
         dayEvents["localDate"] = inpDateLocal;
         locStor.setItem(inpDate, JSON.stringify(dayEvents));
         hideElement("errorMessage");
-        loadLocalStorage();
+
+        // const locStor = window.localStorage;
+        loadData(locStor);
         return true;
     } else {
         const errorMessage = document.getElementById("errorMessage");
