@@ -164,8 +164,6 @@ function loadDayData(data, day) {
 
 
 
-
-
 function openDayEditor(e) {
     const modalDayEditor = document.getElementById("modalDayEditor");
     modalDayEditor.showModal();
