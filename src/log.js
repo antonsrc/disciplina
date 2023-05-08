@@ -122,25 +122,25 @@ function loadData(inpData) {
     }
 
     const inpEv = document.getElementById("inputEvent");
-    let opt = document.createElement('option');
-    opt.value = '0';
-    opt.textContent = 'Выберите событие';
-    inpEv.append(opt);
+    let optionEv = document.createElement('option');
+    optionEv.value = '0';
+    optionEv.textContent = 'Выберите событие';
+    inpEv.append(optionEv);
 
     const legend = document.getElementById("legendMain");
     let eventColors = {};
     legend.innerHTML = '';
     for (let s of mapEvents.keys()) {
-        let opt = document.createElement('option');
-        opt.value = s;
-        opt.textContent = s;
-        inpEv.append(opt);
+        let optionEv = document.createElement('option');
+        optionEv.value = s;
+        optionEv.textContent = s;
+        inpEv.append(optionEv);
 
-        let div = document.createElement('div');
-        div.classList.add("legendLabel");
-        div.style.background = mapEvents.get(s);
-        div.textContent = s;
-        legend.append(div);
+        let divEvLavel = document.createElement('div');
+        divEvLavel.classList.add("legendLabel");
+        divEvLavel.style.background = mapEvents.get(s);
+        divEvLavel.textContent = s;
+        legend.append(divEvLavel);
         
         eventColors[s] = mapEvents.get(s);
     }
@@ -152,18 +152,6 @@ function loadDayData(data, day) {
     return JSON.parse(data.getItem(day));
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 function openDayEditor(e) {
     const modalDayEditor = document.getElementById("modalDayEditor");
     modalDayEditor.showModal();
@@ -171,26 +159,29 @@ function openDayEditor(e) {
     console.log(modalDayEditor.getBoundingClientRect().top);
     window.scrollTo(0, 1000);   //////// поместить после закрытия диалога
 
-    
-
-
-
-
-
-
-
-
-
-
     let dayEvents = loadDayData(LOC_STOR, e);
 
 
 
 
 
-    modalDayEditor.innerHTML = `<span>${dayEvents["localDate"]}</span><br><br>`;
+    // let divD = document.createElement('div');
+    // divD.textContent = dayEvents["localDate"];
+    // divD.id = 'modalDay' + e;
+
+    // let divEv = document.createElement('div');
+    // divEv.id = e + 'modal';
+
+    // if (!document.getElementById('modalDay' + e)) {
+
+    //     modalDayEditor.append(divD);
+    //     modalDayEditor.append(divEv);
+    // }
     
+    modalDayEditor.innerHTML = `<div>${dayEvents["localDate"]}</div><br><br>`;
     modalDayEditor.innerHTML += `<div id="${e}modal"></div>`;
+
+
     const modId2 = document.getElementById(e + 'modal');
     let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
     for (let ev in dayEvents) {
@@ -219,19 +210,7 @@ function openDayEditor(e) {
     </span>`;
 
     modalDayEditor.innerHTML += `<br><button type="button" onclick="modalDayEditor.close()">Закрыть</button>`;
-    
-
 }
-
-
-
-
-
-
-
-
-
-
 
 function removeEvent(d, ev) {
     let dayEvents = JSON.parse(LOC_STOR.getItem(d));
@@ -249,13 +228,6 @@ function removeEvent(d, ev) {
 
     loadData(LOC_STOR);
 }
-
-
-
-
-
-
-
 
 function validTimeValues(time) {
     let hours = time[0];
