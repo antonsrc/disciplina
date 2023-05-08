@@ -75,7 +75,13 @@
     width: 10%;
 }
 
-#buterClick{
+.legendLabel {
+    padding: 3px;
+    margin: 1px;
+    border-radius: 10px;
+}
+
+#togglerClick{
     width: 10%;
     background: rgb(252, 174, 134);
     align-self: stretch;
@@ -85,12 +91,12 @@
 }
 
 
-#btnButer{
+#btnToggler{
     vertical-align: middle;
 }
 
 
-#buter{
+#toggler{
     background: rgb(162, 214, 208);
     text-align: center;
     position: fixed;
@@ -114,7 +120,7 @@
     width: 400px;
 }
 
-#modalChangeEventsOfDay {
+#modalDayEditor {
     border: 1px whitesmoke solid;
     text-align: left;
     width: 80%;

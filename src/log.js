@@ -1,8 +1,9 @@
 "use strict"
 
+const LOC_STOR = window.localStorage;
+
 window.addEventListener('load', function() {
-    const locStor = window.localStorage;
-    loadData(locStor);
+    loadData(LOC_STOR);
 });
 
 const btnAddEvent = document.getElementById("btnAddEvent");
@@ -56,23 +57,18 @@ btnLegend.addEventListener('click', function() {
     }
 });
 
-const btnButer = document.getElementById("btnButer");
-btnButer.addEventListener('click', function() {
-    const buter = document.getElementById("buter");
-    if (buter.style.display == "flex") {
-        buter.style.display = 'none';
-        btnButer.innerHTML = "///";
+const btnToggler = document.getElementById("btnToggler");
+btnToggler.addEventListener('click', function() {
+    const toggler = document.getElementById("toggler");
+    if (toggler.style.display == "flex") {
+        toggler.style.display = 'none';
+        btnToggler.innerHTML = "///";
     } else {
-        buter.style.width = "auto";
-        buter.style.display = 'flex';
-        btnButer.innerHTML = "x";
+        toggler.style.width = "auto";
+        toggler.style.display = 'flex';
+        btnToggler.innerHTML = "x";
     }
 });
-
-
-
-
-
 
 function loadData(inpData) {
     let arrDates = locStorToArr(inpData);
@@ -81,11 +77,9 @@ function loadData(inpData) {
     let progressBarLines = document.getElementById("progressBarLines");
     progressBarLines.innerHTML = "";
 
-
     let mapEvents = new Map();
 
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
-
 
     for (let day of arrDates) {
         let dayEvents = JSON.parse(inpData.getItem(day));
@@ -101,7 +95,7 @@ function loadData(inpData) {
 
         let dayA = document.createElement('a');
         dayA.href = '#';
-        dayA.setAttribute('onclick', `openDataChanger("${day}")`);
+        dayA.setAttribute('onclick', `openDayEditor("${day}")`);
         dayA.textContent = dayEvents["localDate"];
         dayP.append(dayA);
 
@@ -110,11 +104,6 @@ function loadData(inpData) {
         eventP.id = day + 'prog';
         dayDiv.append(eventP);
 
-
-
-        
-
-        
         for (let ev in dayEvents) {
             if (ev == "freeTime" || ev == "localDate") {
                 continue;
@@ -129,25 +118,38 @@ function loadData(inpData) {
             const time = Number(dayEvents[ev]) * (100/1440);
             eventSpan.style.width = time + "%";
             eventP.append(eventSpan);
-
         }
     }
 
     const inpEv = document.getElementById("inputEvent");
-    const legend = document.getElementById("legendMain");
-    inpEv.innerHTML = '<option value="0" selected>Выберите событие</option>';
+    let opt = document.createElement('option');
+    opt.value = '0';
+    opt.textContent = 'Выберите событие';
+    inpEv.append(opt);
 
-    let updEventColors = {};
+    const legend = document.getElementById("legendMain");
+    let eventColors = {};
     legend.innerHTML = '';
     for (let s of mapEvents.keys()) {
-        inpEv.innerHTML += `<option value="${s}">${s}</option>`;
-        legend.innerHTML += `<div style='background: ${mapEvents.get(s)}; padding: 3px; margin: 1px; border-radius: 10px;'>${s}</div>`;
-        updEventColors[s] = mapEvents.get(s);
-    
+        let opt = document.createElement('option');
+        opt.value = s;
+        opt.textContent = s;
+        inpEv.append(opt);
+
+        let div = document.createElement('div');
+        div.classList.add("legendLabel");
+        div.style.background = mapEvents.get(s);
+        div.textContent = s;
+        legend.append(div);
+        
+        eventColors[s] = mapEvents.get(s);
     }
 
+    inpData.setItem("allEvents", JSON.stringify(eventColors));
+}
 
-    inpData.setItem("allEvents", JSON.stringify(updEventColors));
+function loadDayData(data, day) {
+    return JSON.parse(data.getItem(day));
 }
 
 
@@ -164,17 +166,11 @@ function loadData(inpData) {
 
 
 
+function openDayEditor(e) {
+    const modalDayEditor = document.getElementById("modalDayEditor");
+    modalDayEditor.showModal();
 
-
-function openDataChanger(e) {
-    const modalChangeEventsOfDay = document.getElementById("modalChangeEventsOfDay");
-
-    console.log(modalChangeEventsOfDay.getBoundingClientRect());
-
-    modalChangeEventsOfDay.showModal();
-    console.log(modalChangeEventsOfDay.getBoundingClientRect().top);
-    
-
+    console.log(modalDayEditor.getBoundingClientRect().top);
     window.scrollTo(0, 1000);   //////// поместить после закрытия диалога
 
     
@@ -188,16 +184,17 @@ function openDataChanger(e) {
 
 
 
+    let dayEvents = loadDayData(LOC_STOR, e);
 
 
-    const locStor = window.localStorage;
-    let dayEvents = JSON.parse(locStor.getItem(e));
 
-    modalChangeEventsOfDay.innerHTML = `<span>${dayEvents["localDate"]}</span><br><br>`;
+
+
+    modalDayEditor.innerHTML = `<span>${dayEvents["localDate"]}</span><br><br>`;
     
-    modalChangeEventsOfDay.innerHTML += `<div id="${e}modal"></div>`;
+    modalDayEditor.innerHTML += `<div id="${e}modal"></div>`;
     const modId2 = document.getElementById(e + 'modal');
-    let allEvents = JSON.parse(locStor.getItem("allEvents"))
+    let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
     for (let ev in dayEvents) {
         if (ev == "freeTime" || ev == "localDate") {
             continue;
@@ -219,11 +216,11 @@ function openDataChanger(e) {
         <a href="#" onclick="removeEvent('${e}', '${ev}')"> X </a></span><br>`;
     }
 
-    modalChangeEventsOfDay.innerHTML += `<span class='btnRem'>
+    modalDayEditor.innerHTML += `<span class='btnRem'>
         <a href="#" onclick="removeItemInLocStor('${e}')"> Удалить все события дня </a>
     </span>`;
 
-    modalChangeEventsOfDay.innerHTML += `<br><button type="button" onclick="modalChangeEventsOfDay.close()">Закрыть</button>`;
+    modalDayEditor.innerHTML += `<br><button type="button" onclick="modalDayEditor.close()">Закрыть</button>`;
     
 
 }
@@ -232,10 +229,14 @@ function openDataChanger(e) {
 
 
 
-function removeEvent(d, ev) {
-    const locStor = window.localStorage;
 
-    let dayEvents = JSON.parse(locStor.getItem(d));
+
+
+
+
+
+function removeEvent(d, ev) {
+    let dayEvents = JSON.parse(LOC_STOR.getItem(d));
     dayEvents["freeTime"] += dayEvents[ev];
     delete dayEvents[ev];
 
@@ -246,11 +247,9 @@ function removeEvent(d, ev) {
     eventId.nextSibling.remove();
     eventId.remove();
 
-    locStor.setItem(d, JSON.stringify(dayEvents));
+    LOC_STOR.setItem(d, JSON.stringify(dayEvents));
 
-    
-    loadData(locStor);
-    
+    loadData(LOC_STOR);
 }
 
 
@@ -273,20 +272,16 @@ function validTimeValues(time) {
 }
 
 function clearLoc() {
-    window.localStorage.clear();
-
-    const locStor = window.localStorage;
-    loadData(locStor);
+    LOC_STOR.clear();
+    loadData(LOC_STOR);
 }
 
 
 function removeItemInLocStor(e) {
     localStorage.removeItem(e);
-    const modalChangeEventsOfDay = document.getElementById("modalChangeEventsOfDay");
-    modalChangeEventsOfDay.close();
-
-    const locStor = window.localStorage;
-    loadData(locStor);
+    const modalDayEditor = document.getElementById("modalDayEditor");
+    modalDayEditor.close();
+    loadData(LOC_STOR);
 }
 
 function hideElement(elemId) {
@@ -295,15 +290,12 @@ function hideElement(elemId) {
 }
 
 function addNewEvent() {
-    const locStor = window.localStorage;
     const inpEvent = document.getElementById("inputEvent");
     const inpColor = document.getElementById("inputColor").value;
     const inpNewEvent = document.getElementById("inputNewEvent").value;
 
-
-
     if (inpNewEvent != "") {
-        let eventColors = (locStor.getItem("allEvents")) ? JSON.parse(locStor.getItem("allEvents")) : {};
+        let eventColors = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
         if(eventColors[inpNewEvent]) {
             document.getElementById('inputEvent').value = inpNewEvent;
             // inpEvent.innerHTML = `<option value="${inpNewEvent}" selected>${inpNewEvent}</option>`;
@@ -311,7 +303,7 @@ function addNewEvent() {
             inpEvent.innerHTML += `<option value="${inpNewEvent}" selected>${inpNewEvent}</option>`;
         }
         eventColors[inpNewEvent] = inpColor;
-        locStor.setItem("allEvents", JSON.stringify(eventColors));
+        LOC_STOR.setItem("allEvents", JSON.stringify(eventColors));
         return true;
     } 
     else{
@@ -320,7 +312,6 @@ function addNewEvent() {
 }
 
 function getErrorsArray(date, events, mins) {
-    const locStor = window.localStorage;
     let errorsArr = [];
     if (date == "") {
         errorsArr.push("Выберите дату");
@@ -330,8 +321,8 @@ function getErrorsArray(date, events, mins) {
     } 
     if (mins == 0) {
         errorsArr.push("Введите время");
-    } else if (locStor.getItem(date)) {
-        const freeTime = JSON.parse(locStor.getItem(date))["freeTime"];
+    } else if (LOC_STOR.getItem(date)) {
+        const freeTime = JSON.parse(LOC_STOR.getItem(date))["freeTime"];
         if (Number(freeTime) - mins < 0) {
             errorsArr.push(`Свободного времени осталось ${freeTime} мин`);
         }
@@ -340,11 +331,9 @@ function getErrorsArray(date, events, mins) {
 }
 
 function saveToLocStor() { 
-    const locStor = window.localStorage;
     const inputEvent = document.getElementById("inputEvent");
     const inpDate = document.getElementById("inputDate").value;
     const inpDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
-    // inpDate = inpDate.getDay() + "." + inpDate.getMonth() + "." + inpDate.getYear();
     const inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
     let inpTime = document.getElementById("inputTime").value.split(":");
     inpTime = validTimeValues(inpTime);
@@ -357,8 +346,8 @@ function saveToLocStor() {
 
     if (errorsArr.length == 0) {
         let dayEvents;
-        if (locStor.getItem(inpDate)) {
-            dayEvents = JSON.parse(locStor.getItem(inpDate));
+        if (LOC_STOR.getItem(inpDate)) {
+            dayEvents = JSON.parse(LOC_STOR.getItem(inpDate));
             if (inpEvent in dayEvents) {
                 dayEvents[inpEvent] += totalMins;
             } else {
@@ -371,11 +360,9 @@ function saveToLocStor() {
             dayEvents["freeTime"] = 1440 - totalMins;
         }
         dayEvents["localDate"] = inpDateLocal;
-        locStor.setItem(inpDate, JSON.stringify(dayEvents));
+        LOC_STOR.setItem(inpDate, JSON.stringify(dayEvents));
         hideElement("errorMessage");
-
-        // const locStor = window.localStorage;
-        loadData(locStor);
+        loadData(LOC_STOR);
         return true;
     } else {
         const errorMessage = document.getElementById("errorMessage");
