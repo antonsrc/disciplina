@@ -6,48 +6,48 @@ window.addEventListener('load', function() {
     loadData(LOC_STOR);
 });
 
-const btnAddEvent = document.getElementById("btnAddEvent");
+let btnAddEvent = document.getElementById("btnAddEvent");
 btnAddEvent.addEventListener('click', function() {
-    document.getElementById("modalSetEvent").showModal();
+    document.getElementById("modalAddEvent").showModal();
 });
 
-const btnSave = document.getElementById("btnSave");
+let btnSave = document.getElementById("btnSave");
 btnSave.addEventListener('click', function() {
     if(saveToLocStor()) {
-        document.getElementById("modalSetEvent").close();
+        document.getElementById("modalAddEvent").close();
     }
 });
 
-const btnCancel = document.getElementById("btnCancel");
+let btnCancel = document.getElementById("btnCancel");
 btnCancel.addEventListener('click', function() {
-    document.getElementById("modalSetEvent").close();
+    document.getElementById("modalAddEvent").close();
 });
 
-const btnCreateEvent = document.getElementById("btnCreateEvent");
+let btnCreateEvent = document.getElementById("btnCreateEvent");
 btnCreateEvent.addEventListener('click', function() {
     document.getElementById("modalCreateEvent").showModal();
 });
 
-const btnCreateEventCancel = document.getElementById("btnCreateEventCancel");
+let btnCreateEventCancel = document.getElementById("btnCreateEventCancel");
 btnCreateEventCancel.addEventListener('click', function() {
     document.getElementById("modalCreateEvent").close();
 });
 
-const btnCreateEventOk = document.getElementById("btnCreateEventOk");
+let btnCreateEventOk = document.getElementById("btnCreateEventOk");
 btnCreateEventOk.addEventListener('click', function() {
     if(addNewEvent()) {
         document.getElementById("modalCreateEvent").close();
     }
 });
 
-const btnClearLocStor = document.getElementById("btnClearLocStor");
+let btnClearLocStor = document.getElementById("btnClearLocStor");
 btnClearLocStor.addEventListener('click', function() {
     clearLoc();
 });
 
-const btnLegend = document.getElementById("btnLegend");
+let btnLegend = document.getElementById("btnLegend");
 btnLegend.addEventListener('click', function() {
-    const legendMain = document.getElementById("legendMain");
+    let legendMain = document.getElementById("legendMain");
     if (legendMain.style.height == "fit-content") {
         legendMain.style.height = "25px";
         btnLegend.innerHTML = "...";
@@ -57,9 +57,9 @@ btnLegend.addEventListener('click', function() {
     }
 });
 
-const btnToggler = document.getElementById("btnToggler");
+let btnToggler = document.getElementById("btnToggler");
 btnToggler.addEventListener('click', function() {
-    const toggler = document.getElementById("toggler");
+    let toggler = document.getElementById("toggler");
     if (toggler.style.display == "flex") {
         toggler.style.display = 'none';
         btnToggler.innerHTML = "///";
@@ -82,7 +82,7 @@ function loadData(inpData) {
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
 
     for (let day of arrDates) {
-        let dayEvents = JSON.parse(inpData.getItem(day));
+        let eventsOfDay = JSON.parse(inpData.getItem(day));
 
         let dayDiv = document.createElement('div');
         dayDiv.className = 'Progress';
@@ -96,7 +96,7 @@ function loadData(inpData) {
         let dayA = document.createElement('a');
         dayA.href = '#';
         dayA.setAttribute('onclick', `openDayEditor("${day}")`);
-        dayA.textContent = dayEvents["localDate"];
+        dayA.textContent = eventsOfDay["localDate"];
         dayP.append(dayA);
 
         let eventP = document.createElement('p');
@@ -104,30 +104,30 @@ function loadData(inpData) {
         eventP.id = day + 'prog';
         dayDiv.append(eventP);
 
-        for (let ev in dayEvents) {
+        for (let ev in eventsOfDay) {
             if (ev == "freeTime" || ev == "localDate") {
                 continue;
             }
             mapEvents.set(ev, allEvents[ev]);
-            const eventIdName = dayEvents["localDate"] + ev;
+            let eventIdName = eventsOfDay["localDate"] + ev;
 
             let eventSpan = document.createElement('span');
             eventSpan.className = 'common';
             eventSpan.id = eventIdName;
             eventSpan.style.backgroundColor = allEvents[ev];
-            const time = Number(dayEvents[ev]) * (100/1440);
+            let time = Number(eventsOfDay[ev]) * (100/1440);
             eventSpan.style.width = time + "%";
             eventP.append(eventSpan);
         }
     }
 
-    const inpEv = document.getElementById("inputEvent");
+    let inpEv = document.getElementById("inputEvent");
     let optionEv = document.createElement('option');
     optionEv.value = '0';
     optionEv.textContent = 'Выберите событие';
     inpEv.append(optionEv);
 
-    const legend = document.getElementById("legendMain");
+    let legend = document.getElementById("legendMain");
     let eventColors = {};
     legend.innerHTML = '';
     for (let s of mapEvents.keys()) {
@@ -152,25 +152,25 @@ function loadDayData(data, day) {
     return JSON.parse(data.getItem(day));
 }
 
-function openDayEditor(e) {
-    const modalDayEditor = document.getElementById("modalDayEditor");
+function openDayEditor(day) {
+    let modalDayEditor = document.getElementById("modalDayEditor");
     
     modalDayEditor.showModal();
     modalDayEditor.innerHTML = '';
 
-    let dayEvents = loadDayData(LOC_STOR, e);
+    let eventsOfDay = loadDayData(LOC_STOR, day);
     let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
 
     let divD = document.createElement('div');
-    divD.textContent = dayEvents["localDate"];
-    divD.id = 'modalDay' + e;
+    divD.textContent = eventsOfDay["localDate"];
+    divD.id = 'modalDay' + day;
     modalDayEditor.append(divD);
 
     let divEv = document.createElement('div');
-    divEv.id = e + 'modal';
+    divEv.id = day + 'modal';
     modalDayEditor.append(divEv);
 
-    for (let ev in dayEvents) {
+    for (let ev in eventsOfDay) {
         if (ev == "freeTime" || ev == "localDate") {
             continue;
         }
@@ -180,16 +180,16 @@ function openDayEditor(e) {
         divEv.append(pEv);
 
         let spanEv = document.createElement('span');
-        spanEv.id = dayEvents["localDate"] + ev + "_";
+        spanEv.id = eventsOfDay["localDate"] + ev + "_";
         spanEv.classList.add('common');
         spanEv.style.backgroundColor = allEvents[ev];
-        const time = Number(dayEvents[ev]) * (80/1440);
+        let time = Number(eventsOfDay[ev]) * (80/1440);
         spanEv.style.width = time + "%";
         pEv.append(spanEv);
 
         let spanEv2 = document.createElement('span');
         spanEv2.classList.add('common');
-        spanEv2.textContent = dayEvents[ev] + ' мин ' + ev;
+        spanEv2.textContent = eventsOfDay[ev] + ' мин ' + ev;
         pEv.append(spanEv2);
 
         let spanEv3 = document.createElement('span');
@@ -198,7 +198,7 @@ function openDayEditor(e) {
 
         let aEv = document.createElement('a');
         aEv.href = '#';
-        aEv.setAttribute('onclick', `removeEvent('${e}', '${ev}')`);
+        aEv.setAttribute('onclick', `removeEvent('${day}', '${ev}')`);
         aEv.textContent = 'x';
         spanEv3.append(aEv);
     }
@@ -209,7 +209,7 @@ function openDayEditor(e) {
 
     let aBtnRem = document.createElement('a');
     aBtnRem.href = '#';
-    aBtnRem.setAttribute('onclick', `removeItemInLocStor('${e}')`);
+    aBtnRem.setAttribute('onclick', `removeItemFromLocStor('${day}')`);
     aBtnRem.textContent = 'Удалить все события дня';
     spanBtnRem.append(aBtnRem);
 
@@ -224,20 +224,12 @@ function closeDayEditor() {
     modalDayEditor.close();
 }
 
-// TODO
-function removeEvent(d, ev) {
-    let dayEvents = JSON.parse(LOC_STOR.getItem(d));
-    dayEvents["freeTime"] += dayEvents[ev];
-    delete dayEvents[ev];
-
-    const eventIdName = dayEvents["localDate"] + ev + "_";
-    const eventId = document.getElementById(eventIdName);
-    eventId.nextSibling.remove();
-    eventId.nextSibling.remove();
-    eventId.remove();
-
-    LOC_STOR.setItem(d, JSON.stringify(dayEvents));
-
+function removeEvent(day, ev) {
+    let eventsOfDay = JSON.parse(LOC_STOR.getItem(day));
+    eventsOfDay["freeTime"] += eventsOfDay[ev];
+    delete eventsOfDay[ev];
+    document.getElementById(ev + "mod").remove();
+    LOC_STOR.setItem(day, JSON.stringify(eventsOfDay));
     loadData(LOC_STOR);
 }
 
@@ -258,38 +250,49 @@ function clearLoc() {
     loadData(LOC_STOR);
 }
 
-
-function removeItemInLocStor(e) {
-    localStorage.removeItem(e);
-    const modalDayEditor = document.getElementById("modalDayEditor");
-    modalDayEditor.close();
+function removeItemFromLocStor(day) {
+    localStorage.removeItem(day);
+    document.getElementById("modalDayEditor").close();
     loadData(LOC_STOR);
 }
 
 function hideElement(elemId) {
-    const elem = document.getElementById(elemId);
+    let elem = document.getElementById(elemId);
     elem.style.display = "none";
 }
 
-function addNewEvent() {
-    const inpEvent = document.getElementById("inputEvent");
-    const inpColor = document.getElementById("inputColor").value;
-    const inpNewEvent = document.getElementById("inputNewEvent").value;
+function locStorToArr(inpData) {
+    let arr = [];
+    for (let i = 0; i < inpData.length; i++) {
+        let locKey = localStorage.key(i);
+        if (locKey == "allEvents") {
+            continue;
+        }
+        arr.push(locKey);
+    }
+    return arr;
+}
 
-    if (inpNewEvent != "") {
+function addNewEvent() {
+    let inpNewEvent = document.getElementById("inputNewEvent").value;
+    if (inpNewEvent == "") {
+        return false;
+    } else {
+        let inpEvent = document.getElementById("inputEvent");
+        let inpColor = document.getElementById("inputColor").value;
         let eventColors = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
         if(eventColors[inpNewEvent]) {
-            document.getElementById('inputEvent').value = inpNewEvent;
-            // inpEvent.innerHTML = `<option value="${inpNewEvent}" selected>${inpNewEvent}</option>`;
+            inpEvent.value = inpNewEvent;
         } else {
-            inpEvent.innerHTML += `<option value="${inpNewEvent}" selected>${inpNewEvent}</option>`;
+            let optionEv = document.createElement('option');
+            optionEv.value = inpNewEvent;
+            optionEv.textContent = inpNewEvent;
+            optionEv.selected = true;
+            inpEvent.append(optionEv);
         }
         eventColors[inpNewEvent] = inpColor;
         LOC_STOR.setItem("allEvents", JSON.stringify(eventColors));
         return true;
-    } 
-    else{
-        return false;
     }
 }
 
@@ -304,7 +307,7 @@ function getErrorsArray(date, events, mins) {
     if (mins == 0) {
         errorsArr.push("Введите время");
     } else if (LOC_STOR.getItem(date)) {
-        const freeTime = JSON.parse(LOC_STOR.getItem(date))["freeTime"];
+        let freeTime = JSON.parse(LOC_STOR.getItem(date))["freeTime"];
         if (Number(freeTime) - mins < 0) {
             errorsArr.push(`Свободного времени осталось ${freeTime} мин`);
         }
@@ -313,41 +316,40 @@ function getErrorsArray(date, events, mins) {
 }
 
 function saveToLocStor() { 
-    const inputEvent = document.getElementById("inputEvent");
-    const inpDate = document.getElementById("inputDate").value;
-    const inpDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
-    const inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
+    let inputEvent = document.getElementById("inputEvent");
+    let inpDate = document.getElementById("inputDate").value;
+    let inpDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
+    let inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
     let inpTime = document.getElementById("inputTime").value.split(":");
     inpTime = validTimeValues(inpTime);
 
-    const inpHours = Number(inpTime[0]);
-    const inpMins = Number(inpTime[1]);
+    let inpHours = Number(inpTime[0]);
+    let inpMins = Number(inpTime[1]);
     let totalMins = inpMins + inpHours * 60;
-
-    const errorsArr = getErrorsArray(inpDate, inpEvent, totalMins);
+    let errorsArr = getErrorsArray(inpDate, inpEvent, totalMins);
 
     if (errorsArr.length == 0) {
-        let dayEvents;
+        let eventsOfDay;
         if (LOC_STOR.getItem(inpDate)) {
-            dayEvents = JSON.parse(LOC_STOR.getItem(inpDate));
-            if (inpEvent in dayEvents) {
-                dayEvents[inpEvent] += totalMins;
+            eventsOfDay = JSON.parse(LOC_STOR.getItem(inpDate));
+            if (inpEvent in eventsOfDay) {
+                eventsOfDay[inpEvent] += totalMins;
             } else {
-                dayEvents[inpEvent] = totalMins;
+                eventsOfDay[inpEvent] = totalMins;
             }
-            dayEvents["freeTime"] -= totalMins;
+            eventsOfDay["freeTime"] -= totalMins;
         } else {
-            dayEvents = {};
-            dayEvents[inpEvent] = totalMins;
-            dayEvents["freeTime"] = 1440 - totalMins;
+            eventsOfDay = {};
+            eventsOfDay[inpEvent] = totalMins;
+            eventsOfDay["freeTime"] = 1440 - totalMins;
         }
-        dayEvents["localDate"] = inpDateLocal;
-        LOC_STOR.setItem(inpDate, JSON.stringify(dayEvents));
+        eventsOfDay["localDate"] = inpDateLocal;
+        LOC_STOR.setItem(inpDate, JSON.stringify(eventsOfDay));
         hideElement("errorMessage");
         loadData(LOC_STOR);
         return true;
     } else {
-        const errorMessage = document.getElementById("errorMessage");
+        let errorMessage = document.getElementById("errorMessage");
         errorMessage.style.display = "block";
         errorMessage.innerHTML = "";
         for (let i = 0; i < errorsArr.length; i++) {
@@ -355,16 +357,4 @@ function saveToLocStor() {
         }
         return false;
     } 
-}
-
-function locStorToArr(locSt) {
-    let arr = [];
-    for (let i = 0; i < locSt.length; i++) {
-        const locKey = localStorage.key(i);
-        if (locKey == "allEvents") {
-            continue;
-        }
-        arr.push(locKey);
-    }
-    return arr;
 }
