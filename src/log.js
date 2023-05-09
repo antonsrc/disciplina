@@ -154,71 +154,83 @@ function loadDayData(data, day) {
 
 function openDayEditor(e) {
     const modalDayEditor = document.getElementById("modalDayEditor");
+    
     modalDayEditor.showModal();
-
-    console.log(modalDayEditor.getBoundingClientRect().top);
-    window.scrollTo(0, 1000);   //////// поместить после закрытия диалога
+    modalDayEditor.innerHTML = '';
 
     let dayEvents = loadDayData(LOC_STOR, e);
-
-
-
-
-
-    // let divD = document.createElement('div');
-    // divD.textContent = dayEvents["localDate"];
-    // divD.id = 'modalDay' + e;
-
-    // let divEv = document.createElement('div');
-    // divEv.id = e + 'modal';
-
-    // if (!document.getElementById('modalDay' + e)) {
-
-    //     modalDayEditor.append(divD);
-    //     modalDayEditor.append(divEv);
-    // }
-    
-    modalDayEditor.innerHTML = `<div>${dayEvents["localDate"]}</div><br><br>`;
-    modalDayEditor.innerHTML += `<div id="${e}modal"></div>`;
-
-
-    const modId2 = document.getElementById(e + 'modal');
     let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
+
+    let divD = document.createElement('div');
+    divD.textContent = dayEvents["localDate"];
+    divD.id = 'modalDay' + e;
+    modalDayEditor.append(divD);
+
+    let divEv = document.createElement('div');
+    divEv.id = e + 'modal';
+    modalDayEditor.append(divEv);
+
     for (let ev in dayEvents) {
         if (ev == "freeTime" || ev == "localDate") {
             continue;
         }
         
-        modId2.innerHTML += `<p id="${ev}mod"></p>`;
-        const modId = document.getElementById(ev + 'mod');
+        let pEv = document.createElement('p');
+        pEv.id = ev + 'mod';
+        divEv.append(pEv);
 
+        let spanEv = document.createElement('span');
+        spanEv.id = dayEvents["localDate"] + ev + "_";
+        spanEv.classList.add('common');
+        spanEv.style.backgroundColor = allEvents[ev];
+        const time = Number(dayEvents[ev]) * (80/1440);
+        spanEv.style.width = time + "%";
+        pEv.append(spanEv);
 
-        const eventIdName = dayEvents["changeDate"] + ev + "_";
-        modId.innerHTML += `<span id='${eventIdName}' class='common'></span><span class='common'> ${dayEvents[ev]} мин  <b>${ev}</b></span>`;
-        const eventId = document.getElementById(eventIdName);
-        eventId.style.backgroundColor = allEvents[ev];
-        const TO_PROC2 = 80/1440;
-        const time = Number(dayEvents[ev])*TO_PROC2;
-        eventId.style.width = time + "%";
+        let spanEv2 = document.createElement('span');
+        spanEv2.classList.add('common');
+        spanEv2.textContent = dayEvents[ev] + ' мин ' + ev;
+        pEv.append(spanEv2);
 
-        modId.innerHTML += `<span class='btnRem2'>
-        <a href="#" onclick="removeEvent('${e}', '${ev}')"> X </a></span><br>`;
+        let spanEv3 = document.createElement('span');
+        spanEv3.classList.add('btnRem2');
+        pEv.append(spanEv3);
+
+        let aEv = document.createElement('a');
+        aEv.href = '#';
+        aEv.setAttribute('onclick', `removeEvent('${e}', '${ev}')`);
+        aEv.textContent = 'x';
+        spanEv3.append(aEv);
     }
 
-    modalDayEditor.innerHTML += `<span class='btnRem'>
-        <a href="#" onclick="removeItemInLocStor('${e}')"> Удалить все события дня </a>
-    </span>`;
+    let spanBtnRem = document.createElement('span');
+    spanBtnRem.classList.add('btnRem');
+    modalDayEditor.append(spanBtnRem);
 
-    modalDayEditor.innerHTML += `<br><button type="button" onclick="modalDayEditor.close()">Закрыть</button>`;
+    let aBtnRem = document.createElement('a');
+    aBtnRem.href = '#';
+    aBtnRem.setAttribute('onclick', `removeItemInLocStor('${e}')`);
+    aBtnRem.textContent = 'Удалить все события дня';
+    spanBtnRem.append(aBtnRem);
+
+    let buttonClose = document.createElement('button');
+    buttonClose.type = "button";
+    buttonClose.setAttribute('onclick', `closeDayEditor()`);
+    buttonClose.textContent = 'Закрыть';
+    modalDayEditor.append(buttonClose);
 }
 
+function closeDayEditor() {
+    modalDayEditor.close();
+}
+
+// TODO
 function removeEvent(d, ev) {
     let dayEvents = JSON.parse(LOC_STOR.getItem(d));
     dayEvents["freeTime"] += dayEvents[ev];
     delete dayEvents[ev];
 
-
-    const eventIdName = dayEvents["changeDate"] + ev + "_";
+    const eventIdName = dayEvents["localDate"] + ev + "_";
     const eventId = document.getElementById(eventIdName);
     eventId.nextSibling.remove();
     eventId.nextSibling.remove();
