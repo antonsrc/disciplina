@@ -1,31 +1,28 @@
-#container{
+#container {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-
     position: relative;
     height: 100%;
     width: 100%;
     border: 1px white solid;
-
 }
 
-#header{
+#header {
     background: white;
     order: 1;
     width: 100%;
 }
 
-#main{
+#main {
     background: rgb(163, 214, 163);
     order: 2;
     width: 100%;
     text-align: center;
     padding-bottom: 100px;  /* height of footer */
-    
 }
 
-#footer{
+#footer {
     text-align: center;
     position: fixed;
     bottom: 0;
@@ -34,19 +31,15 @@
     left: 10px;
     height: fit-content;
     width: calc(100% - 20px); /* margin -10px */
-
-    /* border: 1px rgb(255, 229, 33) solid; */
-    /* margin-bottom: env(safe-area-inset-bottom); */
 }
 
-#addEvent{
+#addEvent {
     text-align: center;
     width: calc(100% - 20px);
     height: fit-content;
 }
 
-
-#legend{
+#legend {
     background: rgb(255, 229, 33);
     display: flex;
     flex-direction: row;
@@ -57,19 +50,16 @@
     align-items: center;
 }
 
-
-#legendMain{
+#legendMain {
     display: flex;
     width: 80%;
     flex-wrap: wrap;
     flex-direction: row;
-
     overflow: hidden;
     height: 25px;
-
 }
 
-#legendContinue{
+#legendContinue {
     width: 10%;
 }
 
@@ -79,7 +69,7 @@
     border-radius: 10px;
 }
 
-#togglerClick{
+#togglerClick {
     width: 10%;
     background: rgb(252, 174, 134);
     align-self: stretch;
@@ -88,31 +78,24 @@
     align-items: center;
 }
 
-
-#btnToggler{
+#btnToggler {
     vertical-align: middle;
 }
 
-
-#toggler{
+#toggler {
     background: rgb(162, 214, 208);
     text-align: center;
     position: fixed;
+    bottom: 0;
     top: 0;
     right: 9px;
     height: 100%;
-    
     width: auto;
-
     display: none;
     flex-direction: column;
-
 }
 
-
-
-
-#modalAddEvent{
+#modalAddEvent {
     border: 1px white solid;
     text-align: center;
     width: 400px;
@@ -124,11 +107,13 @@
     width: 80%;
 }
 
+#modalStat {
+    border: 3px rgb(214, 33, 255) solid;
+    text-align: left;
+    width: 70%;
+}
 
-
-
-
-#errorMessage{
+#errorMessage {
     border: 3px rgb(255, 0, 0) solid;
     background: rgb(255, 234, 151);
     display: none;
@@ -136,12 +121,9 @@
     color: red;
     font-weight: bold;
     width: 400px;
-
-    /* center */
-    margin: 0 auto;
 }
 
-.Progress{
+.Progress {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -152,21 +134,18 @@ a {
     text-decoration: none;
 }
 
-.Date{
-    /* width: 30%; */
+.Date {
     display: inline-flex;
     background-color: rgb(214, 235, 198);    
     height: 30px;
     align-items: center;
     justify-content:center;
     margin: 1px 0px;
-
     padding-left: 10px;
     padding-right: 10px;
 }
 
-.btnRem{
-    /* width: 5%; */
+.btnRem {
     display: inline-flex;
     background-color: rgb(243, 83, 51);    
     height: 30px;
@@ -175,10 +154,7 @@ a {
     margin: 1px 0px;
 }
 
-
-
-.btnRem2{
-    /* width: 10%; */
+.btnRem2 {
     display: inline-flex;
     background-color: rgb(243, 83, 51);    
     height: 30px;
@@ -187,32 +163,30 @@ a {
     margin: 1px 0px;
 }
 
-.common{
+.common {
     display: inline-flex;
     height: 30px;
     align-items: center;
     margin: 1px 0px;
 }
 
-.common2{
+.common2 {
     display: inline-flex;
     height: 30px;
     width: 100%;
     align-items: center;
     margin: 1px 0px;
-
 }
 
-
-@media screen{
-    body{
+@media screen {
+    body {
         margin: 10px;
         background: rgb(191, 191, 248);
     } 
 }
 
-@media screen and (max-width: 600px){
-    body{
+@media screen and (max-width: 600px) {
+    body {
         background: rgb(63, 236, 181);
     }
 }

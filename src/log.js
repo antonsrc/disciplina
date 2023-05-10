@@ -70,6 +70,11 @@ btnToggler.addEventListener('click', function() {
     }
 });
 
+let btnCloseStat = document.getElementById("btnCloseStat");
+btnCloseStat.addEventListener('click', function() {
+    document.getElementById("modalStat").close();
+});
+
 function loadData(inpData) {
     let arrDates = locStorToArr(inpData);
     arrDates.sort();
@@ -318,7 +323,6 @@ function getErrorsArray(date, events, mins) {
 function saveToLocStor() { 
     let inputEvent = document.getElementById("inputEvent");
     let inpDate = document.getElementById("inputDate").value;
-    let inpDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
     let inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
     let inpTime = document.getElementById("inputTime").value.split(":");
     inpTime = validTimeValues(inpTime);
@@ -330,6 +334,7 @@ function saveToLocStor() {
 
     if (errorsArr.length == 0) {
         let eventsOfDay;
+        let inpDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
         if (LOC_STOR.getItem(inpDate)) {
             eventsOfDay = JSON.parse(LOC_STOR.getItem(inpDate));
             if (inpEvent in eventsOfDay) {
@@ -357,4 +362,11 @@ function saveToLocStor() {
         }
         return false;
     } 
+}
+
+function openStat() {
+    let modalStat = document.getElementById("modalStat");
+    
+    modalStat.showModal();
+
 }

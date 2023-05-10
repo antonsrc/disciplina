@@ -14,7 +14,15 @@
         <div id="main">
             <div id="progressBarLines"></div>
             <dialog id="modalDayEditor"></dialog>
-            
+            <dialog id="modalStat">
+                <label for="inputDateFrom">От:</label>
+                <input type="date" id="inputDateFrom">
+                <br>
+                <label for="inputDateTo">До:</label>
+                <input type="date" id="inputDateTo">
+                <div id="progressBarStat">///</div>
+                <button type="button" id="btnCloseStat">Закрыть</button>
+            </dialog>
             <dialog id="modalAddEvent">
                 <form> 
                     <label for="inputDate">Дата: </label>
@@ -47,8 +55,8 @@
             <div id="toggler">
                 <br><br>
                 <button type="button" id="btnClearLocStor">Очистить locStor</button>
-                <br><br>
-                Статистика
+                <br>
+                <a href='#' onclick='openStat()'><b>Статистика</b></a>
                 <br><br>
                 2023, anton.source@gmail.com
                 <br><br>
