@@ -80,7 +80,7 @@ function loadData(inpData) {
     arrDates.sort();
 
     let progressBarLines = document.getElementById("progressBarLines");
-    progressBarLines.innerHTML = "";
+    progressBarLines.innerHTML = '';
 
     let mapEvents = new Map();
 
@@ -100,8 +100,10 @@ function loadData(inpData) {
 
         let dayA = document.createElement('a');
         dayA.href = '#';
-        dayA.setAttribute('onclick', `openDayEditor("${day}")`);
         dayA.textContent = eventsOfDay["localDate"];
+        dayA.addEventListener('click', function() {
+            openDayEditor(day);
+        });
         dayP.append(dayA);
 
         let eventP = document.createElement('p');
@@ -127,6 +129,7 @@ function loadData(inpData) {
     }
 
     let inpEv = document.getElementById("inputEvent");
+    inpEv.innerHTML = '';   // чистка
     let optionEv = document.createElement('option');
     optionEv.value = '0';
     optionEv.textContent = 'Выберите событие';
@@ -203,8 +206,10 @@ function openDayEditor(day) {
 
         let aEv = document.createElement('a');
         aEv.href = '#';
-        aEv.setAttribute('onclick', `removeEvent('${day}', '${ev}')`);
         aEv.textContent = 'x';
+        aEv.addEventListener('click', function() {
+            removeEvent(day, ev);
+        });
         spanEv3.append(aEv);
     }
 
@@ -214,14 +219,18 @@ function openDayEditor(day) {
 
     let aBtnRem = document.createElement('a');
     aBtnRem.href = '#';
-    aBtnRem.setAttribute('onclick', `removeItemFromLocStor('${day}')`);
     aBtnRem.textContent = 'Удалить все события дня';
+    aBtnRem.addEventListener('click', function() {
+        removeItemFromLocStor(day);
+    });
     spanBtnRem.append(aBtnRem);
 
     let buttonClose = document.createElement('button');
     buttonClose.type = "button";
-    buttonClose.setAttribute('onclick', `closeDayEditor()`);
     buttonClose.textContent = 'Закрыть';
+    buttonClose.addEventListener('click', function() {
+        closeDayEditor();
+    });
     modalDayEditor.append(buttonClose);
 }
 
@@ -322,7 +331,7 @@ function getErrorsArray(date, events, mins) {
 
 function saveToLocStor() { 
     let inputEvent = document.getElementById("inputEvent");
-    let inpDate = document.getElementById("inputDate").value;
+    let inpDate = document.getElementById("inputDate");
     let inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
     let inpTime = document.getElementById("inputTime").value.split(":");
     inpTime = validTimeValues(inpTime);
@@ -330,13 +339,13 @@ function saveToLocStor() {
     let inpHours = Number(inpTime[0]);
     let inpMins = Number(inpTime[1]);
     let totalMins = inpMins + inpHours * 60;
-    let errorsArr = getErrorsArray(inpDate, inpEvent, totalMins);
+    let errorsArr = getErrorsArray(inpDate.value, inpEvent, totalMins);
 
     if (errorsArr.length == 0) {
         let eventsOfDay;
         let inpDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
-        if (LOC_STOR.getItem(inpDate)) {
-            eventsOfDay = JSON.parse(LOC_STOR.getItem(inpDate));
+        if (LOC_STOR.getItem(inpDate.value)) {
+            eventsOfDay = JSON.parse(LOC_STOR.getItem(inpDate.value));
             if (inpEvent in eventsOfDay) {
                 eventsOfDay[inpEvent] += totalMins;
             } else {
@@ -349,7 +358,7 @@ function saveToLocStor() {
             eventsOfDay["freeTime"] = 1440 - totalMins;
         }
         eventsOfDay["localDate"] = inpDateLocal;
-        LOC_STOR.setItem(inpDate, JSON.stringify(eventsOfDay));
+        LOC_STOR.setItem(inpDate.value, JSON.stringify(eventsOfDay));
         hideElement("errorMessage");
         loadData(LOC_STOR);
         return true;
@@ -366,7 +375,35 @@ function saveToLocStor() {
 
 function openStat() {
     let modalStat = document.getElementById("modalStat");
-    
     modalStat.showModal();
 
+    let progressBarStat = document.getElementById("progressBarStat");
+    progressBarStat.innerHTML = '';
+
+    let inputDateFrom = document.getElementById("inputDateFrom");
+    let inputDateTo = document.getElementById("inputDateTo");
+
+    let btnShowDateRange = document.getElementById("btnShowDateRange");
+    btnShowDateRange.addEventListener('click', function() {
+        let inpDateFrom = inputDateFrom.value;
+        let inpDateTo = inputDateTo.value;
+        loadStatData(LOC_STOR, inpDateFrom, inpDateTo);
+    });
+}
+
+function loadStatData(inpData, dateFrom, dateTo) {
+    console.log(dateFrom, dateTo);
+    let arrDates = locStorToArr(inpData);
+    arrDates.sort();
+
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
+
+    let progressBarStat = document.getElementById("progressBarStat");
+    
+    progressBarStat.innerHTML = dateFrom;
+    progressBarStat.innerHTML += dateTo;
+    // получить даты
+
+
+    
 }

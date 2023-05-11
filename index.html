@@ -14,17 +14,22 @@
         <div id="main">
             <div id="progressBarLines"></div>
             <dialog id="modalDayEditor"></dialog>
+
             <dialog id="modalStat">
-                <label for="inputDateFrom">От:</label>
-                <input type="date" id="inputDateFrom">
-                <br>
-                <label for="inputDateTo">До:</label>
-                <input type="date" id="inputDateTo">
-                <div id="progressBarStat">///</div>
+                <form>
+                    <label for="inputDateFrom">От:</label>
+                    <input type="date" id="inputDateFrom">
+                    <br>
+                    <label for="inputDateTo">До:</label>
+                    <input type="date" id="inputDateTo">
+                </form>
+                <button type="button" id="btnShowDateRange">Показать</button>
+                <div id="progressBarStat"></div>
                 <button type="button" id="btnCloseStat">Закрыть</button>
             </dialog>
+
             <dialog id="modalAddEvent">
-                <form> 
+                <form>
                     <label for="inputDate">Дата: </label>
                     <input type="date" id="inputDate">
                     <br>
