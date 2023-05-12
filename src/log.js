@@ -90,12 +90,12 @@ function loadData(inpData) {
         let eventsOfDay = JSON.parse(inpData.getItem(day));
 
         let dayDiv = document.createElement('div');
-        dayDiv.className = 'Progress';
+        dayDiv.classList.add("Progress");
         dayDiv.id = day;
         progressBarLines.append(dayDiv);
 
         let dayP = document.createElement('p');
-        dayP.className = 'Date';
+        dayP.classList.add("Date");
         dayDiv.append(dayP);
 
         let dayA = document.createElement('a');
@@ -107,7 +107,7 @@ function loadData(inpData) {
         dayP.append(dayA);
 
         let eventP = document.createElement('p');
-        eventP.className = 'common2';
+        eventP.classList.add("common2");
         eventP.id = day + 'prog';
         dayDiv.append(eventP);
 
@@ -119,7 +119,7 @@ function loadData(inpData) {
             let eventIdName = eventsOfDay["localDate"] + ev;
 
             let eventSpan = document.createElement('span');
-            eventSpan.className = 'common';
+            eventSpan.classList.add("common");
             eventSpan.id = eventIdName;
             eventSpan.style.backgroundColor = allEvents[ev];
             let time = Number(eventsOfDay[ev]) * (100/1440);
@@ -385,6 +385,7 @@ function openStat() {
 
     let btnShowDateRange = document.getElementById("btnShowDateRange");
     btnShowDateRange.addEventListener('click', function() {
+        progressBarStat.innerHTML = '';
         let inpDateFrom = inputDateFrom.value;
         let inpDateTo = inputDateTo.value;
         loadStatData(LOC_STOR, inpDateFrom, inpDateTo);
@@ -392,18 +393,91 @@ function openStat() {
 }
 
 function loadStatData(inpData, dateFrom, dateTo) {
-    console.log(dateFrom, dateTo);
     let arrDates = locStorToArr(inpData);
     arrDates.sort();
+    let arrDatesRanged = getRange(dateFrom, dateTo, arrDates);
 
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
 
     let progressBarStat = document.getElementById("progressBarStat");
-    
-    progressBarStat.innerHTML = dateFrom;
-    progressBarStat.innerHTML += dateTo;
-    // получить даты
 
+    for (let day of arrDatesRanged) {
+        let eventsOfDay = JSON.parse(inpData.getItem(day));
 
-    
+        let dayDiv = document.createElement('div');
+        dayDiv.classList.add("Progress");
+        dayDiv.id = day;
+        progressBarStat.append(dayDiv);
+
+        let dayP = document.createElement('p');
+        dayP.classList.add("Date");
+        dayP.textContent = eventsOfDay["localDate"];
+        dayDiv.append(dayP);
+
+        let eventP = document.createElement('p');
+        eventP.classList.add("common2");
+        eventP.id = day + 'prog';
+        dayDiv.append(eventP);
+
+        for (let ev in eventsOfDay) {
+            if (ev == "freeTime" || ev == "localDate") {
+                continue;
+            }
+            let eventIdName = eventsOfDay["localDate"] + ev;
+            let eventSpan = document.createElement('span');
+            eventSpan.classList.add("common");
+            eventSpan.id = eventIdName;
+            eventSpan.style.backgroundColor = allEvents[ev];
+            let time = Number(eventsOfDay[ev]) * (100/1440);
+            eventSpan.style.width = time + "%";
+            eventP.append(eventSpan);
+        }
+    }
+}
+
+function getRange(fromDate, toDate, arr) {
+    let inpFrom = new Date(fromDate);
+    inpFrom = inpFrom.getTime();
+    let inpTo = new Date(toDate);
+    inpTo = inpTo.getTime();
+    let arrFirst = new Date(arr[0]);
+    let arrLast = new Date(arr[arr.length - 1]);
+    let indexStart;
+    let indexStop;
+
+    if (inpTo < inpFrom ||
+        inpFrom > arrLast ||
+        inpTo < arrFirst) {
+        return [];
+    }
+
+    if (inpFrom < arrFirst || fromDate == '') {
+        indexStart = 0;
+    } else {
+        for (let i = 0; i < arr.length; i++) {
+            let arrDate = new Date(arr[i]);
+            arrDate = arrDate.getTime();
+            if (arrDate >= inpFrom) {
+                indexStart = i;
+                break;
+            }
+        }
+    }
+
+    if (inpTo > arrLast || toDate == '') {
+        indexStop = arr.length - 1;
+    } else {
+        for (let i = indexStart; i < arr.length; i++) {
+            let arrDate = new Date(arr[i]);
+            arrDate = arrDate.getTime();
+            if (inpTo < arrDate) {
+                indexStop = i - 1;
+                break;
+            } else if (inpTo == arrDate) {
+                indexStop = i;
+                break;
+            }
+        }
+    }
+    return arr.slice(indexStart,indexStop + 1);
 }
