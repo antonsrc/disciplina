@@ -120,7 +120,7 @@ function loadData(inpData) {
 
             let eventSpan = document.createElement('span');
             eventSpan.classList.add("common");
-            eventSpan.id = eventIdName;
+            eventSpan.id = encodeURI(eventIdName);
             eventSpan.style.backgroundColor = allEvents[ev];
             let time = Number(eventsOfDay[ev]) * (100/1440);
             eventSpan.style.width = time + "%";
@@ -184,11 +184,11 @@ function openDayEditor(day) {
         }
         
         let pEv = document.createElement('p');
-        pEv.id = ev + 'mod';
+        pEv.id = encodeURI(ev) + 'mod';
         divEv.append(pEv);
 
         let spanEv = document.createElement('span');
-        spanEv.id = eventsOfDay["localDate"] + ev + "_";
+        spanEv.id = eventsOfDay["localDate"] + encodeURI(ev) + "_";
         spanEv.classList.add('common');
         spanEv.style.backgroundColor = allEvents[ev];
         let time = Number(eventsOfDay[ev]) * (80/1440);
@@ -242,7 +242,7 @@ function removeEvent(day, ev) {
     let eventsOfDay = JSON.parse(LOC_STOR.getItem(day));
     eventsOfDay["freeTime"] += eventsOfDay[ev];
     delete eventsOfDay[ev];
-    document.getElementById(ev + "mod").remove();
+    document.getElementById(encodeURI(ev) + "mod").remove();
     LOC_STOR.setItem(day, JSON.stringify(eventsOfDay));
     loadData(LOC_STOR);
 }
@@ -431,7 +431,7 @@ function loadStatData(inpData, dateFrom, dateTo) {
             let eventIdName = eventsOfDay["localDate"] + ev;
             let eventSpan = document.createElement('span');
             eventSpan.classList.add("common");
-            eventSpan.id = eventIdName;
+            eventSpan.id = encodeURI(eventIdName);
             eventSpan.style.backgroundColor = allEvents[ev];
             let time = Number(eventsOfDay[ev]) * (100/1440);
             eventSpan.style.width = time + "%";
