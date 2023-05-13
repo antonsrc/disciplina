@@ -511,3 +511,18 @@ function getRange(fromDate, toDate, arr) {
     }
     return arr.slice(indexStart,indexStop + 1);
 }
+
+function exportToJsonFile() {
+    let inpData = LOC_STOR;
+    let currentDate = new Date();
+    let day = currentDate.getDate();
+    let month = currentDate.getMonth() + 1;
+    let year = currentDate.getFullYear();
+
+    let filename = `log_backup_${year}_${month}_${day}.json`;
+    let jsonStr = JSON.stringify(inpData);
+
+    let exportJson = document.getElementById('exportJson');
+    exportJson.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(jsonStr));
+    exportJson.setAttribute('download', filename);
+}
