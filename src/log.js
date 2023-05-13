@@ -75,6 +75,11 @@ btnCloseStat.addEventListener('click', function() {
     document.getElementById("modalStat").close();
 });
 
+let btnImportJson = document.getElementById('btnImportJson');
+btnImportJson.addEventListener('change', (event) => {
+    readFile(event.target.files[0]);
+});
+
 function loadData(inpData) {
     let arrDates = locStorToArr(inpData);
     arrDates.sort();
@@ -513,16 +518,51 @@ function getRange(fromDate, toDate, arr) {
 }
 
 function exportToJsonFile() {
-    let inpData = LOC_STOR;
     let currentDate = new Date();
     let day = currentDate.getDate();
     let month = currentDate.getMonth() + 1;
     let year = currentDate.getFullYear();
 
     let filename = `log_backup_${year}_${month}_${day}.json`;
-    let jsonStr = JSON.stringify(inpData);
+    let jsonStr = JSON.stringify(LOC_STOR);
 
     let exportJson = document.getElementById('exportJson');
     exportJson.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(jsonStr));
     exportJson.setAttribute('download', filename);
+}
+
+function readFile(input) {
+    if (input.type && !input.type.startsWith('application/json')) { // Check if the file is an JSON
+        return;
+    }
+
+    let reader = new FileReader();
+    reader.readAsText(input);
+  
+    reader.onload = function() {
+        let jsonFileStr = reader.result;
+        let jsonFile = JSON.parse(jsonFileStr);
+        let allEventsFile = JSON.parse(jsonFile['allEvents']);
+        let allEventsLoc = JSON.parse(LOC_STOR.getItem("allEvents"));
+        for (let day in jsonFile) {
+            if (!LOC_STOR.getItem(day)) {
+                LOC_STOR.setItem(day, `${jsonFile[day]}`);
+               
+                let dayEvents = JSON.parse(jsonFile[day]);
+                for (let ev in dayEvents) {
+                    if (ev == 'freeTime' || ev == 'localDate') {
+                        continue;
+                    } else if (!allEventsLoc[ev]) {
+                        allEventsLoc[ev] = allEventsFile[ev];
+                        LOC_STOR.setItem("allEvents", JSON.stringify(allEventsLoc));
+                    }
+                }
+            }
+        }
+        loadData(LOC_STOR);
+        document.getElementById('btnImportJson').value = null;
+    };
+    reader.onerror = function() {
+        console.log(reader.error);
+    };
 }
