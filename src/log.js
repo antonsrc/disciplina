@@ -378,6 +378,8 @@ function openStat() {
     modalStat.showModal();
 
     let progressBarStat = document.getElementById("progressBarStat");
+    let legend = document.getElementById("legendStat");
+    legend.innerHTML = '';
     progressBarStat.innerHTML = '';
 
     let inputDateFrom = document.getElementById("inputDateFrom");
@@ -386,6 +388,7 @@ function openStat() {
     let btnShowDateRange = document.getElementById("btnShowDateRange");
     btnShowDateRange.addEventListener('click', function() {
         progressBarStat.innerHTML = '';
+        legend.innerHTML = '';
         let inpDateFrom = inputDateFrom.value;
         let inpDateTo = inputDateTo.value;
         loadStatData(LOC_STOR, inpDateFrom, inpDateTo);
@@ -396,6 +399,8 @@ function loadStatData(inpData, dateFrom, dateTo) {
     let arrDates = locStorToArr(inpData);
     arrDates.sort();
     let arrDatesRanged = getRange(dateFrom, dateTo, arrDates);
+
+    let mapEvents = new Map();
 
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
 
@@ -431,6 +436,31 @@ function loadStatData(inpData, dateFrom, dateTo) {
             let time = Number(eventsOfDay[ev]) * (100/1440);
             eventSpan.style.width = time + "%";
             eventP.append(eventSpan);
+
+            if (mapEvents.has(ev)) {
+                let sum = Number(mapEvents.get(ev)[1]) + Number(eventsOfDay[ev]);
+                mapEvents.set(ev, [allEvents[ev], sum]);
+            } else {
+                mapEvents.set(ev, [allEvents[ev], Number(eventsOfDay[ev])]);
+            }
+        }
+
+        let sortedmapEvents = new Map(Array.from(mapEvents).sort((a, b) => b[1][1] - a[1][1]));
+
+        let legend = document.getElementById("legendStat");
+        legend.innerHTML = '';
+        for (let s of sortedmapEvents.entries()) {
+            let divEvLavel = document.createElement('div');
+            divEvLavel.classList.add("legendLabel");
+            divEvLavel.textContent = s[0] + ' ';
+            divEvLavel.style.background = s[1][0];
+            divEvLavel.style.width = 'fit-content';
+            legend.append(divEvLavel);
+
+            let spanEvLavel = document.createElement('span');
+            spanEvLavel.style.background = 'white';
+            spanEvLavel.textContent = s[1][1] + ' мин';
+            divEvLavel.append(spanEvLavel);
         }
     }
 }
