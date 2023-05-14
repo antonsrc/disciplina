@@ -566,3 +566,29 @@ function readFile(input) {
         console.log(reader.error);
     };
 }
+
+function themeToggler() {
+    let main = document.getElementById('main');
+    let date = document.getElementsByClassName('Date');
+    let aText = document.querySelectorAll('.Date > a');
+    if (main.classList.contains('mainDay')) {
+        main.classList.add("mainNight");
+        main.classList.remove("mainDay");
+        for (let elem of date) {
+            elem.style.backgroundColor = "#444d68";
+        }
+        for (let elem of aText) {
+            elem.style.color = "white";
+        }
+    } else {
+        main.classList.add("mainDay");
+        main.classList.remove("mainNight");
+        document.getElementsByClassName('Date')[0].style.backgroundColor = "#d6ebc6";
+        for (let elem of date) {
+            elem.style.backgroundColor = "#d6ebc6";
+        }
+        for (let elem of aText) {
+            elem.style.color = "inherit";
+        }
+    }
+}

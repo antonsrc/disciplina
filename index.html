@@ -11,7 +11,7 @@
 
         <div id="header">log v.0.4.3</div>
 
-        <div id="main">
+        <div id='main' class="mainDay">
             <div id="progressBarLines"></div>
             <dialog id="modalDayEditor"></dialog>
 
@@ -59,22 +59,19 @@
             </dialog>
 
             <div id="toggler">
-                <br><br>
-                <button type="button" id="btnClearLocStor">Очистить locStor</button>
                 <br>
                 <b><a href='#' onclick='openStat()'>Статистика</a></b>
                 <br><br>
                 <b><a id="exportJson" href='#' onclick='exportToJsonFile()'>Экспортировать в JSON файл</a></b>
                 <br><br>
-                <label for="btnImportJson">Импортировать с JSON файла: </label>
+                <label for="btnImportJson"><b>Импортировать с JSON файла: </b></label>
                 <input type="file" id="btnImportJson" accept=".json">
                 <br><br>
-                2023, anton.source@gmail.com
+                <b><a id="btnThemeToggler" href='#' onclick='themeToggler()'>Светлая\темная тема</a></b>
                 <br><br>
-                telegram
-                <br><br>
-                Светлая\темная тема
-                <br><br>
+                <button type="button" id="btnClearLocStor">Очистить locStor</button>
+                <br>
+                2023, anton.source@gmail.com, telegram, vk
             </div>
             
         </div>
