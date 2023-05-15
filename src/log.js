@@ -66,7 +66,7 @@ btnToggler.addEventListener('click', function() {
     } else {
         toggler.style.width = "auto";
         toggler.style.display = 'flex';
-        btnToggler.innerHTML = "x";
+        btnToggler.innerHTML = "X";
     }
 });
 
