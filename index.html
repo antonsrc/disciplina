@@ -8,13 +8,10 @@
 </head>
 <body>
     <div id="container">
-
         <div id="header">log v.0.4.4</div>
-
         <div id='main' class="mainDay">
             <div id="progressBarLines"></div>
             <dialog id="modalDayEditor"></dialog>
-
             <dialog id="modalStat">
                 <form>
                     <label for="inputDateFrom">От:</label>
@@ -28,7 +25,6 @@
                 <div id="legendStat"></div>
                 <button type="button" id="btnCloseStat">Закрыть</button>
             </dialog>
-
             <dialog id="modalAddEvent">
                 <form>
                     <label for="inputDate">Дата: </label>
@@ -57,7 +53,6 @@
                 </form>
                 <div><p id="errorMessage"></p></div>
             </dialog>
-
             <div id="toggler">
                 <br>
                 <b><a href='#' onclick='openStat()'>Статистика</a></b>
@@ -73,26 +68,17 @@
                 <br>
                 2023, anton.source@gmail.com, telegram, vk
             </div>
-            
         </div>
-
         <div id="footer">
             <div id="addEvent">
                 <button type="button" id="btnAddEvent" style="height:30px; width:30px;">+</button>
             </div>
-
             <div id="legend">
                 <div id="legendMain"></div>
-                <div id="legendContinue"><button type="button" id="btnLegend">...</button></div>
-                <!-- <div id="togglerClick"><button type="button" id="btnToggler">///</button></div> -->
+                <div id="legendContinue"><a id="btnLegend" href='#'>...</a></div>
                 <div id="togglerClick"><a id="btnToggler" href='#'>///</a></div>
             </div>
-
-            
         </div>
-
-
-
     </div>
 </body>
 </html>

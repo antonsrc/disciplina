@@ -80,29 +80,36 @@ body {
     flex-wrap: wrap;
     flex-direction: row;
     overflow: hidden;
-    height: 25px;
-}
-
-#legendContinue {
-    width: 10%;
+    height: 2rem;
 }
 
 .legendLabel {
-    padding: 3px;
+    padding: 4px 10px;
     margin: 1px;
-    border-radius: 10px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #togglerClick {
     width: 10%;
-    background: rgb(252, 174, 134);
+    background: rgb(132, 238, 39);
     align-self: stretch;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#btnToggler {
+#legendContinue {
+    background: rgb(229, 174, 255);
+    width: 10%;
+    align-self: stretch;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#btnToggler, #btnLegend {
     vertical-align: middle;
     font-size: 2rem;
 }
@@ -168,6 +175,7 @@ a {
     margin: 1px 0px;
     padding-left: 10px;
     padding-right: 10px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .btnRem {

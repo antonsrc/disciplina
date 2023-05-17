@@ -49,11 +49,11 @@ let btnLegend = document.getElementById("btnLegend");
 btnLegend.addEventListener('click', function() {
     let legendMain = document.getElementById("legendMain");
     if (legendMain.style.height == "fit-content") {
-        legendMain.style.height = "25px";
+        legendMain.style.height = "2rem";
         btnLegend.innerHTML = "...";
     } else {
         legendMain.style.height = "fit-content";
-        btnLegend.innerHTML = "x";
+        btnLegend.innerHTML = "X";
     }
 });
 
