@@ -17,14 +17,14 @@ body {
         padding-left: 10px;
         background: white;
         order: 1;
-        width: 100%;
+        width: calc(100% - 10px);
     }
 }
 
 @media screen and (max-width: 600px) {
     #header {
         padding-left: 10px;
-        background: rgb(232, 217, 120);
+        background: rgb(201, 190, 255);
         order: 1;
         width: 100%;
     }
@@ -76,7 +76,7 @@ body {
 
 #legendMain {
     display: flex;
-    width: 80%;
+    width: 70%;
     flex-wrap: wrap;
     flex-direction: row;
     overflow: hidden;
@@ -92,7 +92,7 @@ body {
 }
 
 #togglerClick {
-    width: 10%;
+    width: 15%;
     background: rgb(132, 238, 39);
     align-self: stretch;
     display: flex;
@@ -102,7 +102,7 @@ body {
 
 #legendContinue {
     background: rgb(229, 174, 255);
-    width: 10%;
+    width: 15%;
     align-self: stretch;
     display: flex;
     justify-content: center;
