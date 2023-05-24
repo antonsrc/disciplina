@@ -58,6 +58,13 @@ legendContinue.addEventListener('click', function() {
     }
 });
 
+legendContinue.addEventListener('mouseover', function() {
+    legendContinue.style.background = 'rgba(255, 249, 203)';
+});
+legendContinue.addEventListener('mouseout', function() {
+    legendContinue.style.background = 'rgba(0, 0, 0, 0)';
+});
+
 let legendTogglerClick = document.getElementById("legendTogglerClick");
 legendTogglerClick.addEventListener('click', function() {
     let btnToggler = document.getElementById("btnToggler");
@@ -70,6 +77,13 @@ legendTogglerClick.addEventListener('click', function() {
         toggler.style.display = 'flex';
         btnToggler.innerHTML = "X";
     }
+});
+
+legendTogglerClick.addEventListener('mouseover', function() {
+    legendTogglerClick.style.background = 'rgba(255, 249, 203)';
+});
+legendTogglerClick.addEventListener('mouseout', function() {
+    legendTogglerClick.style.background = 'rgba(0, 0, 0, 0)';
 });
 
 let btnCloseStat = document.getElementById("btnCloseStat");
