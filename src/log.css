@@ -1,3 +1,13 @@
+html {
+    font-size: 1rem;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    background:rgb(89, 103, 135);
+}
+
 #container {
     display: flex;
     flex-direction: column;
@@ -8,42 +18,38 @@
     border: 0;
 }
 
-body {
-    margin: 0;
+#header {
+    padding-left: 0.5rem;
+    order: 1;
+    width: calc(100% - 0.5rem);
+    background: white;
 }
 
 @media screen {
-    #header {
-        padding-left: 10px;
-        background: white;
-        order: 1;
-        width: calc(100% - 10px);
+    dialog {
+        width: fit-content;
     }
 }
 
 @media screen and (max-width: 600px) {
-    #header {
-        padding-left: 10px;
-        background: rgb(201, 190, 255);
-        order: 1;
+    dialog {
         width: 100%;
     }
 }
 
-.mainDay {
-    background: #a3d6a3;
+.mainNight, .mainDay {
     order: 2;
     width: 100%;
     text-align: center;
-    padding-bottom: 100px;  /* height of footer */
+    padding-bottom: calc(2rem + 11px);  /* height of footer */
+}
+
+.mainDay {
+    background: inherit;
 }
 
 .mainNight {
     background: #607560;
-    order: 2;
-    width: 100%;
-    text-align: center;
-    padding-bottom: 100px;  /* height of footer */
 }
 
 #footer {
@@ -58,9 +64,28 @@ body {
 }
 
 #addEvent {
-    text-align: center;
     width: 100%;
-    height: fit-content;
+    height: 5rem; 
+    border: 1px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#btnAddEvent {
+    padding: 10px;
+    border-radius: 45px;
+    background-color: rgb(124, 233, 157);    
+    border: 1px solid rgb(255, 255, 255);
+    height: 28px;
+    width: 28px;
+    transform: scale(1);
+    cursor: pointer;
+}
+
+#btnToggler, #btnLegend {
+    vertical-align: middle;
+    font-size: 2rem;
 }
 
 #legend {
@@ -68,7 +93,6 @@ body {
     display: flex;
     flex-direction: row;
     width: 100%;
-    color: black;
     margin: 0 auto;
     height: fit-content;
     align-items: center;
@@ -87,13 +111,11 @@ body {
     padding: 4px 10px;
     margin: 1px;
     border-radius: 20px;
-    font-size: 1rem;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#togglerClick {
+#legendTogglerClick {
     width: 15%;
-    background: rgb(132, 238, 39);
+    background: rgb(155, 181, 133);
     align-self: stretch;
     display: flex;
     justify-content: center;
@@ -101,17 +123,12 @@ body {
 }
 
 #legendContinue {
-    background: rgb(229, 174, 255);
+    background: rgb(99, 86, 105);
     width: 15%;
     align-self: stretch;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-#btnToggler, #btnLegend {
-    vertical-align: middle;
-    font-size: 2rem;
 }
 
 #toggler {
@@ -125,12 +142,54 @@ body {
     width: auto;
     display: none;
     flex-direction: column;
+    justify-content: space-between;
+    z-index: 100;
+    font-size: 1.2rem;
+}
+
+#togglerStat {
+    background: rgb(153, 171, 169);
+    order: 0;
+}
+
+#togglerExport {
+    background: rgb(37, 182, 78);
+    order: 1;
+}
+
+#togglerImport {
+    background: rgb(193, 222, 201);
+    display: flex;
+    flex-direction: column;
+    order: 2;
+}
+
+#togglerTheme {
+    background: rgb(96, 140, 147);
+    order: 3;
+}
+
+#togglerContact {
+    background: rgb(36, 70, 75);
+    order: 6;
+}
+
+#togglerVoid {
+    background: rgb(137, 137, 137);
+    order: 4;
+    flex-grow: 1;
+}
+
+#togglerClear {
+    background: rgb(141, 45, 40);
+    order: 5;
 }
 
 #modalAddEvent {
     border: 1px white solid;
     text-align: center;
-    width: 400px;
+    max-width: 50%;
+    min-width: fit-content;
 }
 
 #modalDayEditor {
@@ -175,7 +234,6 @@ a {
     margin: 1px 0px;
     padding-left: 10px;
     padding-right: 10px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .btnRem {
@@ -210,3 +268,4 @@ a {
     align-items: center;
     margin: 1px 0px;
 }
+

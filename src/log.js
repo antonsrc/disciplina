@@ -45,9 +45,10 @@ btnClearLocStor.addEventListener('click', function() {
     clearLoc();
 });
 
-let btnLegend = document.getElementById("btnLegend");
-btnLegend.addEventListener('click', function() {
+let legendContinue = document.getElementById("legendContinue");
+legendContinue.addEventListener('click', function() {
     let legendMain = document.getElementById("legendMain");
+    let btnLegend = document.getElementById("btnLegend");
     if (legendMain.style.height == "fit-content") {
         legendMain.style.height = "2rem";
         btnLegend.innerHTML = "...";
@@ -57,8 +58,9 @@ btnLegend.addEventListener('click', function() {
     }
 });
 
-let btnToggler = document.getElementById("btnToggler");
-btnToggler.addEventListener('click', function() {
+let legendTogglerClick = document.getElementById("legendTogglerClick");
+legendTogglerClick.addEventListener('click', function() {
+    let btnToggler = document.getElementById("btnToggler");
     let toggler = document.getElementById("toggler");
     if (toggler.style.display == "flex") {
         toggler.style.display = 'none';

@@ -8,7 +8,7 @@
 </head>
 <body>
     <div id="container">
-        <div id="header">log v.0.4.4</div>
+        <div id="header">log v.0.4.5</div>
         <div id='main' class="mainDay">
             <div id="progressBarLines"></div>
             <dialog id="modalDayEditor"></dialog>
@@ -54,29 +54,31 @@
                 <div><p id="errorMessage"></p></div>
             </dialog>
             <div id="toggler">
-                <br>
-                <b><a href='#' onclick='openStat()'>Статистика</a></b>
-                <br><br>
-                <b><a id="exportJson" href='#' onclick='exportToJsonFile()'>Экспортировать в JSON файл</a></b>
-                <br><br>
-                <label for="btnImportJson"><b>Импортировать с JSON файла: </b></label>
-                <input type="file" id="btnImportJson" accept=".json">
-                <br><br>
-                <b><a id="btnThemeToggler" href='#' onclick='themeToggler()'>Светлая\темная тема</a></b>
-                <br><br>
-                <button type="button" id="btnClearLocStor">Очистить locStor</button>
-                <br>
-                2023, anton.source@gmail.com, telegram, vk
+                <div id="togglerStat"><a href='#' onclick='openStat()'>Статистика</a></div>
+                <div id="togglerExport"><a id="exportJson" href='#' onclick='exportToJsonFile()'>Экспортировать в JSON файл</a></div>
+                <div id="togglerImport">
+                    <label for="btnImportJson">Импортировать с JSON файла:</label>
+                    <input type="file" id="btnImportJson" accept=".json">
+                </div>
+                <div id="togglerTheme"><a id="btnThemeToggler" href='#' onclick='themeToggler()'>Светлая\темная тема</a></div>
+                <div id="togglerClear"><a id="btnClearLocStor" href='#'>Очистить locStor</a></div>
+                <div id="togglerContact">2023, mail@mail.com, tg, vk</div>
+                <div id="togglerVoid">&nbsp;</div>
             </div>
         </div>
         <div id="footer">
             <div id="addEvent">
-                <button type="button" id="btnAddEvent" style="height:30px; width:30px;">+</button>
+                <div id="btnAddEvent">
+                <svg viewBox="0 0 28 28" width="100%" height="100%">       
+                    <image href="./cross90.svg" />
+                </svg>
             </div>
+        </div>
+
             <div id="legend">
                 <div id="legendMain"></div>
                 <div id="legendContinue"><a id="btnLegend" href='#'>...</a></div>
-                <div id="togglerClick"><a id="btnToggler" href='#'>///</a></div>
+                <div id="legendTogglerClick"><a id="btnToggler" href='#'>///</a></div>
             </div>
         </div>
     </div>
