@@ -108,29 +108,22 @@ body {
     border-radius: 20px;
 }
 
+#legendTogglerClick {
+    order: 2;
+    padding: 1rem;
+    cursor: pointer;
+}
+
 #legendContinue {
-    /* padding: 10px; */
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    height: 100%;
     order: 1;
+    padding: 1rem;
     cursor: pointer;
 }
 
 #btnLegend {
-    vertical-align: middle;
-    font-size: 2rem;
-}
-
-#legendTogglerClick {
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: stretch;
-    order: 2;
-    padding: 1rem;
-    cursor: pointer;
+    height: 28px;
+    width: 28px;
+    transform: scale(1);
 }
 
 #btnToggler {

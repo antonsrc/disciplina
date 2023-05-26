@@ -48,13 +48,13 @@ btnClearLocStor.addEventListener('click', function() {
 let legendContinue = document.getElementById("legendContinue");
 legendContinue.addEventListener('click', function() {
     let legendMain = document.getElementById("legendMain");
-    let btnLegend = document.getElementById("btnLegend");
+    let btnLegendImg = document.getElementById("btnLegendImg");
     if (legendMain.style.height == "fit-content") {
         legendMain.style.height = "2rem";
-        btnLegend.innerHTML = "...";
+        btnLegendImg.href.baseVal = "./dots.svg";
     } else {
         legendMain.style.height = "fit-content";
-        btnLegend.innerHTML = "X";
+        btnLegendImg.href.baseVal = "./cross45.svg";
     }
 });
 
