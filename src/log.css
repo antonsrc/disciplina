@@ -88,7 +88,7 @@ body {
     width: 100%;
     margin: 0 auto;
     height: fit-content;
-    align-items: center;
+    align-items: stretch;
 }
 
 #legendMain {
@@ -112,12 +112,18 @@ body {
     order: 2;
     padding: 1rem;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 #legendContinue {
     order: 1;
     padding: 1rem;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 #btnLegend {
