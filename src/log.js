@@ -65,6 +65,13 @@ legendContinue.addEventListener('mouseout', function() {
     legendContinue.style.background = 'rgba(0, 0, 0, 0)';
 });
 
+btnAddEvent.addEventListener('mouseover', function() {
+    btnAddEvent.style.background = 'rgba(50, 233, 120)';
+});
+btnAddEvent.addEventListener('mouseout', function() {
+    btnAddEvent.style.background = 'rgba(124, 233, 157)';
+});
+
 let legendTogglerClick = document.getElementById("legendTogglerClick");
 legendTogglerClick.addEventListener('click', function() {
     let btnToggler = document.getElementById("btnToggler");
