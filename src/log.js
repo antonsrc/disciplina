@@ -46,14 +46,17 @@ btnClearLocStor.addEventListener('click', function() {
 });
 
 let legendContinue = document.getElementById("legendContinue");
+let legend = document.getElementById("legend");
 legendContinue.addEventListener('click', function() {
     let legendMain = document.getElementById("legendMain");
     let btnLegendImg = document.getElementById("btnLegendImg");
     if (legendMain.style.height == "fit-content") {
-        legendMain.style.height = "2rem";
+        legendMain.style.height = "calc(2.4rem - 2px)";
+        legend.style.height = "calc(2.4rem - 2px)";
         btnLegendImg.href.baseVal = "./dots.svg";
     } else {
         legendMain.style.height = "fit-content";
+        legend.style.height = "fit-content";
         btnLegendImg.href.baseVal = "./cross45.svg";
     }
 });
@@ -72,18 +75,29 @@ btnAddEvent.addEventListener('mouseout', function() {
     btnAddEvent.style.background = 'rgba(124, 233, 157)';
 });
 
+let togglerCloseBeforeBtn = document.getElementById("togglerCloseBeforeBtn");
+togglerCloseBeforeBtn.addEventListener('click', function() {
+    toggler.style.display = 'none';
+});
+
+togglerCloseBeforeBtn.addEventListener('mouseover', function() {
+    togglerCloseBeforeBtn.style.background = 'rgba(255, 249, 203)';
+});
+togglerCloseBeforeBtn.addEventListener('mouseout', function() {
+    togglerCloseBeforeBtn.style.background = 'rgba(0, 0, 0, 0)';
+});
+
+
 let legendTogglerClick = document.getElementById("legendTogglerClick");
 legendTogglerClick.addEventListener('click', function() {
     let btnToggler = document.getElementById("btnToggler");
     let toggler = document.getElementById("toggler");
-    if (toggler.style.display == "flex") {
-        toggler.style.display = 'none';
-        btnToggler.innerHTML = "///";
-    } else {
-        toggler.style.width = "auto";
+    // if (toggler.style.display == "flex") {
+    //     toggler.style.display = 'none';
+    // } else {
+    //     toggler.style.width = "auto";
         toggler.style.display = 'flex';
-        btnToggler.innerHTML = "X";
-    }
+    // }
 });
 
 legendTogglerClick.addEventListener('mouseover', function() {
