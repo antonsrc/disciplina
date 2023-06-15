@@ -173,34 +173,39 @@ body {
     order: 2;
 }
 
-#togglerTheme {
+/* #togglerTheme {
     background: rgb(96, 140, 147);
     order: 3;
-}
+} */
 
 #togglerContact {
-    background: rgb(36, 70, 75);
-    order: 6;
+    background: rgb(255, 229, 33);
+    flex-grow: 1;
+    order: 1;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 #togglerVoid {
     background: rgb(137, 137, 137);
-    order: 4;
-    /* flex-grow: 1; */
+    order: 3;
 }
 
 #togglerClear {
     background: rgb(141, 45, 40);
-    order: 5;
+    order: 4;
 }
 
 #togglerClose {
     background: rgb(255, 229, 33);
-    order: 6;
+    order: 5;
     height: calc(2.2rem + 1px);
-    /* width: calc(2.2rem + 1px); */
     display: flex;
-    flex-direction: row-reverse;
+}
+
+#togglerCloseBeforeBtn {
+    order: 2;
 }
 
 #btnTogglerClose {
@@ -301,3 +306,37 @@ a {
     margin: 1px 0px;
 }
 
+
+
+
+
+/* CHANGE!!! */
+#toggler a {
+    color: blue;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: black;
+    display: inline-block;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: red;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}

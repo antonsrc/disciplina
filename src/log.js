@@ -92,12 +92,7 @@ let legendTogglerClick = document.getElementById("legendTogglerClick");
 legendTogglerClick.addEventListener('click', function() {
     let btnToggler = document.getElementById("btnToggler");
     let toggler = document.getElementById("toggler");
-    // if (toggler.style.display == "flex") {
-    //     toggler.style.display = 'none';
-    // } else {
-    //     toggler.style.width = "auto";
         toggler.style.display = 'flex';
-    // }
 });
 
 legendTogglerClick.addEventListener('mouseover', function() {
