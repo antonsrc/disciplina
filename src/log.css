@@ -178,15 +178,6 @@ body {
     order: 3;
 } */
 
-#togglerContact {
-    background: rgb(255, 229, 33);
-    flex-grow: 1;
-    order: 1;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-}
-
 #togglerVoid {
     background: rgb(137, 137, 137);
     order: 3;
@@ -197,9 +188,19 @@ body {
     order: 4;
 }
 
+#togglerName {
+    order: 5;
+    background: rgb(127, 212, 106);
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 0.5rem 0rem;
+}
+
 #togglerClose {
     background: rgb(255, 229, 33);
-    order: 5;
+    order: 6;
     height: calc(2.2rem + 1px);
     display: flex;
 }
@@ -209,9 +210,19 @@ body {
 }
 
 #btnTogglerClose {
-    height: 1.2rem;
+    /* height: 1.2rem; */
     width: 1.2rem;
     /* transform: scale(1); */
+}
+
+#togglerContact {
+    background: rgb(127, 212, 106);
+    flex-grow: 1;
+    order: 1;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    font-size: 1rem;
 }
 
 #togglerCloseBeforeBtn {
@@ -312,7 +323,7 @@ a {
 
 /* CHANGE!!! */
 #toggler a {
-    color: blue;
+    color: rgb(15, 39, 196);
 }
 
 .inputfile {
@@ -325,16 +336,14 @@ a {
 }
 
 .inputfile + label {
-    font-size: 1.25em;
-    font-weight: 700;
     color: white;
-    background-color: black;
+    background-color: rgb(127, 212, 106);
     display: inline-block;
 }
 
 .inputfile:focus + label,
 .inputfile + label:hover {
-    background-color: red;
+    background-color: rgb(17, 141, 25);
 }
 
 .inputfile + label {
