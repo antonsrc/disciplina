@@ -317,7 +317,9 @@ a {
     margin: 1px 0px;
 }
 
-
+#progressBarLines {
+    width: 100%;
+}
 
 
 

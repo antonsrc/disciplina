@@ -123,6 +123,10 @@ function loadData(inpData) {
 
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
 
+    let progStyle = progressBarLines.style;
+    // progStyle.width = '20%';
+    let tempBarWidth = 0;
+
     for (let day of arrDates) {
         let eventsOfDay = JSON.parse(inpData.getItem(day));
 
@@ -148,6 +152,8 @@ function loadData(inpData) {
         eventP.id = day + 'prog';
         dayDiv.append(eventP);
 
+        let comTime = 0;
+
         for (let ev in eventsOfDay) {
             if (ev == "freeTime" || ev == "localDate") {
                 continue;
@@ -162,7 +168,16 @@ function loadData(inpData) {
             let time = Number(eventsOfDay[ev]) * (100/1440);
             eventSpan.style.width = time + "%";
             eventP.append(eventSpan);
+            comTime += time;
         }
+        
+        if (comTime >= tempBarWidth) {
+            tempBarWidth = comTime;
+        }
+    }
+
+    for (let i of document.getElementsByClassName("common")) {
+        i.style.width = parseFloat(i.style.width)*(100/tempBarWidth) + '%';
     }
 
     let inpEv = document.getElementById("inputEvent");
