@@ -62,7 +62,7 @@ legendContinue.addEventListener('click', function() {
 });
 
 legendContinue.addEventListener('mouseover', function() {
-    legendContinue.style.background = 'rgba(255, 249, 203)';
+    legendContinue.style.background = 'rgba(255, 255, 255, 1)';
 });
 legendContinue.addEventListener('mouseout', function() {
     legendContinue.style.background = 'rgba(0, 0, 0, 0)';
@@ -78,13 +78,15 @@ btnAddEvent.addEventListener('mouseout', function() {
 let togglerCloseBeforeBtn = document.getElementById("togglerCloseBeforeBtn");
 togglerCloseBeforeBtn.addEventListener('click', function() {
     toggler.style.display = 'none';
+    let legend = document.getElementById("legend");
+    legend.style.display = 'flex';
 });
 
 togglerCloseBeforeBtn.addEventListener('mouseover', function() {
-    togglerCloseBeforeBtn.style.background = 'rgba(255, 249, 203)';
+    togglerCloseBeforeBtn.style.background = 'rgba(255, 255, 255, 1)';
 });
 togglerCloseBeforeBtn.addEventListener('mouseout', function() {
-    togglerCloseBeforeBtn.style.background = 'rgba(0, 0, 0, 0)';
+    togglerCloseBeforeBtn.style.background = 'rgba(255, 255, 255, 0)';
 });
 
 
@@ -92,11 +94,13 @@ let legendTogglerClick = document.getElementById("legendTogglerClick");
 legendTogglerClick.addEventListener('click', function() {
     let btnToggler = document.getElementById("btnToggler");
     let toggler = document.getElementById("toggler");
+    let legend = document.getElementById("legend");
         toggler.style.display = 'flex';
+        legend.style.display = 'none';
 });
 
 legendTogglerClick.addEventListener('mouseover', function() {
-    legendTogglerClick.style.background = 'rgba(255, 249, 203)';
+    legendTogglerClick.style.background = 'rgba(255, 255, 255, 1)';
 });
 legendTogglerClick.addEventListener('mouseout', function() {
     legendTogglerClick.style.background = 'rgba(0, 0, 0, 0)';

@@ -18,13 +18,6 @@ body {
     border: 0;
 }
 
-#header {
-    padding-left: 0.5rem;
-    order: 1;
-    width: calc(100% - 0.5rem);
-    background: white;
-}
-
 @media screen {
     dialog {
         width: fit-content;
@@ -41,7 +34,7 @@ body {
     order: 2;
     width: 100%;
     text-align: center;
-    padding-bottom: calc(2rem + 28px);  /* height of footer */
+    padding-bottom: calc(5rem + 2.4rem - 2px);  /* height of footer */
 }
 
 .mainDay {
@@ -79,16 +72,6 @@ body {
     width: 1.2rem;
     /* transform: scale(1); */
     cursor: pointer;
-}
-
-#legend {
-    background: rgb(255, 229, 33);
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin: 0 auto;
-    height: calc(2.4rem - 2px);
-    align-items: stretch;
 }
 
 #legendMain {
@@ -199,7 +182,7 @@ body {
 }
 
 #togglerClose {
-    background: rgb(255, 229, 33);
+    /* background: rgb(255, 255, 255); */
     order: 6;
     height: calc(2.2rem + 1px);
     display: flex;
@@ -273,15 +256,49 @@ a {
     text-decoration: none;
 }
 
+#main {
+    background-image: linear-gradient(45deg, 
+    #ededed 25%, 
+    #e0e0e0 25%, 
+    #e0e0e0 50%, 
+    #ededed 50%, 
+    #ededed 75%, 
+    #e0e0e0 75%, 
+    #e0e0e0 100%);
+    background-size: 56.57px 56.57px;
+}
+
 .Date {
     display: inline-flex;
-    background-color: #d6ebc6;    
+    background-color:#ffffff;
+    color: #505050;
     height: 30px;
     align-items: center;
     justify-content:center;
     margin: 1px 0px;
     padding-left: 10px;
     padding-right: 10px;
+}
+
+#header {
+    padding-right: 0.5rem; 
+    order: 1;
+    width: calc(100% - 0.5rem);
+    color: #505050;
+    background: rgba(255, 255, 255, 0.5);
+
+    text-align: right;
+    /* position: absolute; */
+}
+
+#legend {
+    background: rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 0 auto;
+    height: calc(2.4rem - 2px);
+    align-items: stretch;
 }
 
 .btnRem {
