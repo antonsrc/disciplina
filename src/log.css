@@ -5,7 +5,15 @@ html {
 
 body {
     margin: 0;
-    background:rgb(89, 103, 135);
+    background-image: linear-gradient(45deg, 
+    #ededed 25%, 
+    #e0e0e0 25%, 
+    #e0e0e0 50%, 
+    #ededed 50%, 
+    #ededed 75%, 
+    #e0e0e0 75%, 
+    #e0e0e0 100%);
+    background-size: 56.57px 56.57px;
 }
 
 #container {
@@ -254,18 +262,6 @@ body {
 a {
     color: inherit;
     text-decoration: none;
-}
-
-#main {
-    background-image: linear-gradient(45deg, 
-    #ededed 25%, 
-    #e0e0e0 25%, 
-    #e0e0e0 50%, 
-    #ededed 50%, 
-    #ededed 75%, 
-    #e0e0e0 75%, 
-    #e0e0e0 100%);
-    background-size: 56.57px 56.57px;
 }
 
 .Date {
