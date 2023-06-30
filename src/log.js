@@ -51,8 +51,8 @@ legendContinue.addEventListener('click', function() {
     let legendMain = document.getElementById("legendMain");
     let btnLegendImg = document.getElementById("btnLegendImg");
     if (legendMain.style.height == "fit-content") {
-        legendMain.style.height = "calc(2.4rem - 2px)";
-        legend.style.height = "calc(2.4rem - 2px)";
+        legendMain.style.height = "calc(2rem - 1px)";
+        legend.style.height = "calc(2rem - 1px)";
         btnLegendImg.href.baseVal = "./dots.svg";
     } else {
         legendMain.style.height = "fit-content";
