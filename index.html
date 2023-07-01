@@ -55,17 +55,24 @@
                 <div><p id="errorMessage"></p></div>
             </dialog>
             <div id="toggler">
-                <div id="togglerStat"><a href='#' onclick='openStat()'>Статистика</a></div>
-                <div id="togglerExport"><a id="exportJson" href='#' onclick='exportToJsonFile()'>Экспортировать в JSON файл</a></div>
-                <div id="togglerImport">
-                    <input type="file" name="btnImportJson" id="btnImportJson" accept=".json" class="inputfile">
-                    <label for="btnImportJson">Импортировать с JSON файла</label>
+                <div id="stat" class="togglerLink">
+                    <a href='#' onclick='openStat()'>Статистика</a>
+                </div>
+                <div id="exportJson" class="togglerLink">
+                    <a id="exportJsonLink" href='#' onclick='exportToJsonFile()'>Экспортировать в JSON файл</a>
+                </div>
+                <div id="importJson" class="togglerLink">
+                    <input type="file" name="importJsonInput" id="importJsonInput" accept=".json">
+                    <label for="importJsonInput">Импортировать с JSON файла</label>
                 </div>
                 <!-- <div id="togglerTheme"><a id="btnThemeToggler" href='#' onclick='themeToggler()'>Светлая\темная тема</a></div> -->
-                <div id="togglerClear"><a id="btnClearLocStor" href='#'>Очистить locStor</a></div>
-                <div id="togglerName"><span>e-mail: anton.source@gmail.com | tg:&nbsp;<a href='http://t.me/antsrc'>antsrc</a></span></div>
-                <div id="togglerClose">
-
+                <div id="clLocStor">
+                    <a id="clearLocStor" href='#'>Очистить localStorage</a>
+                </div>
+                <div id="authorContacts">
+                    <span>e-mail: anton.source@gmail.com | tg:&nbsp;<a href='http://t.me/antsrc'>antsrc</a></span>
+                </div>
+                <div id="authorName">
                     <div id="togglerContact"><span>2023 | Anton Moshnyakov</span></div>
                     <div id="togglerCloseBeforeBtn">
                         <div id="btnTogglerClose">

@@ -82,13 +82,6 @@ body {
     cursor: pointer;
 }
 
-.legendLabel {
-    padding: 4px 10px;
-    margin: 1px;
-    border-radius: 10px;
-    font-size: 1rem;
-}
-
 #legendTogglerClick {
     order: 2;
     cursor: pointer;
@@ -134,78 +127,13 @@ body {
     justify-content: flex-end;
 }
 
-#togglerStat {
-    background: rgb(153, 171, 169);
-    order: 0;
-}
-
-#togglerExport {
-    background: rgb(37, 182, 78);
-    order: 1;
-}
-
-#togglerImport {
-    background: rgb(193, 222, 201);
-    display: flex;
-    flex-direction: column;
-    order: 2;
-}
-
 /* #togglerTheme {
     background: rgb(96, 140, 147);
     order: 3;
 } */
 
-#togglerVoid {
-    background: rgb(137, 137, 137);
-    order: 3;
-}
-
-#togglerClear {
-    background: rgb(141, 45, 40);
-    order: 4;
-}
-
-#togglerName {
-    order: 5;
-    background: rgb(127, 212, 106);
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    padding: 0.5rem 0rem;
-}
-
-#togglerClose {
-    order: 6;
-    height: calc(2rem - 1px);
-    display: flex;
-}
-
-#togglerCloseBeforeBtn {
-    order: 2;
-}
-
 #btnTogglerClose {
     width: 1rem;
-}
-
-#togglerContact {
-    background: rgb(127, 212, 106);
-    flex-grow: 1;
-    order: 1;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    font-size: 1rem;
-}
-
-#togglerCloseBeforeBtn {
-    padding: 1rem;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 #modalAddEvent {
@@ -259,7 +187,7 @@ a {
     flex-direction: row;
     width: 100%;
     margin: 0 auto;
-    height: calc(2rem - 1px);
+    height: 2rem;
     align-items: stretch;
 }
 
@@ -269,9 +197,16 @@ a {
     flex-wrap: wrap;
     flex-direction: row;
     overflow: hidden;
-    height: calc(2rem - 1px);
+    height: 2rem;
     order: 0;
     flex-grow: 1;
+}
+
+.legendLabel {
+    padding: 4px 10px;
+    margin: 1px;
+    border-radius: 10px;
+    font-size: 1rem;
 }
 
 .btnRem {
@@ -329,14 +264,85 @@ a {
     width: 100%;
 }
 
-
-
-/* CHANGE!!! */
-#toggler a {
-    color: rgb(15, 39, 196);
+#stat {
+    order: 0;
 }
 
-.inputfile {
+#exportJson {
+    order: 1;
+}
+
+#importJson {
+    order: 2;
+}
+
+#clLocStor {
+    order: 3;
+    background-color: rgb(240, 217, 11);
+    font-size: 0.8rem;
+    padding: 0.7rem 0.3rem 0.3rem 0.3rem;
+}
+
+#authorContacts {
+    order: 4;
+    background-color: rgb(240, 217, 11);
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 0.3rem;
+}
+
+#authorName {
+    order: 5;
+    height: 1.8rem;
+    display: flex;
+}
+
+#togglerContact {
+    background: rgb(104, 218, 100);
+    flex-grow: 1;
+    order: 1;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+#togglerCloseBeforeBtn {
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    order: 2;
+}
+
+#clearLocStor:focus, #clearLocStor:hover {
+    background-color: rgb(178, 17, 41);
+}
+
+#authorContacts a:focus, #authorContacts a:hover {
+    background-color: rgb(85, 195, 81);
+}
+
+#togglerCloseBeforeBtn:focus, #togglerCloseBeforeBtn:hover {
+    background-color: rgb(85, 195, 81);
+}
+
+.togglerLink {
+    background-color: rgb(240, 217, 11);
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+    padding: 0.3rem;
+}
+
+.togglerLink:focus, .togglerLink:hover {
+    background-color: rgb(85, 195, 81);
+}
+
+#importJsonInput {
 	width: 0.1px;
 	height: 0.1px;
 	opacity: 0;
@@ -345,17 +351,6 @@ a {
 	z-index: -1;
 }
 
-.inputfile + label {
-    color: white;
-    background-color: rgb(127, 212, 106);
-    display: inline-block;
-}
-
-.inputfile:focus + label,
-.inputfile + label:hover {
-    background-color: rgb(17, 141, 25);
-}
-
-.inputfile + label {
+#importJsonInput + label {
 	cursor: pointer; /* "hand" cursor */
 }

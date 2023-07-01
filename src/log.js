@@ -40,8 +40,8 @@ btnCreateEventOk.addEventListener('click', function() {
     }
 });
 
-let btnClearLocStor = document.getElementById("btnClearLocStor");
-btnClearLocStor.addEventListener('click', function() {
+let clearLocStor = document.getElementById("clearLocStor");
+clearLocStor.addEventListener('click', function() {
     clearLoc();
 });
 
@@ -52,8 +52,8 @@ legendContinue.addEventListener('click', function() {
     let legendMain = document.getElementById("legendMain");
     let btnLegendImg = document.getElementById("btnLegendImg");
     if (legendMain.style.height == "fit-content") {
-        legendMain.style.height = "calc(2rem - 1px)";
-        legend.style.height = "calc(2rem - 1px)";
+        legendMain.style.height = "2rem";
+        legend.style.height = "2rem";
         btnLegendImg.href.baseVal = "./dots.svg";
         legendContinue.style.justifyContent = 'center';
         legendTogglerClick.style.justifyContent = 'center';
@@ -88,13 +88,6 @@ togglerCloseBeforeBtn.addEventListener('click', function() {
     legend.style.display = 'flex';
 });
 
-togglerCloseBeforeBtn.addEventListener('mouseover', function() {
-    togglerCloseBeforeBtn.style.background = 'rgba(255, 255, 255, 1)';
-});
-togglerCloseBeforeBtn.addEventListener('mouseout', function() {
-    togglerCloseBeforeBtn.style.background = 'rgba(255, 255, 255, 0)';
-});
-
 legendTogglerClick.addEventListener('click', function() {
     let btnToggler = document.getElementById("btnToggler");
     let toggler = document.getElementById("toggler");
@@ -116,8 +109,8 @@ btnCloseStat.addEventListener('click', function() {
     document.getElementById("modalStat").close();
 });
 
-let btnImportJson = document.getElementById('btnImportJson');
-btnImportJson.addEventListener('change', (event) => {
+let importJsonInput = document.getElementById('importJsonInput');
+importJsonInput.addEventListener('change', (event) => {
     readFile(event.target.files[0]);
 });
 
@@ -132,8 +125,6 @@ function loadData(inpData) {
 
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
 
-    let progStyle = progressBarLines.style;
-    // progStyle.width = '20%';
     let tempBarWidth = 0;
 
     for (let day of arrDates) {
@@ -321,8 +312,11 @@ function validTimeValues(time) {
 }
 
 function clearLoc() {
-    LOC_STOR.clear();
-    loadData(LOC_STOR);
+    let answer = confirm('Удалить все данные?');
+    if (answer) {
+        LOC_STOR.clear();
+        loadData(LOC_STOR);
+    }
 }
 
 function removeItemFromLocStor(day) {
@@ -582,9 +576,9 @@ function exportToJsonFile() {
     let filename = `log_backup_${year}_${month}_${day}.json`;
     let jsonStr = JSON.stringify(LOC_STOR);
 
-    let exportJson = document.getElementById('exportJson');
-    exportJson.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(jsonStr));
-    exportJson.setAttribute('download', filename);
+    let exportJsonLink = document.getElementById('exportJsonLink');
+    exportJsonLink.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(jsonStr));
+    exportJsonLink.setAttribute('download', filename);
 }
 
 function readFile(input) {
@@ -616,7 +610,7 @@ function readFile(input) {
             }
         }
         loadData(LOC_STOR);
-        document.getElementById('btnImportJson').value = null;
+        document.getElementById('importJsonInput').value = null;
     };
     reader.onerror = function() {
         console.log(reader.error);
