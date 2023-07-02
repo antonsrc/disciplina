@@ -233,18 +233,6 @@ a {
     flex-direction: row;
 }
 
-.Date {
-    display: inline-flex;
-    background-color:#ffffff;
-    color: #505050;
-    height: 30px;
-    align-items: center;
-    justify-content:center;
-    margin: 1px 0px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
 .common {
     display: inline-flex;
     height: 30px;
@@ -327,7 +315,29 @@ a {
 }
 
 #togglerCloseBeforeBtn:focus, #togglerCloseBeforeBtn:hover {
-    background-color: rgb(85, 195, 81);
+    background-color: rgb(148, 254, 144);
+}
+
+#togglerCloseBeforeBtn {
+    background-color: rgb(55, 179, 42);
+}
+
+.Date {
+    background-color:#ffffff;
+    color: #505050;
+    height: 30px;
+    align-items: center;
+    justify-content:center;
+    margin: 1px 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.Date:focus, .Date:hover {
+    background-color: rgb(230, 230, 230);
 }
 
 .togglerLink {
