@@ -123,18 +123,12 @@ function loadData(inpData) {
 
     let mapEvents = new Map();
 
-
-    console.log(inpData); ///////////////
-      ///////////////
-    let allEventsColors = JSON.parse(inpData.getItem("allEventsColors"));
-    console.log('///////////////', allEventsColors);
-    let allEventsNames = JSON.parse(inpData.getItem("allEventsNames"));
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
 
     let tempBarWidth = 0;
 
     for (let day of arrDates) {
         let eventsOfDay = JSON.parse(inpData.getItem(day));
-        console.log(eventsOfDay);  //////////////
 
         let dayDiv = document.createElement('div');
         dayDiv.classList.add("Progress");
@@ -156,21 +150,17 @@ function loadData(inpData) {
 
         let comTime = 0;
 
-        
-
         for (let ev in eventsOfDay) {
             if (ev == "freeTime" || ev == "localDate") {
                 continue;
             }
-            mapEvents.set(ev, allEventsColors[ev]);
+            mapEvents.set(ev, allEvents[ev]);
             let eventIdName = eventsOfDay["localDate"] + ev;
 
             let eventSpan = document.createElement('span');
             eventSpan.classList.add("common");
             eventSpan.id = encodeURI(eventIdName);
-            
-            let fff = allEventsColors[ev];
-            eventSpan.style.backgroundColor = fff; //////////
+            eventSpan.style.backgroundColor = allEvents[ev].color;
 
             let time = Number(eventsOfDay[ev]) * (100/1440);
             eventSpan.style.width = time + "%";
@@ -194,8 +184,6 @@ function loadData(inpData) {
     optionEv.textContent = 'Выберите событие';
     inpEv.append(optionEv);
 
-    console.log('0000===', mapEvents);  //////////////
-
     let legend = document.getElementById("legendMain");
     let eventColors = {};
     legend.innerHTML = '';
@@ -203,20 +191,19 @@ function loadData(inpData) {
 
         let optionEv = document.createElement('option');
         optionEv.value = s;
-        optionEv.textContent = allEventsNames[s];
+        optionEv.textContent = allEvents[s].name;
         inpEv.append(optionEv);
 
         let divEvLavel = document.createElement('div');
         divEvLavel.classList.add("legendLabel");
-        divEvLavel.style.background = mapEvents.get(s);
-        divEvLavel.textContent = allEventsNames[s];
+        divEvLavel.style.background = mapEvents.get(s).color;
+        divEvLavel.textContent = allEvents[s].name;
         legend.append(divEvLavel);
         
         eventColors[s] = mapEvents.get(s);
     }
 
-    console.log('111===', eventColors);  //////////////
-    inpData.setItem("allEventsColors", JSON.stringify(eventColors));
+    inpData.setItem("allEvents", JSON.stringify(eventColors));
 }
 
 function loadDayData(data, day) {
@@ -230,7 +217,7 @@ function openDayEditor(day) {
     modalDayEditor.innerHTML = '';
 
     let eventsOfDay = loadDayData(LOC_STOR, day);
-    let allEventsColors = JSON.parse(LOC_STOR.getItem("allEventsColors"))
+    let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
 
     let divD = document.createElement('div');
     divD.textContent = eventsOfDay["localDate"];
@@ -253,14 +240,14 @@ function openDayEditor(day) {
         let spanEv = document.createElement('span');
         spanEv.id = eventsOfDay["localDate"] + encodeURI(ev) + "_";
         spanEv.classList.add('common');
-        spanEv.style.backgroundColor = allEventsColors[ev];
+        spanEv.style.backgroundColor = allEvents[ev].color;
         let time = Number(eventsOfDay[ev]) * (80/1440);
         spanEv.style.width = time + "%";
         pEv.append(spanEv);
 
         let spanEv2 = document.createElement('span');
         spanEv2.classList.add('common');
-        spanEv2.textContent = eventsOfDay[ev] + ' мин ' + ev;
+        spanEv2.textContent = eventsOfDay[ev] + ' мин ' + allEvents[ev].name;
         pEv.append(spanEv2);
 
         let spanEv3 = document.createElement('span');
@@ -345,7 +332,7 @@ function locStorToArr(inpData) {
     let arr = [];
     for (let i = 0; i < inpData.length; i++) {
         let locKey = localStorage.key(i);
-        if (locKey == "allEventsColors" || locKey == "allEventsNames") {
+        if (locKey == "allEvents") {
             continue;
         }
         arr.push(locKey);
@@ -362,34 +349,31 @@ function addNewEvent() {
         
         let inpColor = document.getElementById("inputColor").value;
         let inpEvent = document.getElementById("inputEvent");
-        let eventColors = (LOC_STOR.getItem("allEventsColors")) ? JSON.parse(LOC_STOR.getItem("allEventsColors")) : {};
-        let eventNames = (LOC_STOR.getItem("allEventsNames")) ? JSON.parse(LOC_STOR.getItem("allEventsNames")) : {};
-        
+        let allEvents = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
+
         let newId;
-        if (Object.keys(eventColors).length == undefined) {
+        if (Object.keys(allEvents).length == undefined) {
             newId = 'id0';
         }
         else {
-            newId = 'id' + String(Object.keys(eventColors).length); //////////////
+            newId = 'id' + String(Object.keys(allEvents).length); //////////////
         }
-        if(eventColors[inpNewEvent]) {
+        if(allEvents[inpNewEvent]) {
             inpEvent.textContent = inpNewEvent;
         } else {
             let optionEv = document.createElement('option');
-            // optionEv.value = inpNewEvent;
             optionEv.value = newId;  ////////////
             optionEv.textContent = inpNewEvent;
             optionEv.selected = true;
             inpEvent.append(optionEv);
         }
-        // eventColors[inpNewEvent] = inpColor;
-        eventColors[newId] = inpColor;//////////
-        eventNames[newId] = inpNewEvent;//////////
-        
-        console.log('1111',eventColors);
-        console.log('2222',eventNames);
-        LOC_STOR.setItem("allEventsColors", JSON.stringify(eventColors));
-        LOC_STOR.setItem("allEventsNames", JSON.stringify(eventNames));
+
+        allEvents[newId] = {
+            color: inpColor,
+            name: inpNewEvent,
+        }
+        LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
+
         return true;
     }
 }
@@ -417,7 +401,6 @@ function saveToLocStor() {
     let inputEvent = document.getElementById("inputEvent");
     let inpDate = document.getElementById("inputDate");
     let inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
-    console.log('9------', inpEvent);
     let inpTime = document.getElementById("inputTime").value.split(":");
     inpTime = validTimeValues(inpTime);
 
@@ -484,11 +467,8 @@ function loadStatData(inpData, dateFrom, dateTo) {
     let arrDates = locStorToArr(inpData);
     arrDates.sort();
     let arrDatesRanged = getRange(dateFrom, dateTo, arrDates);
-
     let mapEvents = new Map();
-
-    let allEventsColors = JSON.parse(inpData.getItem("allEventsColors"));
-
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
     let progressBarStat = document.getElementById("progressBarStat");
 
     for (let day of arrDatesRanged) {
@@ -517,16 +497,16 @@ function loadStatData(inpData, dateFrom, dateTo) {
             let eventSpan = document.createElement('span');
             eventSpan.classList.add("common");
             eventSpan.id = encodeURI(eventIdName);
-            eventSpan.style.backgroundColor = allEventsColors[ev];
+            eventSpan.style.backgroundColor = allEvents[ev].color;
             let time = Number(eventsOfDay[ev]) * (100/1440);
             eventSpan.style.width = time + "%";
             eventP.append(eventSpan);
 
             if (mapEvents.has(ev)) {
                 let sum = Number(mapEvents.get(ev)[1]) + Number(eventsOfDay[ev]);
-                mapEvents.set(ev, [allEventsColors[ev], sum]);
+                mapEvents.set(ev, [allEvents[ev], sum]);
             } else {
-                mapEvents.set(ev, [allEventsColors[ev], Number(eventsOfDay[ev])]);
+                mapEvents.set(ev, [allEvents[ev], Number(eventsOfDay[ev])]);
             }
         }
 
@@ -535,10 +515,12 @@ function loadStatData(inpData, dateFrom, dateTo) {
         let legend = document.getElementById("legendStat");
         legend.innerHTML = '';
         for (let s of sortedmapEvents.entries()) {
+            console.log(s);
             let divEvLavel = document.createElement('div');
             divEvLavel.classList.add("legendLabel");
-            divEvLavel.textContent = s[0] + ' ';
-            divEvLavel.style.background = s[1][0];
+            divEvLavel.textContent = s[1][0].name + ' ';
+            divEvLavel.style.background = s[1][0].color;
+
             divEvLavel.style.width = 'fit-content';
             legend.append(divEvLavel);
 
@@ -622,8 +604,8 @@ function readFile(input) {
     reader.onload = function() {
         let jsonFileStr = reader.result;
         let jsonFile = JSON.parse(jsonFileStr);
-        let allEventsFile = JSON.parse(jsonFile['allEventsColors']);
-        let allEventsLoc = JSON.parse(LOC_STOR.getItem("allEventsColors"));
+        let allEventsFile = JSON.parse(jsonFile['allEvents']);
+        let allEventsLoc = JSON.parse(LOC_STOR.getItem("allEvents"));
         for (let day in jsonFile) {
             if (!LOC_STOR.getItem(day)) {
                 LOC_STOR.setItem(day, `${jsonFile[day]}`);
@@ -634,7 +616,7 @@ function readFile(input) {
                         continue;
                     } else if (!allEventsLoc[ev]) {
                         allEventsLoc[ev] = allEventsFile[ev];
-                        LOC_STOR.setItem("allEventsColors", JSON.stringify(allEventsLoc));
+                        LOC_STOR.setItem("allEvents", JSON.stringify(allEventsLoc));
                     }
                 }
             }
