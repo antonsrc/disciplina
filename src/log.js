@@ -120,11 +120,8 @@ function loadData(inpData) {
 
     let progressBarLines = document.getElementById("progressBarLines");
     progressBarLines.innerHTML = '';
-
     let mapEvents = new Map();
-
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
-
     let tempBarWidth = 0;
 
     for (let day of arrDates) {
@@ -138,6 +135,11 @@ function loadData(inpData) {
         let dayP = document.createElement('p');
         dayP.classList.add("Date");
         dayP.textContent = eventsOfDay["localDate"];
+        let weekDay = new Date(day).getDay();
+        if (weekDay == 0 || weekDay == 6) {
+            dayP.style.color = 'rgb(45, 170, 13)';
+        }
+
         dayP.addEventListener('click', function() {
             openDayEditor(day);
         });
