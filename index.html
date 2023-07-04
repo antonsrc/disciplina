@@ -13,6 +13,18 @@
             <div id="header">disciplina v.0.5.6</div>
             <div id="progressBarLines"></div>
             <dialog id="modalDayEditor"></dialog>
+            <dialog id="modalLabelEditor">
+                <h1 id="nameLabel"></h1>
+                <p>Поменять цвет или имя события</p>
+                <label for="inputNewLabel">Имя: </label>
+                <input type="text" name="inputNewLabel" id="inputNewLabel">
+                <br><br>
+                <label for="inputNewColor">Цвет: </label>
+                <input type="color" id="inputNewColor" name="inputNewColor" value="#ff0000">
+                <br><br>
+                <button type="button" id="btnChangeLabelOk">Добавить</button>
+                <button type="button" id="btnChangeLabelCancel">Отмена</button>
+            </dialog>
             <dialog id="modalStat">
                 <form>
                     <label for="inputDateFrom">От:</label>
@@ -70,7 +82,7 @@
                     <a id="clearLocStor" href='#'>Очистить localStorage</a>
                 </div>
                 <div id="authorContacts">
-                    <span>e-mail: anton.source@gmail.com | tg:&nbsp;<a href='http://t.me/antsrc'>antsrc</a></span>
+                    <span>e-mail: <a href='mailto: anton.source@gmail.com'>anton.source@gmail.com</a> | tg:&nbsp;<a href='http://t.me/antsrc'>antsrc</a></span>
                 </div>
                 <div id="authorName">
                     <div id="togglerContact"><span>2023 | Anton Moshnyakov</span></div>

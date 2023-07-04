@@ -200,8 +200,13 @@ function loadData(inpData) {
         divEvLavel.classList.add("legendLabel");
         divEvLavel.style.background = mapEvents.get(s).color;
         divEvLavel.textContent = allEvents[s].name;
+        divEvLavel.id = 'legend_'+s;
         legend.append(divEvLavel);
         
+        divEvLavel.addEventListener('click', function() {
+            openLabelEditor(s);
+        });
+
         eventColors[s] = mapEvents.get(s);
     }
 
@@ -210,6 +215,18 @@ function loadData(inpData) {
 
 function loadDayData(data, day) {
     return JSON.parse(data.getItem(day));
+}
+
+function openLabelEditor(label) {
+    let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
+
+    let modalLabelEditor = document.getElementById("modalLabelEditor");
+    let nameLabel = document.getElementById("nameLabel");
+    nameLabel.textContent = allEvents[label].name;
+
+    modalLabelEditor.showModal();
+    let inpNewLabel = document.getElementById("inputNewLabel").value;
+    // TODO Доделать окно с изменением цвета и имени события
 }
 
 function openDayEditor(day) {
