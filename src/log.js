@@ -40,6 +40,20 @@ btnCreateEventOk.addEventListener('click', function() {
     }
 });
 
+let btnChangeLabelCancel = document.getElementById("btnChangeLabelCancel");
+btnChangeLabelCancel.addEventListener('click', function() {
+    document.getElementById("modalLabelEditor").close();
+});
+
+let btnChangeLabelOk = document.getElementById("btnChangeLabelOk");
+btnChangeLabelOk.addEventListener('click', function() {
+    if(changeLocStor()) {
+        
+        document.getElementById("modalLabelEditor").close();
+        loadData(LOC_STOR);
+    }
+});
+
 let clearLocStor = document.getElementById("clearLocStor");
 clearLocStor.addEventListener('click', function() {
     clearLoc();
@@ -221,12 +235,29 @@ function openLabelEditor(label) {
     let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
 
     let modalLabelEditor = document.getElementById("modalLabelEditor");
-    let nameLabel = document.getElementById("nameLabel");
+    let nameLabel = document.getElementsByClassName("nameLabel")[0];
     nameLabel.textContent = allEvents[label].name;
-
+    nameLabel.id = label+'_label';
+    document.getElementById("inputNewLabel").value = '';
     modalLabelEditor.showModal();
+}
+
+function changeLocStor() {
     let inpNewLabel = document.getElementById("inputNewLabel").value;
-    // TODO Доделать окно с изменением цвета и имени события
+    let inpNewColor = document.getElementById("inputNewColor").value;
+    let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
+    let changeId = document.getElementsByClassName("nameLabel")[0].id;
+    changeId = changeId.split('_')[0];
+    if (inpNewLabel == "") {
+        return true;
+    } else {
+        allEvents[changeId] = {
+            color: inpNewColor,
+            name: inpNewLabel,
+        }
+        LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
+        return true;
+    }
 }
 
 function openDayEditor(day) {
