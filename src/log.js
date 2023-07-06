@@ -128,6 +128,12 @@ importJsonInput.addEventListener('change', (event) => {
     readFile(event.target.files[0]);
 });
 
+// let inputNewLabel = document.getElementById('inputNewLabel');
+// inputNewLabel.addEventListener('change', (event) => {
+//     console.log('изменено');
+//     console.log(event);
+// });
+
 function loadData(inpData) {
     let arrDates = locStorToArr(inpData);
     arrDates.sort();
@@ -238,26 +244,29 @@ function openLabelEditor(label) {
     let nameLabel = document.getElementsByClassName("nameLabel")[0];
     nameLabel.textContent = allEvents[label].name;
     nameLabel.id = label+'_label';
-    document.getElementById("inputNewLabel").value = '';
+    document.getElementById("inputNewLabel").value = allEvents[label].name;
+    document.getElementById("inputNewColor").value = allEvents[label].color;
     modalLabelEditor.showModal();
 }
 
 function changeLocStor() {
     let inpNewLabel = document.getElementById("inputNewLabel").value;
+    let inputNewColor = document.getElementById("inputNewColor");
     let inpNewColor = document.getElementById("inputNewColor").value;
     let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
     let changeId = document.getElementsByClassName("nameLabel")[0].id;
     changeId = changeId.split('_')[0];
+    
     if (inpNewLabel == "") {
         return true;
-    } else {
-        allEvents[changeId] = {
-            color: inpNewColor,
-            name: inpNewLabel,
-        }
-        LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
-        return true;
     }
+
+    allEvents[changeId] = {
+        color: inpNewColor,
+        name: inpNewLabel,
+    }
+    LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
+    return true;
 }
 
 function openDayEditor(day) {
