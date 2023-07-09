@@ -157,6 +157,10 @@ dialog {
     width: 70%;
 }
 
+#modalLabelEditor {
+    width: 80%;
+}
+
 #errorMessage {
     border: 3px rgb(255, 0, 0) solid;
     background: rgb(255, 234, 151);
