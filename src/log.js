@@ -128,12 +128,6 @@ importJsonInput.addEventListener('change', (event) => {
     readFile(event.target.files[0]);
 });
 
-// let inputNewLabel = document.getElementById('inputNewLabel');
-// inputNewLabel.addEventListener('change', (event) => {
-//     console.log('изменено');
-//     console.log(event);
-// });
-
 function loadData(inpData) {
     let arrDates = locStorToArr(inpData);
     arrDates.sort();

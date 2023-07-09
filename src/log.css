@@ -132,25 +132,27 @@ body {
     order: 3;
 } */
 
+dialog {
+    border: 1px white solid;
+}
+
 #btnTogglerClose {
     width: 1rem;
 }
 
 #modalAddEvent {
-    border: 1px white solid;
     text-align: center;
-    max-width: 50%;
-    min-width: fit-content;
+    /* max-width: 50%; */
+    /* min-width: fit-content; */
+    width: 80%;
 }
 
 #modalDayEditor {
-    border: 1px whitesmoke solid;
     text-align: left;
     width: 80%;
 }
 
 #modalStat {
-    border: 3px rgb(185, 236, 115) solid;
     text-align: left;
     width: 70%;
 }
