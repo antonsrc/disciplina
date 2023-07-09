@@ -34,7 +34,7 @@ body {
 
 @media screen and (max-width: 600px) {
     dialog {
-        width: 90%;
+        width: 80%;
     }
 }
 
