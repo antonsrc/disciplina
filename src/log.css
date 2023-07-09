@@ -28,13 +28,13 @@ body {
 
 @media screen {
     dialog {
-        width: fit-content;
+        width: 60%;
     }
 }
 
 @media screen and (max-width: 600px) {
     dialog {
-        width: 100%;
+        width: 90%;
     }
 }
 
@@ -132,33 +132,24 @@ body {
     order: 3;
 } */
 
-dialog {
-    border: 1px white solid;
-}
-
 #btnTogglerClose {
     width: 1rem;
 }
 
+dialog {
+    border: 1px white solid;
+}
+
 #modalAddEvent {
     text-align: center;
-    /* max-width: 50%; */
-    /* min-width: fit-content; */
-    width: 80%;
 }
 
 #modalDayEditor {
     text-align: left;
-    width: 80%;
 }
 
 #modalStat {
     text-align: left;
-    width: 70%;
-}
-
-#modalLabelEditor {
-    width: 80%;
 }
 
 #errorMessage {
