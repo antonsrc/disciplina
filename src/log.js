@@ -8,6 +8,8 @@ window.addEventListener('load', function() {
 
 let btnAddEvent = document.getElementById("btnAddEvent");
 btnAddEvent.addEventListener('click', function() {
+    let inpDate = document.getElementById("inputDate");
+    inpDate.valueAsDate = new Date();
     document.getElementById("modalAddEvent").showModal();
 });
 
@@ -707,3 +709,4 @@ function themeToggler() {
         }
     }
 }
+

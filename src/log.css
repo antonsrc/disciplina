@@ -137,12 +137,118 @@ body {
 }
 
 dialog {
-    border: 1px white solid;
+    border: 0px white solid;
+    padding: 0px;
 }
 
-#modalAddEvent {
-    text-align: center;
+#modalAddEventGrid {
+
+
+    display: grid;
+    
+        /* TODO Остановился здесь, продолжить делать порядки с высотой */
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 50px auto auto 50px;
+
+
+    justify-items: center;
+    column-gap: 0.5rem;
+    row-gap: 1rem;
+    padding-bottom: 1rem;
 }
+
+#btnCancel {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+}
+
+#inputDateL {
+    grid-column: 1;
+    grid-row: 1;
+    /* height: 5rem; */
+    align-self: center;
+    justify-self: end;
+}
+
+#inputDate {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: start;
+}
+
+#inputEventL {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: end;
+}
+
+/* #inputEvent {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+} */
+
+#inputEventNew {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+}
+
+#inputTimeL {
+    grid-column: 1;
+    grid-row: 3;
+    justify-self: end;
+}
+
+#inputTime {
+    grid-column: 2;
+    grid-row: 3;
+    justify-self: start;
+}
+
+#btnSave {
+    grid-column: 1/3;
+    grid-row: 4;
+    justify-self: center;
+
+    background-color:rgb(124, 233, 157);
+    color: #ffffff;
+    height: 30px;
+    align-items: center;
+    justify-content:center;
+    margin: 1px 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+#btnSave:focus, #btnSave:hover {
+    background-color: rgb(50, 233, 120);
+}
+
+#btnCreateEvent {
+    background-color:rgb(124, 233, 157);
+    color: #ffffff;
+    height: 1.3rem;
+    align-items: center;
+    justify-content:center;
+    margin: 1px 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+#btnCreateEvent:focus, #btnCreateEvent:hover {
+    background-color: rgb(50, 233, 120);
+}
+
+
+
 
 #modalDayEditor {
     text-align: left;

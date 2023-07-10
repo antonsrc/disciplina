@@ -8,9 +8,8 @@
 </head>
 <body>
     <div id="container">
-        
         <div id='main' class="mainDay">
-            <div id="header">disciplina v.0.5.6</div>
+            <div id="header">disciplina v.0.5.7</div>
             <div id="progressBarLines"></div>
             <dialog id="modalDayEditor"></dialog>
             <dialog id="modalLabelEditor">
@@ -39,15 +38,24 @@
                 <button type="button" id="btnCloseStat">Закрыть</button>
             </dialog>
             <dialog id="modalAddEvent">
-                <form>
-                    <label for="inputDate">Дата: </label>
+                <form id="modalAddEventGrid">
+                    <button type="button" id="btnCancel">Отмена</button>
+
+                    <label id="inputDateL" for="inputDate">Дата: </label>
+                    <label id="inputEventL" for="inputEvent">Событие: </label>
+                    <label id="inputTimeL" for="inputTime">Длительность: </label>
                     <input type="date" id="inputDate">
+                    <div id="inputEventNew">
+                    <select name="inputEvent" id="inputEvent" size="1"></select>
                     <br>
-                    <p>
-                        <select name="inputEvent" id="inputEvent" size="1"></select>
-                        или
-                        <button type="button" id="btnCreateEvent">Добавьте новое</button>
-                    </p>
+                    или добавьте
+                    <div type="button" id="btnCreateEvent">Новое</div>
+                    </div>
+                    <input type="time" id="inputTime" name="inputTime" value="00:00">
+
+                    <div type="button" id="btnSave">Сохранить</div>
+                    
+                    
                     <dialog id="modalCreateEvent">
                         <label for="inputNewEvent">Название: </label>
                         <input type="text" name="inputNewEvent" id="inputNewEvent">
@@ -58,11 +66,6 @@
                         <button type="button" id="btnCreateEventOk">Добавить</button>
                         <button type="button" id="btnCreateEventCancel">Отмена</button>
                     </dialog>
-                    <label for="inputTime">Времени затрачено: </label>
-                    <input type="time" id="inputTime" name="inputTime" value="00:00">
-                    <br><br>
-                    <button type="button" id="btnSave">Сохранить</button>
-                    <button type="button" id="btnCancel">Отмена</button>
                 </form>
                 <div><p id="errorMessage"></p></div>
             </dialog>
