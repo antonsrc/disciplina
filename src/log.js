@@ -10,6 +10,7 @@ let btnAddEvent = document.getElementById("btnAddEvent");
 btnAddEvent.addEventListener('click', function() {
     let inpDate = document.getElementById("inputDate");
     inpDate.valueAsDate = new Date();
+    hideElement("errorMessage");
     document.getElementById("modalAddEvent").showModal();
 });
 

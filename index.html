@@ -40,22 +40,10 @@
             <dialog id="modalAddEvent">
                 <form id="modalAddEventGrid">
                     <div id="btnCancel">
-                        <!-- <div id="btnTogglerClose"> -->
-                            <svg viewBox="0 0 28 28" width="100%" height="100%">       
-                                <image href="./cross45.svg" />
-                            </svg>
-                        <!-- </div> -->
+                        <svg viewBox="0 0 28 28" width="100%" height="100%">       
+                            <image href="./cross45.svg" />
+                        </svg>
                     </div>
-
-
-
-
-
-
-
-
-
-
                     <label id="inputDateL" for="inputDate">Дата: </label>
                     <label id="inputEventL" for="inputEvent">Событие: </label>
                     <label id="inputTimeL" for="inputTime">Длительность: </label>
@@ -67,22 +55,26 @@
                     <div type="button" id="btnCreateEvent">Новое</div>
                     </div>
                     <input type="time" id="inputTime" name="inputTime" value="00:00">
-
-                    <div type="button" id="btnSave">Сохранить</div>
-                    
-                    
+                    <div id="btnSave">Сохранить</div>
+                
                     <dialog id="modalCreateEvent">
-                        <label for="inputNewEvent">Название: </label>
-                        <input type="text" name="inputNewEvent" id="inputNewEvent">
-                        <br><br>
-                        <label for="inputColor">Цвет: </label>
-                        <input type="color" id="inputColor" name="inputColor" value="#ff0000">
-                        <br><br>
-                        <button type="button" id="btnCreateEventOk">Добавить</button>
-                        <button type="button" id="btnCreateEventCancel">Отмена</button>
+                        <div id="modalCreateEventGrid">
+                            <label for="inputNewEvent" id="inputNewEventL">Название: </label>
+                            <input type="text" name="inputNewEvent" id="inputNewEvent">
+                            <label for="inputColor" id="inputColorL">Цвет: </label>
+                            <input type="color" id="inputColor" name="inputColor" value="#ff0000">
+                            <div id="btnCreateEventOk">Добавить</div>
+                            <div id="btnCreateEventCancel">
+                                <svg viewBox="0 0 28 28" width="100%" height="100%">       
+                                    <image href="./cross45.svg" />
+                                </svg>
+                            </div>
+                        </div>
                     </dialog>
+
+
                 </form>
-                <div><p id="errorMessage"></p></div>
+                <div id="errorMessage"></div>
             </dialog>
             <div id="toggler">
                 <div id="stat" class="togglerLink">
