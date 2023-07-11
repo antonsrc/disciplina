@@ -34,7 +34,7 @@ body {
 
 @media screen and (max-width: 600px) {
     dialog {
-        width: 80%;
+        width: 90%;
     }
 }
 
@@ -142,13 +142,9 @@ dialog {
 }
 
 #modalAddEventGrid {
-
-
     display: grid;
-    
-        /* TODO Остановился здесь, продолжить делать порядки с высотой */
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 50px auto auto 50px;
+    grid-template-rows: 60px auto auto 50px;
 
 
     justify-items: center;
@@ -161,19 +157,37 @@ dialog {
     grid-column: 2;
     grid-row: 1;
     justify-self: end;
+    align-self: self-start;
+    /* width: 1rem; */
+    height: 1rem;
+    background-color: rgb(124, 233, 157);
+    padding: .5rem;
+    cursor: pointer;
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* justify-content: center; */
 }
+
+
+
+#btnCancel:focus, #btnCancel:hover {
+    background-color: rgb(50, 233, 120);
+}
+
+
 
 #inputDateL {
     grid-column: 1;
     grid-row: 1;
     /* height: 5rem; */
-    align-self: center;
+    align-self: self-end;
     justify-self: end;
 }
 
 #inputDate {
     grid-column: 2;
     grid-row: 1;
+    align-self: self-end;
     justify-self: start;
 }
 
@@ -213,7 +227,7 @@ dialog {
     justify-self: center;
 
     background-color:rgb(124, 233, 157);
-    color: #ffffff;
+    color: #000000;
     height: 30px;
     align-items: center;
     justify-content:center;
@@ -231,7 +245,7 @@ dialog {
 
 #btnCreateEvent {
     background-color:rgb(124, 233, 157);
-    color: #ffffff;
+    color: #000000;
     height: 1.3rem;
     align-items: center;
     justify-content:center;
@@ -400,15 +414,6 @@ a {
     font-size: 1rem;
 }
 
-#togglerCloseBeforeBtn {
-    padding: 1rem;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    order: 2;
-}
-
 #clearLocStor:focus, #clearLocStor:hover {
     background-color: rgb(178, 17, 41);
 }
@@ -423,6 +428,12 @@ a {
 
 #togglerCloseBeforeBtn {
     background-color: rgb(55, 179, 42);
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    order: 2;
 }
 
 .Date {
