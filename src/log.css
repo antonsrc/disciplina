@@ -30,11 +30,19 @@ body {
     dialog {
         width: 60%;
     }
+
+    #modalCreateEvent {
+        width: 55%;
+    }
 }
 
 @media screen and (max-width: 600px) {
     dialog {
         width: 100%;
+    }
+
+    #modalCreateEvent {
+        width: 95%;
     }
 }
 
@@ -137,10 +145,6 @@ body {
 dialog {
     border: 0px white solid;
     padding: 0px;
-}
-
-#modalCreateEvent {
-    width: 55%;
 }
 
 #modalCreateEventGrid {
