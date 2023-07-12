@@ -80,6 +80,7 @@ body {
     width: 1rem;
     /* transform: scale(1); */
     cursor: pointer;
+    box-shadow: 0 0 10px 5px rgb(255, 255, 255);
 }
 
 #legendTogglerClick {
