@@ -30,19 +30,11 @@ body {
     dialog {
         width: 60%;
     }
-
-    #modalCreateEvent {
-        width: 55%;
-    }
 }
 
 @media screen and (max-width: 600px) {
     dialog {
         width: 100%;
-    }
-
-    #modalCreateEvent {
-        width: 95%;
     }
 }
 
@@ -186,6 +178,8 @@ dialog {
     grid-row: 1;
     align-self: self-end;
     justify-self: start;
+
+    width: 7rem;
 }
 
 #inputColorL {
