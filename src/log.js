@@ -133,7 +133,7 @@ importJsonInput.addEventListener('change', (event) => {
 
 function loadData(inpData) {
     let arrDates = locStorToArr(inpData);
-    arrDates.sort();
+    arrDates.sort().reverse();
 
     let progressBarLines = document.getElementById("progressBarLines");
     progressBarLines.innerHTML = '';
@@ -267,22 +267,24 @@ function changeLocStor() {
 }
 
 function openDayEditor(day) {
+    let barsOfDay = document.getElementById("barsOfDay");
     let modalDayEditor = document.getElementById("modalDayEditor");
-    
+    let cancelDayEditor = document.getElementById("cancelDayEditor");
+    let headDay = document.getElementById("headDay");
+    let clDayA = document.getElementById("clDayA");
+
+
     modalDayEditor.showModal();
-    modalDayEditor.innerHTML = '';
+    barsOfDay.innerHTML = '';
 
     let eventsOfDay = loadDayData(LOC_STOR, day);
     let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
 
-    let divD = document.createElement('div');
-    divD.textContent = eventsOfDay["localDate"];
-    divD.id = 'modalDay' + day;
-    modalDayEditor.append(divD);
+    headDay.textContent = eventsOfDay["localDate"];
 
     let divEv = document.createElement('div');
     divEv.id = day + 'modal';
-    modalDayEditor.append(divEv);
+    barsOfDay.append(divEv);
 
     for (let ev in eventsOfDay) {
         if (ev == "freeTime" || ev == "localDate") {
@@ -318,29 +320,18 @@ function openDayEditor(day) {
         });
         spanEv3.append(aEv);
     }
-
-    let spanBtnRem = document.createElement('span');
-    spanBtnRem.classList.add('btnRem');
-    modalDayEditor.append(spanBtnRem);
-
-    let aBtnRem = document.createElement('a');
-    aBtnRem.href = '#';
-    aBtnRem.textContent = 'Удалить все события дня';
-    aBtnRem.addEventListener('click', function() {
+    
+    clDayA.addEventListener('click', function() {
         removeItemFromLocStor(day);
     });
-    spanBtnRem.append(aBtnRem);
 
-    let buttonClose = document.createElement('button');
-    buttonClose.type = "button";
-    buttonClose.textContent = 'Закрыть';
-    buttonClose.addEventListener('click', function() {
+    cancelDayEditor.addEventListener('click', function() {
         closeDayEditor();
     });
-    modalDayEditor.append(buttonClose);
 }
 
 function closeDayEditor() {
+    let modalDayEditor = document.getElementById("modalDayEditor");
     modalDayEditor.close();
 }
 
