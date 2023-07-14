@@ -282,10 +282,6 @@ function openDayEditor(day) {
 
     headDay.textContent = eventsOfDay["localDate"];
 
-    let divEv = document.createElement('div');
-    divEv.id = day + 'modal';
-    barsOfDay.append(divEv);
-
     for (let ev in eventsOfDay) {
         if (ev == "freeTime" || ev == "localDate") {
             continue;
@@ -293,28 +289,38 @@ function openDayEditor(day) {
         
         let pEv = document.createElement('p');
         pEv.id = encodeURI(ev) + 'mod';
-        divEv.append(pEv);
+        pEv.style.marginBottom = '1rem';
+        pEv.style.marginTop = '1rem';
+        barsOfDay.append(pEv);
 
-        let spanEv = document.createElement('span');
-        spanEv.id = eventsOfDay["localDate"] + encodeURI(ev) + "_";
-        spanEv.classList.add('common');
-        spanEv.style.backgroundColor = allEvents[ev].color;
-        let time = Number(eventsOfDay[ev]) * (80/1440);
-        spanEv.style.width = time + "%";
-        pEv.append(spanEv);
+        // let spanEv = document.createElement('span');
+        // spanEv.id = eventsOfDay["localDate"] + encodeURI(ev) + "_";
+        // spanEv.classList.add('common');
+        // spanEv.style.backgroundColor = allEvents[ev].color;
+        // let time = Number(eventsOfDay[ev]) * (1/2);
+        // spanEv.style.width = time + "%";
+        // pEv.append(spanEv);
 
         let spanEv2 = document.createElement('span');
-        spanEv2.classList.add('common');
-        spanEv2.textContent = eventsOfDay[ev] + ' мин ' + allEvents[ev].name;
+        spanEv2.classList.add('legendLabelDay');
+        spanEv2.style.backgroundColor = allEvents[ev].color;
+        spanEv2.textContent = allEvents[ev].name;
         pEv.append(spanEv2);
 
+        let spanEv = document.createElement('span');
+        spanEv.textContent = ' ' + eventsOfDay[ev] + ' мин ';
+        pEv.append(spanEv);
+
+
         let spanEv3 = document.createElement('span');
-        spanEv3.classList.add('btnRem2');
+        spanEv3.classList.add('clDayEv');
         pEv.append(spanEv3);
 
         let aEv = document.createElement('a');
+
         aEv.href = '#';
-        aEv.textContent = 'x';
+        aEv.textContent = '[удалить]';
+        aEv.classList.add('clDayEvA');
         aEv.addEventListener('click', function() {
             removeEvent(day, ev);
         });
