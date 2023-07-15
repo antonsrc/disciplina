@@ -9,7 +9,7 @@
 <body>
     <div id="container">
         <div id='main' class="mainDay">
-            <div id="header">disciplina v.0.5.9</div>
+            <div id="header">disciplina v.0.5.10</div>
             <div id="progressBarLines"></div>
 
             <dialog id="modalDayEditor">
@@ -30,17 +30,25 @@
             </dialog>
 
             <dialog id="modalLabelEditor">
-                <h1 class="nameLabel"></h1>
-                <p>Поменять цвет или имя события</p>
-                <label for="inputNewLabel">Имя: </label>
-                <input type="text" name="inputNewLabel" id="inputNewLabel">
-                <br><br>
-                <label for="inputNewColor">Цвет: </label>
-                <input type="color" id="inputNewColor" name="inputNewColor" value="#ff0000">
-                <br><br>
-                <button type="button" id="btnChangeLabelOk">Добавить</button>
-                <button type="button" id="btnChangeLabelCancel">Отмена</button>
+                <div id="modalLabelEditorGrid">
+                    <div class="nameLabel">Изменить событие</div>
+                    <div id="btnChangeLabelCancel">
+                        <svg viewBox="0 0 28 28" width="100%" height="100%">       
+                            <image href="./cross45.svg" />
+                        </svg>
+                    </div>
+
+                    <label for="inputNewLabel" id="inputNewLabelL">Название: </label>
+                    <input type="text" name="inputNewLabel" id="inputNewLabel">
+
+                    <label for="inputNewColor" id="inputNewColorL">Цвет: </label>
+                    <input type="color" id="inputNewColor" name="inputNewColor" value="#ff0000">
+
+                    <div id="btnChangeLabelOk">Изменить</div>
+
+                </div>
             </dialog>
+
             <dialog id="modalStat">
                 <form>
                     <label for="inputDateFrom">От:</label>
@@ -76,7 +84,7 @@
                     <div id="btnSave">Сохранить</div>
                     <dialog id="modalCreateEvent">
                         <div id="modalCreateEventGrid">
-                            <div id="headEventNew">Добавьте новое событие</div>
+                            <div id="headEventNew">Новое событие</div>
                             <label for="inputNewEvent" id="inputNewEventL">Название: </label>
                             <input type="text" name="inputNewEvent" id="inputNewEvent">
                             <label for="inputColor" id="inputColorL">Цвет: </label>

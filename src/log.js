@@ -239,7 +239,6 @@ function openLabelEditor(label) {
 
     let modalLabelEditor = document.getElementById("modalLabelEditor");
     let nameLabel = document.getElementsByClassName("nameLabel")[0];
-    nameLabel.textContent = allEvents[label].name;
     nameLabel.id = label+'_label';
     document.getElementById("inputNewLabel").value = allEvents[label].name;
     document.getElementById("inputNewColor").value = allEvents[label].color;
@@ -293,14 +292,6 @@ function openDayEditor(day) {
         pEv.style.marginTop = '1rem';
         barsOfDay.append(pEv);
 
-        // let spanEv = document.createElement('span');
-        // spanEv.id = eventsOfDay["localDate"] + encodeURI(ev) + "_";
-        // spanEv.classList.add('common');
-        // spanEv.style.backgroundColor = allEvents[ev].color;
-        // let time = Number(eventsOfDay[ev]) * (1/2);
-        // spanEv.style.width = time + "%";
-        // pEv.append(spanEv);
-
         let spanEv2 = document.createElement('span');
         spanEv2.classList.add('legendLabelDay');
         spanEv2.style.backgroundColor = allEvents[ev].color;
@@ -310,7 +301,6 @@ function openDayEditor(day) {
         let spanEv = document.createElement('span');
         spanEv.textContent = ' ' + eventsOfDay[ev] + ' мин ';
         pEv.append(spanEv);
-
 
         let spanEv3 = document.createElement('span');
         spanEv3.classList.add('clDayEv');
