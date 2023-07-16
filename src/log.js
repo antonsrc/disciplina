@@ -507,7 +507,7 @@ function openStat() {
 
 
         let divWithScroll = document.getElementById("divWithScroll");
-        divWithScroll.style.height = '65vh';
+        divWithScroll.style.height = '50vh';
 
         loadStatData(LOC_STOR, inpDateFrom, inpDateTo);
     });
@@ -520,7 +520,7 @@ function loadStatData(inpData, dateFrom, dateTo) {
     let mapEvents = new Map();
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
     let progressBarStat = document.getElementById("progressBarStat");
-    progressBarStat.style.paddingBottom = '1.5rem';
+    // legendStat.style.paddingBottom = '1.5rem';
     for (let day of arrDatesRanged) {
         let eventsOfDay = JSON.parse(inpData.getItem(day));
 
