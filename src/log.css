@@ -526,7 +526,7 @@ dialog::backdrop {
 
 
 #modalStatGrid {
-    text-align: center;
+    text-align: left;
 
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -571,6 +571,7 @@ dialog::backdrop {
     grid-row: 2;
     align-self: self-end;
     justify-self: end;
+    text-align: center;
 }
 
 #inpTo {
@@ -578,6 +579,7 @@ dialog::backdrop {
     grid-row: 2;
     align-self: self-end;
     justify-self: start;
+    text-align: center;
 }
 
 #btnShowDateRange {
