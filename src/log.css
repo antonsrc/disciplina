@@ -526,7 +526,7 @@ dialog::backdrop {
 
 
 #modalStatGrid {
-    text-align: left;
+    text-align: center;
 
     display: grid;
     grid-template-columns: repeat(2, 1fr);
