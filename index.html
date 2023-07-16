@@ -50,20 +50,38 @@
             </dialog>
 
             <dialog id="modalStat">
-                <form>
-                    <label for="inputDateFrom">От:</label>
-                    <input type="date" id="inputDateFrom">
-                    <br>
-                    <label for="inputDateTo">До:</label>
-                    <input type="date" id="inputDateTo">
-                </form>
-                <button type="button" id="btnShowDateRange">Показать</button>
-                <div id="progressBarStat"></div>
-                <div id="legendStat"></div>
-                <button type="button" id="btnCloseStat">Закрыть</button>
+                <div id="modalStatGrid">
+                    <div id="headStat">Статистика</div>
+                    <div id="btnCloseStat">
+                        <svg viewBox="0 0 28 28" width="100%" height="100%">       
+                            <image href="./cross45.svg" />
+                        </svg>
+                    </div>
+
+                    <div id="inpFrom">
+                        <label for="inputDateFrom">От:</label>
+                        <input type="date" id="inputDateFrom">
+                    </div>
+
+                    <div id="inpTo">
+                        <label for="inputDateTo">До:</label>
+                        <input type="date" id="inputDateTo">
+                    </div>
+
+                    <div id="btnShowDateRange">Показать</div>
+
+                    <div id="divWithScroll">
+                        <div id="progressBarStat"></div>
+                        <div id="legendStat"></div>
+                    </div>
+
+
+                </div>
             </dialog>
+
+
             <dialog id="modalAddEvent">
-                <form id="modalAddEventGrid">
+                <div id="modalAddEventGrid">
                     <div id="btnCancel">
                         <svg viewBox="0 0 28 28" width="100%" height="100%">       
                             <image href="./cross45.svg" />
@@ -97,7 +115,7 @@
                             </div>
                         </div>
                     </dialog>
-                </form>
+                </div>
                 <div id="errorMessage"></div>
             </dialog>
             <div id="toggler">

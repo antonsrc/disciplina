@@ -123,6 +123,8 @@ btnToggler.addEventListener('mouseout', function() {
 
 let btnCloseStat = document.getElementById("btnCloseStat");
 btnCloseStat.addEventListener('click', function() {
+    let modalStat = document.getElementById("modalStat");
+    modalStat.style.height = 'fit-content';
     document.getElementById("modalStat").close();
 });
 
@@ -247,7 +249,6 @@ function openLabelEditor(label) {
 
 function changeLocStor() {
     let inpNewLabel = document.getElementById("inputNewLabel").value;
-    let inputNewColor = document.getElementById("inputNewColor");
     let inpNewColor = document.getElementById("inputNewColor").value;
     let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
     let changeId = document.getElementsByClassName("nameLabel")[0].id;
@@ -307,7 +308,6 @@ function openDayEditor(day) {
         pEv.append(spanEv3);
 
         let aEv = document.createElement('a');
-
         aEv.href = '#';
         aEv.textContent = '[удалить]';
         aEv.classList.add('clDayEvA');
@@ -486,6 +486,7 @@ function saveToLocStor() {
 
 function openStat() {
     let modalStat = document.getElementById("modalStat");
+    modalStat.style.height = 'fit-content';
     modalStat.showModal();
 
     let progressBarStat = document.getElementById("progressBarStat");
@@ -496,12 +497,18 @@ function openStat() {
     let inputDateFrom = document.getElementById("inputDateFrom");
     let inputDateTo = document.getElementById("inputDateTo");
 
+
     let btnShowDateRange = document.getElementById("btnShowDateRange");
     btnShowDateRange.addEventListener('click', function() {
         progressBarStat.innerHTML = '';
         legend.innerHTML = '';
         let inpDateFrom = inputDateFrom.value;
         let inpDateTo = inputDateTo.value;
+
+
+        let divWithScroll = document.getElementById("divWithScroll");
+        divWithScroll.style.height = '65vh';
+
         loadStatData(LOC_STOR, inpDateFrom, inpDateTo);
     });
 }
@@ -513,7 +520,7 @@ function loadStatData(inpData, dateFrom, dateTo) {
     let mapEvents = new Map();
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
     let progressBarStat = document.getElementById("progressBarStat");
-
+    progressBarStat.style.paddingBottom = '1.5rem';
     for (let day of arrDatesRanged) {
         let eventsOfDay = JSON.parse(inpData.getItem(day));
 
@@ -523,7 +530,7 @@ function loadStatData(inpData, dateFrom, dateTo) {
         progressBarStat.append(dayDiv);
 
         let dayP = document.createElement('p');
-        dayP.classList.add("Date");
+        dayP.classList.add("DateStat");
         dayP.textContent = eventsOfDay["localDate"];
         dayDiv.append(dayP);
 
@@ -558,21 +565,23 @@ function loadStatData(inpData, dateFrom, dateTo) {
         let legend = document.getElementById("legendStat");
         legend.innerHTML = '';
         for (let s of sortedmapEvents.entries()) {
-            console.log(s);
-            let divEvLavel = document.createElement('div');
-            divEvLavel.classList.add("legendLabel");
-            divEvLavel.textContent = s[1][0].name + ' ';
-            divEvLavel.style.background = s[1][0].color;
+            let pEvLavel = document.createElement('p');
+            pEvLavel.id = s[0] + 'stat';
+            legend.append(pEvLavel);
 
-            divEvLavel.style.width = 'fit-content';
-            legend.append(divEvLavel);
+            let spanEv2 = document.createElement('span');
+            spanEv2.classList.add('legendLabelDaySt');
+            spanEv2.style.backgroundColor = s[1][0].color;
+            spanEv2.textContent = s[1][0].name;
+            pEvLavel.append(spanEv2);
 
-            let spanEvLavel = document.createElement('span');
-            spanEvLavel.style.background = 'white';
-            spanEvLavel.textContent = s[1][1] + ' мин';
-            divEvLavel.append(spanEvLavel);
+            let spanEv = document.createElement('span');
+            spanEv.textContent = ' ' + s[1][1] + ' мин ';
+            pEvLavel.append(spanEv);
+
         }
     }
+
 }
 
 function getRange(fromDate, toDate, arr) {
