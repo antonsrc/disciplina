@@ -2,29 +2,49 @@
 
 const LOC_STOR = window.localStorage;
 
-window.addEventListener('load', function() {
+window.addEventListener('load', () => {
     loadData(LOC_STOR);
 });
 
-let btnAddEvent = document.getElementById("btnAddEvent");
-btnAddEvent.addEventListener('click', function() {
-    let inpDate = document.getElementById("inputDate");
-    inpDate.valueAsDate = new Date();
+let openEventAdder = document.getElementById("openEventAdder");
+let dialogEventAdder = document.getElementById("dialogEventAdder");
+let inputDate = document.getElementById("inputDate");
+
+openEventAdder.addEventListener('click', () => {
+    inputDate.valueAsDate = new Date();
     hideElement("errorMessage");
-    document.getElementById("modalAddEvent").showModal();
+    dialogEventAdder.showModal();
 });
 
-let btnSave = document.getElementById("btnSave");
-btnSave.addEventListener('click', function() {
+let addEvent = document.getElementById("addEvent");
+addEvent.addEventListener('click', () => {
     if(saveToLocStor()) {
-        document.getElementById("modalAddEvent").close();
+        dialogEventAdder.close();
     }
 });
 
-let btnCancel = document.getElementById("btnCancel");
-btnCancel.addEventListener('click', function() {
-    document.getElementById("modalAddEvent").close();
-});
+
+
+
+
+document.querySelectorAll('.closeDialog').forEach(item => {
+    item.addEventListener('click', event => {
+        let elem = event.target;
+        while(event.target) {
+            elem = elem.parentElement;
+            if (elem.tagName == 'DIALOG') break;
+        }
+        // console.log(elem.id);
+        document.getElementById(elem.id).close();
+    })
+  })
+
+
+
+
+
+
+
 
 let btnCreateEvent = document.getElementById("btnCreateEvent");
 btnCreateEvent.addEventListener('click', function() {
@@ -91,11 +111,11 @@ btnLegend.addEventListener('mouseout', function() {
     btnLegend.style.background = 'rgba(0, 0, 0, 0)';
 });
 
-btnAddEvent.addEventListener('mouseover', function() {
-    btnAddEvent.style.background = 'rgba(50, 233, 120)';
+openEventAdder.addEventListener('mouseover', function() {
+    openEventAdder.style.background = 'rgba(50, 233, 120)';
 });
-btnAddEvent.addEventListener('mouseout', function() {
-    btnAddEvent.style.background = 'rgba(124, 233, 157)';
+openEventAdder.addEventListener('mouseout', function() {
+    openEventAdder.style.background = 'rgba(124, 233, 157)';
 });
 
 let togglerCloseBeforeBtn = document.getElementById("togglerCloseBeforeBtn");
@@ -269,7 +289,7 @@ function changeLocStor() {
 function openDayEditor(day) {
     let barsOfDay = document.getElementById("barsOfDay");
     let modalDayEditor = document.getElementById("modalDayEditor");
-    let cancelDayEditor = document.getElementById("cancelDayEditor");
+    // let cancelDayEditor = document.getElementById("cancelDayEditor");
     let headDay = document.getElementById("headDay");
     let clDayA = document.getElementById("clDayA");
 
@@ -321,9 +341,9 @@ function openDayEditor(day) {
         removeItemFromLocStor(day);
     });
 
-    cancelDayEditor.addEventListener('click', function() {
-        closeDayEditor();
-    });
+    // cancelDayEditor.addEventListener('click', function() {
+    //     closeDayEditor();
+    // });
 }
 
 function closeDayEditor() {

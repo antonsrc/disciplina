@@ -14,11 +14,9 @@
 
             <dialog id="modalDayEditor">
                 <div id="modalDayEditorGrid">
-                    <div id="cancelDayEditor">
-                        <svg viewBox="0 0 28 28" width="100%" height="100%">       
-                            <image href="./cross45.svg" />
-                        </svg>
-                    </div>
+                    <svg class="closeDialog" id="cancelDayEditor" viewBox="0 0 28 28" width="100%" height="100%">       
+                        <image href="./cross45.svg" />
+                    </svg>
                     <div id="headDay"></div>
 
                     <div id="barsOfDay"></div>
@@ -82,13 +80,13 @@
             </dialog>
 
 
-            <dialog id="modalAddEvent">
+            <dialog id="dialogEventAdder">
                 <div id="modalAddEventGrid">
-                    <div id="btnCancel">
-                        <svg viewBox="0 0 28 28" width="100%" height="100%">       
+                    <!-- <div id="btnCancel"> -->
+                        <svg class="closeDialog" id="btnCancel" viewBox="0 0 28 28" width="100%" height="100%">       
                             <image href="./cross45.svg" />
                         </svg>
-                    </div>
+                    <!-- </div> -->
                     <div id="headEvent">Добавьте событие</div>
                     <label id="inputDateL" for="inputDate">Дата: </label>
                     <label id="inputEventL" for="inputEvent">Событие: </label>
@@ -101,7 +99,7 @@
                     <div type="button" id="btnCreateEvent">Новое</div>
                     </div>
                     <input type="time" id="inputTime" name="inputTime" value="00:00">
-                    <div id="btnSave">Сохранить</div>
+                    <div id="addEvent">Добавить</div>
                     <dialog id="modalCreateEvent">
                         <div id="modalCreateEventGrid">
                             <div id="headEventNew">Новое событие</div>
@@ -151,12 +149,10 @@
             </div>
         </div>
         <div id="footer">
-            <div id="addEvent">
-                <div id="btnAddEvent">
-                    <svg viewBox="0 0 28 28" width="100%" height="100%">       
-                        <image href="./cross90.svg" />
-                    </svg>
-                </div>
+            <div id="footerAddEvent">
+                <svg id="openEventAdder" viewBox="0 0 28 28" width="100%" height="100%">       
+                    <image href="./cross90.svg" />
+                </svg>
             </div>
             <div id="legend">
                 <div id="legendMain"></div>
