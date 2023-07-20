@@ -9,6 +9,16 @@ window.addEventListener('load', () => {
 let openEventAdder = document.getElementById("openEventAdder");
 let dialogEventAdder = document.getElementById("dialogEventAdder");
 let inputDate = document.getElementById("inputDate");
+let addEvent = document.getElementById("addEvent");
+
+document.querySelectorAll('.closeDialog').forEach(item => {
+    item.addEventListener('click', e => {
+        let parentDialog = e.target.closest('dialog');
+        if (parentDialog) {
+            document.getElementById(parentDialog.id).close();
+        }
+    });
+});
 
 openEventAdder.addEventListener('click', () => {
     inputDate.valueAsDate = new Date();
@@ -16,7 +26,6 @@ openEventAdder.addEventListener('click', () => {
     dialogEventAdder.showModal();
 });
 
-let addEvent = document.getElementById("addEvent");
 addEvent.addEventListener('click', () => {
     if(saveToLocStor()) {
         dialogEventAdder.close();
@@ -27,52 +36,24 @@ addEvent.addEventListener('click', () => {
 
 
 
-document.querySelectorAll('.closeDialog').forEach(item => {
-    item.addEventListener('click', event => {
-        let elem = event.target;
-        while(event.target) {
-            elem = elem.parentElement;
-            if (elem.tagName == 'DIALOG') break;
-        }
-        // console.log(elem.id);
-        document.getElementById(elem.id).close();
-    })
-  })
-
-
-
-
-
-
-
 
 let btnCreateEvent = document.getElementById("btnCreateEvent");
 btnCreateEvent.addEventListener('click', function() {
-    document.getElementById("modalCreateEvent").showModal();
-});
-
-let btnCreateEventCancel = document.getElementById("btnCreateEventCancel");
-btnCreateEventCancel.addEventListener('click', function() {
-    document.getElementById("modalCreateEvent").close();
+    document.getElementById("dialogEventCreater").showModal();
 });
 
 let btnCreateEventOk = document.getElementById("btnCreateEventOk");
 btnCreateEventOk.addEventListener('click', function() {
     if(addNewEvent()) {
-        document.getElementById("modalCreateEvent").close();
+        document.getElementById("dialogEventCreater").close();
     }
-});
-
-let btnChangeLabelCancel = document.getElementById("btnChangeLabelCancel");
-btnChangeLabelCancel.addEventListener('click', function() {
-    document.getElementById("modalLabelEditor").close();
 });
 
 let btnChangeLabelOk = document.getElementById("btnChangeLabelOk");
 btnChangeLabelOk.addEventListener('click', function() {
     if(changeLocStor()) {
         
-        document.getElementById("modalLabelEditor").close();
+        document.getElementById("dialogLabelEditor").close();
         loadData(LOC_STOR);
     }
 });
@@ -82,33 +63,33 @@ clearLocStor.addEventListener('click', function() {
     clearLoc();
 });
 
-let legendContinue = document.getElementById("legendContinue");
+let foldLabelsWrapper = document.getElementById("foldLabelsWrapper");
 let legend = document.getElementById("legend");
-let legendTogglerClick = document.getElementById("legendTogglerClick");
-legendContinue.addEventListener('click', function() {
-    let legendMain = document.getElementById("legendMain");
-    let btnLegendImg = document.getElementById("btnLegendImg");
-    if (legendMain.style.height == "fit-content") {
-        legendMain.style.height = "2rem";
+let showTogglerWrapper = document.getElementById("showTogglerWrapper");
+foldLabelsWrapper.addEventListener('click', function() {
+    let labels = document.getElementById("labels");
+    let foldSVG = document.getElementById("foldSVG");
+    if (labels.style.height == "fit-content") {
+        labels.style.height = "2rem";
         legend.style.height = "2rem";
-        btnLegendImg.href.baseVal = "./dots.svg";
-        legendContinue.style.justifyContent = 'center';
-        legendTogglerClick.style.justifyContent = 'center';
+        foldSVG.href.baseVal = "./dots.svg";
+        foldLabelsWrapper.style.justifyContent = 'center';
+        showTogglerWrapper.style.justifyContent = 'center';
     } else {
-        legendMain.style.height = "fit-content";
+        labels.style.height = "fit-content";
         legend.style.height = "fit-content";
-        btnLegendImg.href.baseVal = "./cross45.svg";
-        legendContinue.style.justifyContent = 'end';
-        legendTogglerClick.style.justifyContent = 'end';
+        foldSVG.href.baseVal = "./cross45.svg";
+        foldLabelsWrapper.style.justifyContent = 'end';
+        showTogglerWrapper.style.justifyContent = 'end';
     }
 });
 
-let btnLegend = document.getElementById("btnLegend");
-btnLegend.addEventListener('mouseover', function() {
-    btnLegend.style.background = 'rgba(255, 255, 255, 1)';
+let foldLabels = document.getElementById("foldLabels");
+foldLabels.addEventListener('mouseover', function() {
+    foldLabels.style.background = 'rgba(255, 255, 255, 1)';
 });
-btnLegend.addEventListener('mouseout', function() {
-    btnLegend.style.background = 'rgba(0, 0, 0, 0)';
+foldLabels.addEventListener('mouseout', function() {
+    foldLabels.style.background = 'rgba(0, 0, 0, 0)';
 });
 
 openEventAdder.addEventListener('mouseover', function() {
@@ -125,27 +106,20 @@ togglerCloseBeforeBtn.addEventListener('click', function() {
     legend.style.display = 'flex';
 });
 
-legendTogglerClick.addEventListener('click', function() {
-    let btnToggler = document.getElementById("btnToggler");
+showTogglerWrapper.addEventListener('click', function() {
+    let showToggler = document.getElementById("showToggler");
     let toggler = document.getElementById("toggler");
     let legend = document.getElementById("legend");
         toggler.style.display = 'flex';
         legend.style.display = 'none';
 });
 
-let btnToggler = document.getElementById("btnToggler");
-btnToggler.addEventListener('mouseover', function() {
-    btnToggler.style.background = 'rgba(255, 255, 255, 1)';
+let showToggler = document.getElementById("showToggler");
+showToggler.addEventListener('mouseover', function() {
+    showToggler.style.background = 'rgba(255, 255, 255, 1)';
 });
-btnToggler.addEventListener('mouseout', function() {
-    btnToggler.style.background = 'rgba(0, 0, 0, 0)';
-});
-
-let btnCloseStat = document.getElementById("btnCloseStat");
-btnCloseStat.addEventListener('click', function() {
-    let modalStat = document.getElementById("modalStat");
-    modalStat.style.height = 'fit-content';
-    document.getElementById("modalStat").close();
+showToggler.addEventListener('mouseout', function() {
+    showToggler.style.background = 'rgba(0, 0, 0, 0)';
 });
 
 let importJsonInput = document.getElementById('importJsonInput');
@@ -225,7 +199,7 @@ function loadData(inpData) {
     optionEv.textContent = 'Выберите событие';
     inpEv.append(optionEv);
 
-    let legend = document.getElementById("legendMain");
+    let legend = document.getElementById("labels");
     let eventColors = {};
     legend.innerHTML = '';
     for (let s of mapEvents.keys()) {
@@ -259,12 +233,12 @@ function loadDayData(data, day) {
 function openLabelEditor(label) {
     let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
 
-    let modalLabelEditor = document.getElementById("modalLabelEditor");
+    let dialogLabelEditor = document.getElementById("dialogLabelEditor");
     let nameLabel = document.getElementsByClassName("nameLabel")[0];
     nameLabel.id = label+'_label';
     document.getElementById("inputNewLabel").value = allEvents[label].name;
     document.getElementById("inputNewColor").value = allEvents[label].color;
-    modalLabelEditor.showModal();
+    dialogLabelEditor.showModal();
 }
 
 function changeLocStor() {
@@ -288,13 +262,12 @@ function changeLocStor() {
 
 function openDayEditor(day) {
     let barsOfDay = document.getElementById("barsOfDay");
-    let modalDayEditor = document.getElementById("modalDayEditor");
-    // let cancelDayEditor = document.getElementById("cancelDayEditor");
+    let dialogDayEditor = document.getElementById("dialogDayEditor");
     let headDay = document.getElementById("headDay");
     let clDayA = document.getElementById("clDayA");
 
 
-    modalDayEditor.showModal();
+    dialogDayEditor.showModal();
     barsOfDay.innerHTML = '';
 
     let eventsOfDay = loadDayData(LOC_STOR, day);
@@ -340,15 +313,6 @@ function openDayEditor(day) {
     clDayA.addEventListener('click', function() {
         removeItemFromLocStor(day);
     });
-
-    // cancelDayEditor.addEventListener('click', function() {
-    //     closeDayEditor();
-    // });
-}
-
-function closeDayEditor() {
-    let modalDayEditor = document.getElementById("modalDayEditor");
-    modalDayEditor.close();
 }
 
 function removeEvent(day, ev) {
@@ -382,7 +346,7 @@ function clearLoc() {
 
 function removeItemFromLocStor(day) {
     localStorage.removeItem(day);
-    document.getElementById("modalDayEditor").close();
+    document.getElementById("dialogDayEditor").close();
     loadData(LOC_STOR);
 }
 
@@ -505,9 +469,11 @@ function saveToLocStor() {
 }
 
 function openStat() {
-    let modalStat = document.getElementById("modalStat");
-    modalStat.style.height = 'fit-content';
-    modalStat.showModal();
+    let dialogStat = document.getElementById("dialogStat");
+    dialogStat.style.height = 'fit-content';
+    let divWithScroll = document.getElementById("divWithScroll");
+    divWithScroll.style.height = '0vh';
+    dialogStat.showModal();
 
     let progressBarStat = document.getElementById("progressBarStat");
     let legend = document.getElementById("legendStat");
@@ -525,8 +491,6 @@ function openStat() {
         let inpDateFrom = inputDateFrom.value;
         let inpDateTo = inputDateTo.value;
 
-
-        let divWithScroll = document.getElementById("divWithScroll");
         divWithScroll.style.height = '50vh';
 
         loadStatData(LOC_STOR, inpDateFrom, inpDateTo);
@@ -726,4 +690,3 @@ function themeToggler() {
         }
     }
 }
-

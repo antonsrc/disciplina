@@ -11,82 +11,59 @@
         <div id='main' class="mainDay">
             <div id="header">disciplina v.0.5.12</div>
             <div id="progressBarLines"></div>
-
-            <dialog id="modalDayEditor">
-                <div id="modalDayEditorGrid">
-                    <svg class="closeDialog" id="cancelDayEditor" viewBox="0 0 28 28" width="100%" height="100%">       
+            <dialog id="dialogDayEditor">
+                <div id="dialogDayEditorGrid">
+                    <svg class="closeDialog" id="closeDayEditor" viewBox="0 0 28 28" width="100%" height="100%">       
                         <image href="./cross45.svg" />
                     </svg>
                     <div id="headDay"></div>
-
                     <div id="barsOfDay"></div>
-
                     <div id="clDay">
                         <a id="clDayA" href="#">Удалить все события дня</a>
                     </div>
                 </div>
             </dialog>
-
-            <dialog id="modalLabelEditor">
-                <div id="modalLabelEditorGrid">
+            <dialog id="dialogLabelEditor">
+                <div id="dialogLabelEditorGrid">
                     <div class="nameLabel">Изменить событие</div>
-                    <div id="btnChangeLabelCancel">
-                        <svg viewBox="0 0 28 28" width="100%" height="100%">       
-                            <image href="./cross45.svg" />
-                        </svg>
-                    </div>
-
+                    <svg class="closeDialog" id="closeLabelEditor" viewBox="0 0 28 28" width="100%" height="100%">       
+                        <image href="./cross45.svg" />
+                    </svg>
                     <label for="inputNewLabel" id="inputNewLabelL">Название: </label>
                     <input type="text" name="inputNewLabel" id="inputNewLabel">
-
                     <label for="inputNewColor" id="inputNewColorL">Цвет: </label>
                     <input type="color" id="inputNewColor" name="inputNewColor" value="#ff0000">
-
                     <div id="btnChangeLabelOk">Изменить</div>
-
                 </div>
             </dialog>
-
-            <dialog id="modalStat">
-                <div id="modalStatGrid">
+            <dialog id="dialogStat">
+                <div id="dialogStatGrid">
                     <div id="headStat">Статистика</div>
-                    <div id="btnCloseStat">
-                        <svg viewBox="0 0 28 28" width="100%" height="100%">       
-                            <image href="./cross45.svg" />
-                        </svg>
-                    </div>
-
+                    <svg class="closeDialog" id="closeStat" viewBox="0 0 28 28" width="100%" height="100%">       
+                        <image href="./cross45.svg" />
+                    </svg>
                     <div id="inpFrom">
                         <label for="inputDateFrom">От:</label>
                         <br>
                         <input type="date" id="inputDateFrom">
                     </div>
-
                     <div id="inpTo">
                         <label for="inputDateTo">До:</label>
                         <br>
                         <input type="date" id="inputDateTo">
                     </div>
-
                     <div id="btnShowDateRange">Показать</div>
-
                     <div id="divWithScroll">
                         <div id="legendStat"></div>
                         <div id="progressBarStat"></div>
                     </div>
-
-
                 </div>
             </dialog>
-
-
             <dialog id="dialogEventAdder">
-                <div id="modalAddEventGrid">
-                    <!-- <div id="btnCancel"> -->
-                        <svg class="closeDialog" id="btnCancel" viewBox="0 0 28 28" width="100%" height="100%">       
-                            <image href="./cross45.svg" />
-                        </svg>
-                    <!-- </div> -->
+                <div id="dialogEventAdderGrid">
+                    <svg class="closeDialog" id="closeEventAdder" viewBox="0 0 28 28" width="100%" height="100%">       
+                        <image href="./cross45.svg" />
+                    </svg>
                     <div id="headEvent">Добавьте событие</div>
                     <label id="inputDateL" for="inputDate">Дата: </label>
                     <label id="inputEventL" for="inputEvent">Событие: </label>
@@ -100,19 +77,17 @@
                     </div>
                     <input type="time" id="inputTime" name="inputTime" value="00:00">
                     <div id="addEvent">Добавить</div>
-                    <dialog id="modalCreateEvent">
-                        <div id="modalCreateEventGrid">
+                    <dialog id="dialogEventCreater">
+                        <div id="dialogEventCreaterGrid">
                             <div id="headEventNew">Новое событие</div>
                             <label for="inputNewEvent" id="inputNewEventL">Название: </label>
                             <input type="text" name="inputNewEvent" id="inputNewEvent">
                             <label for="inputColor" id="inputColorL">Цвет: </label>
                             <input type="color" id="inputColor" name="inputColor" value="#ff0000">
                             <div id="btnCreateEventOk">Добавить</div>
-                            <div id="btnCreateEventCancel">
-                                <svg viewBox="0 0 28 28" width="100%" height="100%">       
-                                    <image href="./cross45.svg" />
-                                </svg>
-                            </div>
+                            <svg class="closeDialog" id="closeEventCreater" viewBox="0 0 28 28" width="100%" height="100%">       
+                                <image href="./cross45.svg" />
+                            </svg>
                         </div>
                     </dialog>
                 </div>
@@ -155,21 +130,16 @@
                 </svg>
             </div>
             <div id="legend">
-                <div id="legendMain"></div>
-                <div id="legendContinue">
-                    <div id="btnLegend">
-                        <svg viewBox="0 0 28 28" width="100%" height="100%">       
-                            <image id="btnLegendImg" href="./dots.svg" />
-                        </svg>
-                    </div>
-
+                <div id="labels"></div>
+                <div id="foldLabelsWrapper">
+                    <svg id="foldLabels" viewBox="0 0 28 28" width="100%" height="100%">       
+                        <image id="foldSVG" href="./dots.svg" />
+                    </svg>
                 </div>
-                <div id="legendTogglerClick">
-                    <div id="btnToggler">
-                        <svg viewBox="0 0 28 28" width="100%" height="100%">       
-                            <image href="./menu.svg" />
-                        </svg>
-                    </div>
+                <div id="showTogglerWrapper">
+                    <svg id="showToggler" viewBox="0 0 28 28" width="100%" height="100%">       
+                        <image href="./menu.svg" />
+                    </svg>
                 </div>
             </div>
         </div>

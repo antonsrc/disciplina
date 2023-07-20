@@ -30,6 +30,49 @@ a {
     text-decoration: none;
 }
 
+.closeDialog {
+    justify-self: end;
+    align-self: self-start;
+    width: 1rem;
+    height: 1rem;
+    background-color: rgb(55, 179, 42);
+    padding: .5rem;
+    cursor: pointer;
+    z-index: 50;
+}
+
+.closeDialog:focus, .closeDialog:hover {
+    background-color: rgb(148, 254, 144);
+}
+
+#closeEventAdder {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#closeDayEditor {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+#closeLabelEditor {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#closeStat {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#closeEventCreater {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+
+
+
 #container {
     display: flex;
     flex-direction: column;
@@ -111,7 +154,7 @@ a {
     box-shadow: 0 0 20px 5px rgb(255, 255, 255);
 }
 
-#legendTogglerClick {
+#showTogglerWrapper {
     order: 2;
     cursor: pointer;
     display: flex;
@@ -119,7 +162,7 @@ a {
     justify-content: center;
 }
 
-#legendContinue {
+#foldLabelsWrapper {
     order: 1;
     cursor: pointer;
     display: flex;
@@ -127,13 +170,13 @@ a {
     justify-content: center;
 }
 
-#btnLegend {
+#foldLabels {
     height: 1rem;
     padding: 0.5rem 1rem;
     width: 1rem;
 }
 
-#btnToggler {
+#showToggler {
     height: 1rem;
     width: 1rem;
     padding: 0.5rem 1rem;
@@ -163,7 +206,7 @@ a {
     width: 1rem;
 }
 
-#modalCreateEventGrid {
+#dialogEventCreaterGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 
@@ -189,22 +232,6 @@ a {
     grid-row: 2;
     align-self: self-end;
     justify-self: end;
-}
-
-#btnCreateEventCancel {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
-    align-self: self-start;
-    width: 1rem;
-    height: 1rem;
-    background-color: rgb(124, 233, 157);
-    padding: .5rem;
-    cursor: pointer;
-}
-
-#btnCreateEventCancel:focus, #btnCreateEventCancel:hover {
-    background-color: rgb(50, 233, 120);
 }
 
 #inputNewEvent {
@@ -252,7 +279,7 @@ a {
     background-color: rgb(50, 233, 120);
 }
 
-#modalAddEventGrid {
+#dialogEventAdderGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     justify-items: center;
@@ -271,37 +298,6 @@ a {
     font-size: 1rem;
     height: 1.5rem;
 }
-
-.closeDialog {
-    justify-self: end;
-    align-self: self-start;
-    width: 1rem;
-    height: 1rem;
-    background-color: rgb(55, 179, 42);
-    padding: .5rem;
-    cursor: pointer;
-    z-index: 50;
-}
-
-.closeDialog:focus, .closeDialog:hover {
-    background-color: rgb(148, 254, 144);
-}
-
-#btnCancel {
-    grid-column: 2;
-    grid-row: 1;
-    
-}
-
-#cancelDayEditor {
-    grid-column: 3;
-    grid-row: 1;
-}
-
-
-
-
-
 
 #inputDateL {
     grid-column: 1;
@@ -381,7 +377,7 @@ a {
     background-color: rgb(50, 233, 120);
 }
 
-#modalDayEditorGrid {
+#dialogDayEditorGrid {
     text-align: left;
 
     display: grid;
@@ -392,8 +388,6 @@ a {
     row-gap: 0.5rem;
     padding-bottom: 0.5rem;
 }
-
-
 
 #headDay {
     grid-column: 1/4;
@@ -441,7 +435,7 @@ a {
     background-color: rgb(255, 0, 0);
 }
 
-#modalLabelEditorGrid {
+#dialogLabelEditorGrid {
     text-align: left;
 
     display: grid;
@@ -451,23 +445,6 @@ a {
     column-gap: 0.5rem;
     row-gap: 1.3rem;
     padding-bottom: 1.3rem;
-}
-
-#btnChangeLabelCancel {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
-    align-self: self-start;
-    width: 1rem;
-    height: 1rem;
-    background-color: rgb(55, 179, 42);
-    padding: .5rem;
-    cursor: pointer;
-    z-index: 50;
-}
-
-#btnChangeLabelCancel:focus, #btnChangeLabelCancel:hover {
-    background-color: rgb(148, 254, 144);
 }
 
 .nameLabel {
@@ -532,8 +509,7 @@ a {
     background-color: rgb(50, 233, 120);
 }
 
-
-#modalStatGrid {
+#dialogStatGrid {
     text-align: left;
 
     display: grid;
@@ -543,23 +519,6 @@ a {
     column-gap: 1rem;
     row-gap: 1.3rem;
     padding-bottom: 1rem;
-}
-
-#btnCloseStat {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
-    align-self: self-start;
-    width: 1rem;
-    height: 1rem;
-    background-color: rgb(55, 179, 42);
-    padding: .5rem;
-    cursor: pointer;
-    z-index: 50;
-}
-
-#btnCloseStat:focus, #btnCloseStat:hover {
-    background-color: rgb(148, 254, 144);
 }
 
 #headStat {
@@ -648,7 +607,7 @@ a {
     align-items: stretch;
 }
 
-#legendMain {
+#labels {
     display: flex;
     width: 70%;
     flex-wrap: wrap;
