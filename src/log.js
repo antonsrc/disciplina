@@ -63,6 +63,9 @@ clearLocStor.addEventListener('click', () => {
 });
 
 
+
+
+
 foldLabelsWrapper.addEventListener('click', function() {
     if (labels.style.height == "fit-content") {
         labels.style.height = "2rem";

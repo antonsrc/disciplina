@@ -687,12 +687,6 @@ a {
     transition: background-color 0.1s linear;
 }
 
-a:-webkit-any-link {
-    /* color: -webkit-link; */
-    cursor: pointer;
-    /* text-decoration: underline; */
-}
-
 #clearLocStor a:hover {
     background-color: rgb(255, 0, 0);
     transition: background-color 0.1s linear;
