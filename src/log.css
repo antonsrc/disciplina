@@ -257,7 +257,7 @@ a {
     justify-self: start;
 }
 
-#btnCreateEventOk {
+#addNewEvent {
     grid-column: 1/3;
     grid-row: 4;
     justify-self: center;
@@ -275,7 +275,7 @@ a {
     flex-direction: column;
 }
 
-#btnCreateEventOk:focus, #btnCreateEventOk:hover {
+#addNewEvent:focus, #addNewEvent:hover {
     background-color: rgb(50, 233, 120);
 }
 
@@ -359,7 +359,7 @@ a {
     background-color: rgb(50, 233, 120);
 }
 
-#btnCreateEvent {
+#openNewEventCreater {
     background-color:rgb(124, 233, 157);
     color: #000000;
     height: 1.3rem;
@@ -373,7 +373,7 @@ a {
     flex-direction: column;
 }
 
-#btnCreateEvent:focus, #btnCreateEvent:hover {
+#openNewEventCreater:focus, #openNewEventCreater:hover {
     background-color: rgb(50, 233, 120);
 }
 
@@ -487,7 +487,7 @@ a {
     justify-self: start;
 }
 
-#btnChangeLabelOk {
+#changeLabel {
     grid-column: 1/3;
     grid-row: 4;
     justify-self: center;
@@ -505,7 +505,7 @@ a {
     flex-direction: column;
 }
 
-#btnChangeLabelOk:focus, #btnChangeLabelOk:hover {
+#changeLabel:focus, #changeLabel:hover {
     background-color: rgb(50, 233, 120);
 }
 
@@ -651,13 +651,6 @@ a {
     order: 2;
 }
 
-#clLocStor {
-    order: 3;
-    background-color: rgb(240, 217, 11);
-    font-size: 0.8rem;
-    padding: 0.7rem 0.3rem 0.3rem 0.3rem;
-}
-
 #authorContacts {
     order: 4;
     background-color: rgb(240, 217, 11);
@@ -684,7 +677,18 @@ a {
     font-size: 1rem;
 }
 
-#clearLocStor:focus, #clearLocStor:hover {
+/* #clearLocStor:focus, #clearLocStor:hover {
+    background-color: rgb(255, 0, 0);
+} */
+
+#clLocStor {
+    order: 3;
+    background-color: rgb(240, 217, 11);
+    font-size: 0.8rem;
+    padding: 0.7rem 0.3rem 0.3rem 0.3rem;
+}
+
+#clearLocStor:hover {
     background-color: rgb(255, 0, 0);
 }
 

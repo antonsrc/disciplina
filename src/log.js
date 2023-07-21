@@ -8,8 +8,13 @@ window.addEventListener('load', () => {
 
 let openEventAdder = document.getElementById("openEventAdder");
 let dialogEventAdder = document.getElementById("dialogEventAdder");
+let dialogEventCreater = document.getElementById("dialogEventCreater");
+let dialogLabelEditor = document.getElementById("dialogLabelEditor");
 let inputDate = document.getElementById("inputDate");
 let addEvent = document.getElementById("addEvent");
+let addNewEvent = document.getElementById("addNewEvent");
+let openNewEventCreater = document.getElementById("openNewEventCreater");
+let changeLabel = document.getElementById("changeLabel");
 
 document.querySelectorAll('.closeDialog').forEach(item => {
     item.addEventListener('click', e => {
@@ -32,28 +37,17 @@ addEvent.addEventListener('click', () => {
     }
 });
 
-
-
-
-
-
-let btnCreateEvent = document.getElementById("btnCreateEvent");
-btnCreateEvent.addEventListener('click', function() {
-    document.getElementById("dialogEventCreater").showModal();
+openNewEventCreater.addEventListener('click', () => {
+    dialogEventCreater.showModal();
 });
 
-let btnCreateEventOk = document.getElementById("btnCreateEventOk");
-btnCreateEventOk.addEventListener('click', function() {
-    if(addNewEvent()) {
-        document.getElementById("dialogEventCreater").close();
-    }
+addNewEvent.addEventListener('click', () => {
+    newEvent();
 });
 
-let btnChangeLabelOk = document.getElementById("btnChangeLabelOk");
-btnChangeLabelOk.addEventListener('click', function() {
-    if(changeLocStor()) {
-        
-        document.getElementById("dialogLabelEditor").close();
+changeLabel.addEventListener('click', () => {
+    if(changeLocStor()) { // здесь можно использовать промисы
+        dialogLabelEditor.close();
         loadData(LOC_STOR);
     }
 });
@@ -232,8 +226,6 @@ function loadDayData(data, day) {
 
 function openLabelEditor(label) {
     let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
-
-    let dialogLabelEditor = document.getElementById("dialogLabelEditor");
     let nameLabel = document.getElementsByClassName("nameLabel")[0];
     nameLabel.id = label+'_label';
     document.getElementById("inputNewLabel").value = allEvents[label].name;
@@ -367,13 +359,10 @@ function locStorToArr(inpData) {
     return arr;
 }
 
-function addNewEvent() {
+function newEvent() {
     let inpNewEvent = document.getElementById("inputNewEvent").value;
     
-    if (inpNewEvent == "") {
-        return false;
-    } else {
-        
+    if (inpNewEvent != "") {
         let inpColor = document.getElementById("inputColor").value;
         let inpEvent = document.getElementById("inputEvent");
         let allEvents = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
@@ -401,7 +390,7 @@ function addNewEvent() {
         }
         LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
 
-        return true;
+        dialogEventCreater.close();
     }
 }
 
