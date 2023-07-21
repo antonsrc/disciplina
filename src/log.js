@@ -15,6 +15,12 @@ let addEvent = document.getElementById("addEvent");
 let addNewEvent = document.getElementById("addNewEvent");
 let openNewEventCreater = document.getElementById("openNewEventCreater");
 let changeLabel = document.getElementById("changeLabel");
+let clearLocStor = document.getElementById("clearLocStor");
+let foldLabelsWrapper = document.getElementById("foldLabelsWrapper");
+let legend = document.getElementById("legend");
+let showTogglerWrapper = document.getElementById("showTogglerWrapper");
+let labels = document.getElementById("labels");
+let foldSVG = document.getElementById("foldSVG");
 
 document.querySelectorAll('.closeDialog').forEach(item => {
     item.addEventListener('click', e => {
@@ -52,17 +58,12 @@ changeLabel.addEventListener('click', () => {
     }
 });
 
-let clearLocStor = document.getElementById("clearLocStor");
-clearLocStor.addEventListener('click', function() {
+clearLocStor.addEventListener('click', () => {
     clearLoc();
 });
 
-let foldLabelsWrapper = document.getElementById("foldLabelsWrapper");
-let legend = document.getElementById("legend");
-let showTogglerWrapper = document.getElementById("showTogglerWrapper");
+
 foldLabelsWrapper.addEventListener('click', function() {
-    let labels = document.getElementById("labels");
-    let foldSVG = document.getElementById("foldSVG");
     if (labels.style.height == "fit-content") {
         labels.style.height = "2rem";
         legend.style.height = "2rem";

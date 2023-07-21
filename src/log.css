@@ -184,6 +184,7 @@ a {
 
 #toggler {
     text-align: center;
+    background-color: rgb(240, 217, 11);
     position: fixed;
     bottom: 0;
     right: 0;
@@ -653,7 +654,6 @@ a {
 
 #authorContacts {
     order: 4;
-    background-color: rgb(240, 217, 11);
     flex-grow: 1;
     align-items: center;
     justify-content: center;
@@ -677,19 +677,19 @@ a {
     font-size: 1rem;
 }
 
-/* #clearLocStor:focus, #clearLocStor:hover {
-    background-color: rgb(255, 0, 0);
-} */
-
-#clLocStor {
+#clearLocStor {
     order: 3;
-    background-color: rgb(240, 217, 11);
     font-size: 0.8rem;
     padding: 0.7rem 0.3rem 0.3rem 0.3rem;
 }
 
-#clearLocStor:hover {
+#clearLocStor a {
+    transition: background-color 0.1s linear;
+}
+
+#clearLocStor a:hover {
     background-color: rgb(255, 0, 0);
+    transition: background-color 0.1s linear;
 }
 
 #authorContacts a:focus, #authorContacts a:hover {
@@ -768,9 +768,7 @@ a {
     font-size: 1rem;
 }
 
-
 .togglerLink {
-    background-color: rgb(240, 217, 11);
     display: flex;
     flex-direction: column;
     font-size: 1.2rem;
