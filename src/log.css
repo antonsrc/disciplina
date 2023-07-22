@@ -159,7 +159,7 @@ a {
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: end;
 }
 
 #foldLabelsWrapper {
@@ -167,7 +167,7 @@ a {
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: end;
 }
 
 #foldLabels {

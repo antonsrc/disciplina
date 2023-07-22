@@ -21,6 +21,7 @@ let legend = document.getElementById("legend");
 let showTogglerWrapper = document.getElementById("showTogglerWrapper");
 let labels = document.getElementById("labels");
 let foldSVG = document.getElementById("foldSVG");
+let foldLabels = document.getElementById("foldLabels");
 
 document.querySelectorAll('.closeDialog').forEach(item => {
     item.addEventListener('click', e => {
@@ -62,27 +63,21 @@ clearLocStor.addEventListener('click', () => {
     clearLoc();
 });
 
-
-
-
-
 foldLabelsWrapper.addEventListener('click', function() {
-    if (labels.style.height == "fit-content") {
-        labels.style.height = "2rem";
-        legend.style.height = "2rem";
-        foldSVG.href.baseVal = "./dots.svg";
-        foldLabelsWrapper.style.justifyContent = 'center';
-        showTogglerWrapper.style.justifyContent = 'center';
-    } else {
+    if (foldSVG.href.baseVal == "./dots.svg") {
         labels.style.height = "fit-content";
         legend.style.height = "fit-content";
         foldSVG.href.baseVal = "./cross45.svg";
-        foldLabelsWrapper.style.justifyContent = 'end';
-        showTogglerWrapper.style.justifyContent = 'end';
+    } else {
+        labels.style.height = "2rem";
+        legend.style.height = "2rem";
+        foldSVG.href.baseVal = "./dots.svg";
     }
 });
 
-let foldLabels = document.getElementById("foldLabels");
+
+
+
 foldLabels.addEventListener('mouseover', function() {
     foldLabels.style.background = 'rgba(255, 255, 255, 1)';
 });
