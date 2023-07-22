@@ -21,7 +21,9 @@ let legend = document.getElementById("legend");
 let showTogglerWrapper = document.getElementById("showTogglerWrapper");
 let labels = document.getElementById("labels");
 let foldSVG = document.getElementById("foldSVG");
-let foldLabels = document.getElementById("foldLabels");
+let toggler = document.getElementById("toggler");
+let closeTogglerWrapper = document.getElementById("closeTogglerWrapper");
+let importJsonInput = document.getElementById('importJsonInput');
 
 document.querySelectorAll('.closeDialog').forEach(item => {
     item.addEventListener('click', e => {
@@ -75,50 +77,20 @@ foldLabelsWrapper.addEventListener('click', function() {
     }
 });
 
-
-
-
-foldLabels.addEventListener('mouseover', function() {
-    foldLabels.style.background = 'rgba(255, 255, 255, 1)';
-});
-foldLabels.addEventListener('mouseout', function() {
-    foldLabels.style.background = 'rgba(0, 0, 0, 0)';
-});
-
-openEventAdder.addEventListener('mouseover', function() {
-    openEventAdder.style.background = 'rgba(50, 233, 120)';
-});
-openEventAdder.addEventListener('mouseout', function() {
-    openEventAdder.style.background = 'rgba(124, 233, 157)';
-});
-
-let togglerCloseBeforeBtn = document.getElementById("togglerCloseBeforeBtn");
-togglerCloseBeforeBtn.addEventListener('click', function() {
-    toggler.style.display = 'none';
-    let legend = document.getElementById("legend");
-    legend.style.display = 'flex';
-});
-
 showTogglerWrapper.addEventListener('click', function() {
-    let showToggler = document.getElementById("showToggler");
-    let toggler = document.getElementById("toggler");
-    let legend = document.getElementById("legend");
-        toggler.style.display = 'flex';
-        legend.style.display = 'none';
+    toggler.style.display = 'flex';
 });
 
-let showToggler = document.getElementById("showToggler");
-showToggler.addEventListener('mouseover', function() {
-    showToggler.style.background = 'rgba(255, 255, 255, 1)';
-});
-showToggler.addEventListener('mouseout', function() {
-    showToggler.style.background = 'rgba(0, 0, 0, 0)';
+closeTogglerWrapper.addEventListener('click', function() {
+    toggler.style.display = 'none';
 });
 
-let importJsonInput = document.getElementById('importJsonInput');
-importJsonInput.addEventListener('change', (event) => {
-    readFile(event.target.files[0]);
+importJsonInput.addEventListener('change', (e) => {
+    readFile(e.target.files[0]);
 });
+
+
+
 
 function loadData(inpData) {
     let arrDates = locStorToArr(inpData);

@@ -149,9 +149,12 @@ a {
     background-color: rgb(124, 233, 157);    
     height: 1rem;
     width: 1rem;
-    /* transform: scale(1); */
     cursor: pointer;
     box-shadow: 0 0 20px 5px rgb(255, 255, 255);
+}
+
+#openEventAdder:hover {
+    background-color: rgb(50, 233, 120);   
 }
 
 #showTogglerWrapper {
@@ -174,12 +177,22 @@ a {
     height: 1rem;
     padding: 0.5rem 1rem;
     width: 1rem;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#foldLabels:hover {
+    background-color: rgba(255, 255, 255, 1);
 }
 
 #showToggler {
     height: 1rem;
     width: 1rem;
     padding: 0.5rem 1rem;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#showToggler:hover {
+    background-color: rgba(255, 255, 255, 1);
 }
 
 #toggler {
@@ -202,10 +215,6 @@ a {
     background: rgb(96, 140, 147);
     order: 3;
 } */
-
-#btnTogglerClose {
-    width: 1rem;
-}
 
 #dialogEventCreaterGrid {
     display: grid;
@@ -696,18 +705,23 @@ a {
     background-color: rgb(85, 195, 81);
 }
 
-#togglerCloseBeforeBtn:focus, #togglerCloseBeforeBtn:hover {
-    background-color: rgb(148, 254, 144);
-}
-
-#togglerCloseBeforeBtn {
-    background-color: rgb(55, 179, 42);
-    padding: 1rem;
+#closeTogglerWrapper {
     cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: center;
     order: 2;
+}
+
+#closeToggler {
+    height: 1rem;
+    width: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: rgb(55, 179, 42);
+}
+
+#closeToggler:hover {
+    background-color: rgb(148, 254, 144);
 }
 
 .DateStat {
@@ -789,5 +803,5 @@ a {
 }
 
 #importJsonInput + label {
-	cursor: pointer; /* "hand" cursor */
+	cursor: pointer;
 }
