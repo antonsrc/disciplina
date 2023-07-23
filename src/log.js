@@ -25,6 +25,8 @@ let foldSVG = document.getElementById("foldSVG");
 let toggler = document.getElementById("toggler");
 let closeTogglerWrapper = document.getElementById("closeTogglerWrapper");
 let importJson = document.getElementById('importJson');
+let inpNewLabelName = document.getElementById("inputNewLabel");
+let inpNewLabelColor = document.getElementById("inputNewColor");
 
 document.querySelectorAll('.closeDialog').forEach(item => {
     item.addEventListener('click', e => {
@@ -47,13 +49,11 @@ addEvent.addEventListener('click', () => {
     }
 });
 
-openNewEventCreater.addEventListener('click', () => {
-    dialogEventCreater.showModal();
-});
+openNewEventCreater.addEventListener('click', () => dialogEventCreater.showModal());
 
-addNewEvent.addEventListener('click', () => {
-    newEvent();
-});
+addNewEvent.addEventListener('click', () => newEvent());
+
+clearLocStor.addEventListener('click', () => clearLoc());
 
 changeLabel.addEventListener('click', () => {
     if(changeLocStor()) { // здесь можно использовать промисы
@@ -61,10 +61,6 @@ changeLabel.addEventListener('click', () => {
         loadData(LOC_STOR)
             .then(() => setEventListenersForLabels());
     }
-});
-
-clearLocStor.addEventListener('click', () => {
-    clearLoc();
 });
 
 foldLabelsWrapper.addEventListener('click', () => {
@@ -99,7 +95,8 @@ function clearLoc() {
     let answer = confirm('Удалить все данные?');
     if (answer) {
         LOC_STOR.clear();
-        loadData(LOC_STOR);  // может помимо load сделать и reloadData
+        loadData(LOC_STOR)
+            .then(() => setEventListenersForLabels());  // может помимо load сделать и reloadData
     }
 }
 
@@ -117,36 +114,27 @@ function setEventListenersForLabels() {
     });
 }
 
-
-
-
-
-
-
-
 function openLabelEditor(idLabel) {
         let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
-        let nameLabel = document.getElementsByClassName("nameLabel")[0];
-        nameLabel.id = idLabel+'_label';
+        dialogLabelEditor.dataset.id = idLabel;
         document.getElementById("inputNewLabel").value = allEvents[idLabel].name;
         document.getElementById("inputNewColor").value = allEvents[idLabel].color;
         dialogLabelEditor.showModal();
 }
 
+
+
 function changeLocStor() {
-    let inpNewLabel = document.getElementById("inputNewLabel").value;
-    let inpNewColor = document.getElementById("inputNewColor").value;
     let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
-    let changeId = document.getElementsByClassName("nameLabel")[0].id;
-    changeId = changeId.split('_')[0];
-    
-    if (inpNewLabel == "") {
+    let changedId = dialogLabelEditor.dataset.id;
+
+    if (inpNewLabelName == "") {
         return true;
     }
 
-    allEvents[changeId] = {
-        color: inpNewColor,
-        name: inpNewLabel,
+    allEvents[changedId] = {
+        color: inpNewLabelColor.value,
+        name: inpNewLabelName.value,
     }
     LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
     return true;
@@ -312,7 +300,8 @@ function removeEvent(day, ev) {
     delete eventsOfDay[ev];
     document.getElementById(encodeURI(ev) + "mod").remove();
     LOC_STOR.setItem(day, JSON.stringify(eventsOfDay));
-    loadData(LOC_STOR);
+    loadData(LOC_STOR)
+        .then(() => setEventListenersForLabels());
 }
 
 function validTimeValues(time) {
@@ -330,7 +319,8 @@ function validTimeValues(time) {
 function removeItemFromLocStor(day) {
     localStorage.removeItem(day);
     document.getElementById("dialogDayEditor").close();
-    loadData(LOC_STOR);
+    loadData(LOC_STOR)
+        .then(() => setEventListenersForLabels());
 }
 
 function locStorToArr(inpData) {
@@ -430,7 +420,8 @@ function saveToLocStor() {
         eventsOfDay["localDate"] = inpDateLocal;
         LOC_STOR.setItem(inpDate.value, JSON.stringify(eventsOfDay));
         hideElement("errorMessage");
-        loadData(LOC_STOR);
+        loadData(LOC_STOR)
+            .then(() => setEventListenersForLabels());
         return true;
     } else {
         let errorMessage = document.getElementById("errorMessage");
@@ -632,7 +623,8 @@ function readFile(input) {
                 }
             }
         }
-        loadData(LOC_STOR);
+        loadData(LOC_STOR)
+            .then(() => setEventListenersForLabels());
         document.getElementById('importJson').value = null;
     };
     reader.onerror = function() {
