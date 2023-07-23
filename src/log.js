@@ -3,7 +3,8 @@
 const LOC_STOR = window.localStorage;
 
 window.addEventListener('load', () => {
-    loadData(LOC_STOR);
+    loadData(LOC_STOR)
+        .then(() => setEventListenersForLabels());
 });
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -23,7 +24,7 @@ let labels = document.getElementById("labels");
 let foldSVG = document.getElementById("foldSVG");
 let toggler = document.getElementById("toggler");
 let closeTogglerWrapper = document.getElementById("closeTogglerWrapper");
-let importJsonInput = document.getElementById('importJsonInput');
+let importJson = document.getElementById('importJson');
 
 document.querySelectorAll('.closeDialog').forEach(item => {
     item.addEventListener('click', e => {
@@ -57,7 +58,8 @@ addNewEvent.addEventListener('click', () => {
 changeLabel.addEventListener('click', () => {
     if(changeLocStor()) { // здесь можно использовать промисы
         dialogLabelEditor.close();
-        loadData(LOC_STOR);
+        loadData(LOC_STOR)
+            .then(() => setEventListenersForLabels());
     }
 });
 
@@ -65,7 +67,7 @@ clearLocStor.addEventListener('click', () => {
     clearLoc();
 });
 
-foldLabelsWrapper.addEventListener('click', function() {
+foldLabelsWrapper.addEventListener('click', () => {
     if (foldSVG.href.baseVal == "./dots.svg") {
         labels.style.height = "fit-content";
         legend.style.height = "fit-content";
@@ -77,131 +79,58 @@ foldLabelsWrapper.addEventListener('click', function() {
     }
 });
 
-showTogglerWrapper.addEventListener('click', function() {
+showTogglerWrapper.addEventListener('click', () => {
     toggler.style.display = 'flex';
 });
 
-closeTogglerWrapper.addEventListener('click', function() {
+closeTogglerWrapper.addEventListener('click', () => {
     toggler.style.display = 'none';
 });
 
-importJsonInput.addEventListener('change', (e) => {
+importJson.addEventListener('change', (e) => {
     readFile(e.target.files[0]);
 });
-
-
-
-
-function loadData(inpData) {
-    let arrDates = locStorToArr(inpData);
-    arrDates.sort().reverse();
-
-    let progressBarLines = document.getElementById("progressBarLines");
-    progressBarLines.innerHTML = '';
-    let mapEvents = new Map();
-    let allEvents = JSON.parse(inpData.getItem("allEvents"));
-    let tempBarWidth = 0;
-
-    for (let day of arrDates) {
-        let eventsOfDay = JSON.parse(inpData.getItem(day));
-
-        let dayDiv = document.createElement('div');
-        dayDiv.classList.add("Progress");
-        dayDiv.id = day;
-        progressBarLines.append(dayDiv);
-
-        let dayP = document.createElement('p');
-        dayP.classList.add("Date");
-        dayP.textContent = eventsOfDay["localDate"];
-        let weekDay = new Date(day).getDay();
-        if (weekDay == 0 || weekDay == 6) {
-            dayP.style.color = 'rgb(45, 170, 13)';
-        }
-
-        dayP.addEventListener('click', function() {
-            openDayEditor(day);
-        });
-        dayDiv.append(dayP);
-
-        let eventP = document.createElement('p');
-        eventP.classList.add("common2");
-        eventP.id = day + 'prog';
-        dayDiv.append(eventP);
-
-        let comTime = 0;
-
-        for (let ev in eventsOfDay) {
-            if (ev == "freeTime" || ev == "localDate") {
-                continue;
-            }
-            mapEvents.set(ev, allEvents[ev]);
-            let eventIdName = eventsOfDay["localDate"] + ev;
-
-            let eventSpan = document.createElement('span');
-            eventSpan.classList.add("common");
-            eventSpan.id = encodeURI(eventIdName);
-            eventSpan.style.backgroundColor = allEvents[ev].color;
-
-            let time = Number(eventsOfDay[ev]) * (100/1440);
-            eventSpan.style.width = time + "%";
-            eventP.append(eventSpan);
-            comTime += time;
-        }
-        
-        if (comTime >= tempBarWidth) {
-            tempBarWidth = comTime;
-        }
-    }
-
-    for (let i of document.getElementsByClassName("common")) {
-        i.style.width = parseFloat(i.style.width)*(100/tempBarWidth) + '%';
-    }
-
-    let inpEv = document.getElementById("inputEvent");
-    inpEv.innerHTML = '';   // чистка
-    let optionEv = document.createElement('option');
-    optionEv.value = '0';
-    optionEv.textContent = 'Выберите событие';
-    inpEv.append(optionEv);
-
-    let legend = document.getElementById("labels");
-    let eventColors = {};
-    legend.innerHTML = '';
-    for (let s of mapEvents.keys()) {
-
-        let optionEv = document.createElement('option');
-        optionEv.value = s;
-        optionEv.textContent = allEvents[s].name;
-        inpEv.append(optionEv);
-
-        let divEvLavel = document.createElement('div');
-        divEvLavel.classList.add("legendLabel");
-        divEvLavel.style.background = mapEvents.get(s).color;
-        divEvLavel.textContent = allEvents[s].name;
-        divEvLavel.id = 'legend_'+s;
-        legend.append(divEvLavel);
-        
-        divEvLavel.addEventListener('click', function() {
-            openLabelEditor(s);
-        });
-
-        eventColors[s] = mapEvents.get(s);
-    }
-
-    inpData.setItem("allEvents", JSON.stringify(eventColors));
-}
 
 function loadDayData(data, day) {
     return JSON.parse(data.getItem(day));
 }
 
-function openLabelEditor(label) {
-    let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
-    let nameLabel = document.getElementsByClassName("nameLabel")[0];
-    nameLabel.id = label+'_label';
-    document.getElementById("inputNewLabel").value = allEvents[label].name;
-    document.getElementById("inputNewColor").value = allEvents[label].color;
-    dialogLabelEditor.showModal();
+function clearLoc() {
+    let answer = confirm('Удалить все данные?');
+    if (answer) {
+        LOC_STOR.clear();
+        loadData(LOC_STOR);  // может помимо load сделать и reloadData
+    }
+}
+
+function hideElement(elemId) {
+    let elem = document.getElementById(elemId);
+    elem.style.display = "none";
+}
+
+function setEventListenersForLabels() {
+    document.querySelectorAll('.eventLabel').forEach(item => {
+        item.addEventListener('click', e => {
+            let idLabel = e.target.id.split('_')[1];
+            openLabelEditor(idLabel);
+        });
+    });
+}
+
+
+
+
+
+
+
+
+function openLabelEditor(idLabel) {
+        let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
+        let nameLabel = document.getElementsByClassName("nameLabel")[0];
+        nameLabel.id = idLabel+'_label';
+        document.getElementById("inputNewLabel").value = allEvents[idLabel].name;
+        document.getElementById("inputNewColor").value = allEvents[idLabel].color;
+        dialogLabelEditor.showModal();
 }
 
 function changeLocStor() {
@@ -221,6 +150,105 @@ function changeLocStor() {
     }
     LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
     return true;
+}
+
+function loadData(inpData) {
+    return new Promise(function(resolve, reject) {
+        let arrDates = locStorToArr(inpData);
+        arrDates.sort().reverse();
+    
+        let progressBarLines = document.getElementById("progressBarLines");
+        progressBarLines.innerHTML = '';
+        let mapEvents = new Map();
+        let allEvents = JSON.parse(inpData.getItem("allEvents"));
+        let tempBarWidth = 0;
+    
+        for (let day of arrDates) {
+            let eventsOfDay = JSON.parse(inpData.getItem(day));
+    
+            let dayDiv = document.createElement('div');
+            dayDiv.classList.add("Progress");
+            dayDiv.id = day;
+            progressBarLines.append(dayDiv);
+    
+            let dayP = document.createElement('p');
+            dayP.classList.add("Date");
+            dayP.textContent = eventsOfDay["localDate"];
+            let weekDay = new Date(day).getDay();
+            if (weekDay == 0 || weekDay == 6) {
+                dayP.style.color = 'rgb(45, 170, 13)';
+            }
+    
+            dayP.addEventListener('click', function() {
+                openDayEditor(day);
+            });
+            dayDiv.append(dayP);
+    
+            let eventP = document.createElement('p');
+            eventP.classList.add("common2");
+            eventP.id = day + 'prog';
+            dayDiv.append(eventP);
+    
+            let comTime = 0;
+    
+            for (let ev in eventsOfDay) {
+                if (ev == "freeTime" || ev == "localDate") {
+                    continue;
+                }
+                mapEvents.set(ev, allEvents[ev]);
+                let eventIdName = eventsOfDay["localDate"] + ev;
+    
+                let eventSpan = document.createElement('span');
+                eventSpan.classList.add("common");
+                eventSpan.id = encodeURI(eventIdName);
+                eventSpan.style.backgroundColor = allEvents[ev].color;
+    
+                let time = Number(eventsOfDay[ev]) * (100/1440);
+                eventSpan.style.width = time + "%";
+                eventP.append(eventSpan);
+                comTime += time;
+            }
+            
+            if (comTime >= tempBarWidth) {
+                tempBarWidth = comTime;
+            }
+        }
+    
+        for (let i of document.getElementsByClassName("common")) {
+            i.style.width = parseFloat(i.style.width)*(100/tempBarWidth) + '%';
+        }
+    
+        let inpEv = document.getElementById("inputEvent");
+        inpEv.innerHTML = '';   // чистка
+        let optionEv = document.createElement('option');
+        optionEv.value = '0';
+        optionEv.textContent = 'Выберите событие';
+        inpEv.append(optionEv);
+    
+        let legend = document.getElementById("labels");
+        let eventColors = {};
+        legend.innerHTML = '';
+        for (let s of mapEvents.keys()) {
+    
+            let optionEv = document.createElement('option');
+            optionEv.value = s;
+            optionEv.textContent = allEvents[s].name;
+            inpEv.append(optionEv);
+    
+            let divEvLavel = document.createElement('div');
+            divEvLavel.classList.add("eventLabel");
+            divEvLavel.style.background = mapEvents.get(s).color;
+            divEvLavel.textContent = allEvents[s].name;
+            divEvLavel.id = 'legend_'+s;
+            legend.append(divEvLavel);
+    
+            eventColors[s] = mapEvents.get(s);
+        }
+    
+        inpData.setItem("allEvents", JSON.stringify(eventColors));
+
+        resolve(0);
+    });
 }
 
 function openDayEditor(day) {
@@ -299,23 +327,10 @@ function validTimeValues(time) {
     return [hours, mins];
 }
 
-function clearLoc() {
-    let answer = confirm('Удалить все данные?');
-    if (answer) {
-        LOC_STOR.clear();
-        loadData(LOC_STOR);
-    }
-}
-
 function removeItemFromLocStor(day) {
     localStorage.removeItem(day);
     document.getElementById("dialogDayEditor").close();
     loadData(LOC_STOR);
-}
-
-function hideElement(elemId) {
-    let elem = document.getElementById(elemId);
-    elem.style.display = "none";
 }
 
 function locStorToArr(inpData) {
@@ -618,7 +633,7 @@ function readFile(input) {
             }
         }
         loadData(LOC_STOR);
-        document.getElementById('importJsonInput').value = null;
+        document.getElementById('importJson').value = null;
     };
     reader.onerror = function() {
         console.log(reader.error);

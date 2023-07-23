@@ -600,7 +600,6 @@ a {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 5px;
-
 }
 
 #legendStat {
@@ -657,7 +656,7 @@ a {
     order: 1;
 }
 
-#importJson {
+#importJsonWrapper {
     order: 2;
 }
 
@@ -763,7 +762,7 @@ a {
     background-color: rgb(230, 230, 230);
 }
 
-.legendLabel {
+.eventLabel {
     cursor: pointer;
     padding: 4px 10px;
     margin: 1px;
@@ -771,7 +770,7 @@ a {
     font-size: 1rem;
 }
 
-.legendLabel:focus, .legendLabel:hover{
+.eventLabel:focus, .eventLabel:hover{
     color: white;
 }
 
@@ -793,7 +792,7 @@ a {
     background-color: rgb(85, 195, 81);
 }
 
-#importJsonInput {
+#importJson {
 	width: 0.1px;
 	height: 0.1px;
 	opacity: 0;
@@ -802,6 +801,6 @@ a {
 	z-index: -1;
 }
 
-#importJsonInput + label {
+#importJson + label {
 	cursor: pointer;
 }
