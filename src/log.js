@@ -2,21 +2,17 @@
 
 const LOC_STOR = window.localStorage;
 
-window.addEventListener('load', () => {
-    loadData(LOC_STOR)
-        .then(() => setEventListenersForLabels());
-});
-
 let openEventAdder = document.getElementById("openEventAdder");
 let dialogEventAdder = document.getElementById("dialogEventAdder");
 let dialogEventCreater = document.getElementById("dialogEventCreater");
 let dialogLabelEditor = document.getElementById("dialogLabelEditor");
+let dialogDayEditor = document.getElementById("dialogDayEditor");
 let inputDate = document.getElementById("inputDate");
 let addEvent = document.getElementById("addEvent");
 let addNewEvent = document.getElementById("addNewEvent");
 let openNewEventCreater = document.getElementById("openNewEventCreater");
 let changeLabel = document.getElementById("changeLabel");
-let clearLocStor = document.getElementById("clearLocStor");
+let clearLocStorage = document.getElementById("clearLocStorage");
 let foldLabelsWrapper = document.getElementById("foldLabelsWrapper");
 let legend = document.getElementById("legend");
 let showTogglerWrapper = document.getElementById("showTogglerWrapper");
@@ -27,6 +23,13 @@ let closeTogglerWrapper = document.getElementById("closeTogglerWrapper");
 let importJson = document.getElementById('importJson');
 let inpNewLabelName = document.getElementById("inputNewLabel");
 let inpNewLabelColor = document.getElementById("inputNewColor");
+let removeDay = document.getElementById("removeDay");
+let headDay = document.getElementById("headDay");
+
+window.addEventListener('load', () => {
+    loadData(LOC_STOR)
+        .then(() => setEventListenersForLabels());
+});
 
 document.querySelectorAll('.closeDialog').forEach(item => {
     item.addEventListener('click', e => {
@@ -53,14 +56,19 @@ openNewEventCreater.addEventListener('click', () => dialogEventCreater.showModal
 
 addNewEvent.addEventListener('click', () => newEvent());
 
-clearLocStor.addEventListener('click', () => clearLoc());
+clearLocStorage.addEventListener('click', () => clearLocStor());
+
+removeDay.addEventListener('click', () => {
+    removeDayFromLocStor(dialogDayEditor.dataset.day)
+        .then(() => loadData(LOC_STOR))
+        .then(() => setEventListenersForLabels());
+});
 
 changeLabel.addEventListener('click', () => {
-    if(changeLocStor()) { // здесь можно использовать промисы
-        dialogLabelEditor.close();
-        loadData(LOC_STOR)
-            .then(() => setEventListenersForLabels());
-    }
+    changeLabelInLocStor()
+        .then(() => dialogLabelEditor.close())
+        .then(() => loadData(LOC_STOR))
+        .then(() => setEventListenersForLabels());
 });
 
 foldLabelsWrapper.addEventListener('click', () => {
@@ -91,12 +99,12 @@ function loadDayData(data, day) {
     return JSON.parse(data.getItem(day));
 }
 
-function clearLoc() {
+function clearLocStor() {
     let answer = confirm('Удалить все данные?');
     if (answer) {
         LOC_STOR.clear();
         loadData(LOC_STOR)
-            .then(() => setEventListenersForLabels());  // может помимо load сделать и reloadData
+            .then(() => setEventListenersForLabels());
     }
 }
 
@@ -122,26 +130,42 @@ function openLabelEditor(idLabel) {
         dialogLabelEditor.showModal();
 }
 
-
-
-function changeLocStor() {
-    let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
-    let changedId = dialogLabelEditor.dataset.id;
-
-    if (inpNewLabelName == "") {
-        return true;
-    }
-
-    allEvents[changedId] = {
-        color: inpNewLabelColor.value,
-        name: inpNewLabelName.value,
-    }
-    LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
-    return true;
+function changeLabelInLocStor() {
+    return new Promise((resolve, reject) => {
+        let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
+        let eventId = dialogLabelEditor.dataset.id;
+        allEvents[eventId] = {
+            color: inpNewLabelColor.value,
+            name: inpNewLabelName.value,
+        }
+        LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
+        resolve(0);
+    });
 }
 
+function removeEventFromDay(day, e) {
+    return new Promise((resolve, reject) => {
+        let eventsOfDay = JSON.parse(LOC_STOR.getItem(day));
+        eventsOfDay["freeTime"] += eventsOfDay[e];
+        delete eventsOfDay[e];
+        document.getElementById(e + '_day').remove();
+        LOC_STOR.setItem(day, JSON.stringify(eventsOfDay));
+        resolve(0);
+    });
+}
+
+function removeDayFromLocStor(day) {
+    return new Promise((resolve, reject) => {
+        localStorage.removeItem(day);
+        dialogDayEditor.close();
+        resolve(0);
+    });
+}
+
+
+
 function loadData(inpData) {
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
         let arrDates = locStorToArr(inpData);
         arrDates.sort().reverse();
     
@@ -241,11 +265,6 @@ function loadData(inpData) {
 
 function openDayEditor(day) {
     let barsOfDay = document.getElementById("barsOfDay");
-    let dialogDayEditor = document.getElementById("dialogDayEditor");
-    let headDay = document.getElementById("headDay");
-    let clDayA = document.getElementById("clDayA");
-
-
     dialogDayEditor.showModal();
     barsOfDay.innerHTML = '';
 
@@ -253,6 +272,7 @@ function openDayEditor(day) {
     let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
 
     headDay.textContent = eventsOfDay["localDate"];
+    dialogDayEditor.dataset.day = day;
 
     for (let ev in eventsOfDay) {
         if (ev == "freeTime" || ev == "localDate") {
@@ -260,7 +280,7 @@ function openDayEditor(day) {
         }
         
         let pEv = document.createElement('p');
-        pEv.id = encodeURI(ev) + 'mod';
+        pEv.id = ev + '_day';
         pEv.style.marginBottom = '1rem';
         pEv.style.marginTop = '1rem';
         barsOfDay.append(pEv);
@@ -284,24 +304,12 @@ function openDayEditor(day) {
         aEv.textContent = '[удалить]';
         aEv.classList.add('clDayEvA');
         aEv.addEventListener('click', function() {
-            removeEvent(day, ev);
+            removeEventFromDay(day, ev)
+                .then(() => loadData(LOC_STOR))
+                .then(() => setEventListenersForLabels());
         });
         spanEv3.append(aEv);
     }
-    
-    clDayA.addEventListener('click', function() {
-        removeItemFromLocStor(day);
-    });
-}
-
-function removeEvent(day, ev) {
-    let eventsOfDay = JSON.parse(LOC_STOR.getItem(day));
-    eventsOfDay["freeTime"] += eventsOfDay[ev];
-    delete eventsOfDay[ev];
-    document.getElementById(encodeURI(ev) + "mod").remove();
-    LOC_STOR.setItem(day, JSON.stringify(eventsOfDay));
-    loadData(LOC_STOR)
-        .then(() => setEventListenersForLabels());
 }
 
 function validTimeValues(time) {
@@ -314,13 +322,6 @@ function validTimeValues(time) {
         mins = 0;
     }
     return [hours, mins];
-}
-
-function removeItemFromLocStor(day) {
-    localStorage.removeItem(day);
-    document.getElementById("dialogDayEditor").close();
-    loadData(LOC_STOR)
-        .then(() => setEventListenersForLabels());
 }
 
 function locStorToArr(inpData) {
@@ -348,13 +349,17 @@ function newEvent() {
             newId = 'id0';
         }
         else {
-            newId = 'id' + String(Object.keys(allEvents).length); //////////////
+            let idNum = Object.keys(allEvents).length;
+            while (allEvents.hasOwnProperty('id' + String(idNum))) {
+                console.log('dfd');
+                idNum++;
+            }
         }
         if(allEvents[inpNewEvent]) {
             inpEvent.textContent = inpNewEvent;
         } else {
             let optionEv = document.createElement('option');
-            optionEv.value = newId;  ////////////
+            optionEv.value = newId;
             optionEv.textContent = inpNewEvent;
             optionEv.selected = true;
             inpEvent.append(optionEv);
@@ -470,7 +475,6 @@ function loadStatData(inpData, dateFrom, dateTo) {
     let mapEvents = new Map();
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
     let progressBarStat = document.getElementById("progressBarStat");
-    // legendStat.style.paddingBottom = '1.5rem';
     for (let day of arrDatesRanged) {
         let eventsOfDay = JSON.parse(inpData.getItem(day));
 
