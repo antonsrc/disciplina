@@ -656,11 +656,11 @@ a {
     margin: 1px 0px;
 }
 
-#stat {
+#statWrapper {
     order: 0;
 }
 
-#exportJson {
+#exportJsonWrapper {
     order: 1;
 }
 

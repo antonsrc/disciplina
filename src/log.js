@@ -25,6 +25,8 @@ let inpNewLabelName = document.getElementById("inputNewLabel");
 let inpNewLabelColor = document.getElementById("inputNewColor");
 let removeDay = document.getElementById("removeDay");
 let headDay = document.getElementById("headDay");
+let exportJson = document.getElementById("exportJson");
+let stat = document.getElementById("stat");
 
 window.addEventListener('load', () => {
     loadData(LOC_STOR)
@@ -57,6 +59,10 @@ openNewEventCreater.addEventListener('click', () => dialogEventCreater.showModal
 addNewEvent.addEventListener('click', () => newEvent());
 
 clearLocStorage.addEventListener('click', () => clearLocStor());
+
+exportJson.addEventListener('click', () => exportToJsonFile(LOC_STOR));
+
+stat.addEventListener('click', () => openStat());
 
 removeDay.addEventListener('click', () => {
     removeDayFromLocStor(dialogDayEditor.dataset.day)
@@ -156,17 +162,63 @@ function removeEventFromDay(day, e) {
 
 function removeDayFromLocStor(day) {
     return new Promise((resolve, reject) => {
-        localStorage.removeItem(day);
+        LOC_STOR.removeItem(day);
         dialogDayEditor.close();
         resolve(0);
     });
 }
 
+function exportToJsonFile(inpData) {
+    let currentDate = new Date();
+    let day = currentDate.getDate();
+    let month = currentDate.getMonth() + 1;
+    let year = currentDate.getFullYear();
 
+    let filename = `log_backup_${year}_${month}_${day}.json`;
+    let jsonStr = JSON.stringify(inpData);
+
+    exportJson.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(jsonStr));
+    exportJson.setAttribute('download', filename);
+}
+
+function validTimeValues(time) {
+    let [hours, mins] = time;
+    if (!hours) hours = 0;
+    if (!mins) mins = 0;
+    return [+hours, +mins];
+}
+
+function getArrayOfKeys(inpData) {
+    let arr = Object.keys(inpData).filter(item => item != 'allEvents');
+    return arr;
+}
+
+
+
+
+
+function getErrorsArray(date, events, mins) {
+    let errorsArr = [];
+    if (date == "") {
+        errorsArr.push("Выберите дату");
+    }
+    if ( (events == "") || (events == "0") ) {
+        errorsArr.push("Выберите или введите событие");
+    } 
+    if (mins == 0) {
+        errorsArr.push("Введите время");
+    } else if (LOC_STOR.getItem(date)) {
+        let freeTime = JSON.parse(LOC_STOR.getItem(date))["freeTime"];
+        if (Number(freeTime) - mins < 0) {
+            errorsArr.push(`Свободного времени осталось ${freeTime} мин`);
+        }
+    }
+    return errorsArr;
+}
 
 function loadData(inpData) {
     return new Promise((resolve, reject) => {
-        let arrDates = locStorToArr(inpData);
+        let arrDates = getArrayOfKeys(inpData);
         arrDates.sort().reverse();
     
         let progressBarLines = document.getElementById("progressBarLines");
@@ -312,30 +364,6 @@ function openDayEditor(day) {
     }
 }
 
-function validTimeValues(time) {
-    let hours = time[0];
-    let mins = time[1];
-    if (!hours) {
-        hours = 0;
-    }
-    if (!mins) {
-        mins = 0;
-    }
-    return [hours, mins];
-}
-
-function locStorToArr(inpData) {
-    let arr = [];
-    for (let i = 0; i < inpData.length; i++) {
-        let locKey = localStorage.key(i);
-        if (locKey == "allEvents") {
-            continue;
-        }
-        arr.push(locKey);
-    }
-    return arr;
-}
-
 function newEvent() {
     let inpNewEvent = document.getElementById("inputNewEvent").value;
     
@@ -344,6 +372,7 @@ function newEvent() {
         let inpEvent = document.getElementById("inputEvent");
         let allEvents = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
 
+        
         let newId;
         if (Object.keys(allEvents).length == undefined) {
             newId = 'id0';
@@ -354,6 +383,7 @@ function newEvent() {
                 console.log('dfd');
                 idNum++;
             }
+            newId = 'id' + String(idNum);
         }
         if(allEvents[inpNewEvent]) {
             inpEvent.textContent = inpNewEvent;
@@ -375,34 +405,13 @@ function newEvent() {
     }
 }
 
-function getErrorsArray(date, events, mins) {
-    let errorsArr = [];
-    if (date == "") {
-        errorsArr.push("Выберите дату");
-    }
-    if ( (events == "") || (events == "0") ) {
-        errorsArr.push("Выберите или введите событие");
-    } 
-    if (mins == 0) {
-        errorsArr.push("Введите время");
-    } else if (LOC_STOR.getItem(date)) {
-        let freeTime = JSON.parse(LOC_STOR.getItem(date))["freeTime"];
-        if (Number(freeTime) - mins < 0) {
-            errorsArr.push(`Свободного времени осталось ${freeTime} мин`);
-        }
-    }
-    return errorsArr;
-}
-
 function saveToLocStor() { 
     let inputEvent = document.getElementById("inputEvent");
     let inpDate = document.getElementById("inputDate");
     let inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
-    let inpTime = document.getElementById("inputTime").value.split(":");
-    inpTime = validTimeValues(inpTime);
+    let inpTime = document.getElementById("inputTime");
 
-    let inpHours = Number(inpTime[0]);
-    let inpMins = Number(inpTime[1]);
+    let [inpHours, inpMins]  = validTimeValues(inpTime.value.split(":"));
     let totalMins = inpMins + inpHours * 60;
     let errorsArr = getErrorsArray(inpDate.value, inpEvent, totalMins);
 
@@ -469,7 +478,7 @@ function openStat() {
 }
 
 function loadStatData(inpData, dateFrom, dateTo) {
-    let arrDates = locStorToArr(inpData);
+    let arrDates = getArrayOfKeys(inpData);
     arrDates.sort();
     let arrDatesRanged = getRange(dateFrom, dateTo, arrDates);
     let mapEvents = new Map();
@@ -583,20 +592,6 @@ function getRange(fromDate, toDate, arr) {
         }
     }
     return arr.slice(indexStart,indexStop + 1);
-}
-
-function exportToJsonFile() {
-    let currentDate = new Date();
-    let day = currentDate.getDate();
-    let month = currentDate.getMonth() + 1;
-    let year = currentDate.getFullYear();
-
-    let filename = `log_backup_${year}_${month}_${day}.json`;
-    let jsonStr = JSON.stringify(LOC_STOR);
-
-    let exportJsonLink = document.getElementById('exportJsonLink');
-    exportJsonLink.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(jsonStr));
-    exportJsonLink.setAttribute('download', filename);
 }
 
 function readFile(input) {

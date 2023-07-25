@@ -9,7 +9,7 @@
 <body>
     <div id="container">
         <div id='main' class="mainDay">
-            <div id="header">disciplina v.0.6.3</div>
+            <div id="header">disciplina v.0.6.4</div>
             <div id="progressBarLines"></div>
             <dialog id="dialogDayEditor">
                 <div id="dialogDayEditorGrid">
@@ -94,11 +94,11 @@
                 <div id="errorMessage"></div>
             </dialog>
             <div id="toggler">
-                <div id="stat" class="togglerLink">
-                    <a href='#' onclick='openStat()'>Статистика</a>
+                <div id="statWrapper" class="togglerLink">
+                    <a id="stat" href="#">Статистика</a>
                 </div>
-                <div id="exportJson" class="togglerLink">
-                    <a id="exportJsonLink" href='#' onclick='exportToJsonFile()'>Экспортировать в JSON файл</a>
+                <div id="exportJsonWrapper" class="togglerLink">
+                    <a id="exportJson" href='#'>Экспортировать в JSON файл</a>
                 </div>
                 <div id="importJsonWrapper" class="togglerLink">
                     <input type="file" name="importJson" id="importJson" accept=".json">
