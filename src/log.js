@@ -197,14 +197,21 @@ function getArrayOfKeys(inpData) {
 
 
 
+
+
+
+
 function getErrorsArray(date, events, mins) {
     let errorsArr = [];
+
     if (date == "") {
         errorsArr.push("Выберите дату");
     }
+
     if ( (events == "") || (events == "0") ) {
         errorsArr.push("Выберите или введите событие");
     } 
+
     if (mins == 0) {
         errorsArr.push("Введите время");
     } else if (LOC_STOR.getItem(date)) {
@@ -213,7 +220,83 @@ function getErrorsArray(date, events, mins) {
             errorsArr.push(`Свободного времени осталось ${freeTime} мин`);
         }
     }
+
     return errorsArr;
+}
+
+function saveToLocStor() { 
+    let inpDate = document.getElementById("inputDate");
+
+    let inputEvent = document.getElementById("inputEvent");
+    let inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
+
+    let inpTime = document.getElementById("inputTime");
+    let [inpHours, inpMins]  = validTimeValues(inpTime.value.split(":"));
+    let totalMins = inpMins + inpHours * 60;
+
+
+    let errorsArr = getErrorsArray(inpDate.value, inpEvent, totalMins);
+
+
+
+    Promise.allSettled([
+        new Promise((resolve, reject) => {
+            if (inpDate.value == "") reject('inpDateReject');
+            else resolve(inpDate.value);
+        }), // 1
+        new Promise((resolve, reject) => {
+            if ( (inpEvent == "") || (inpEvent == "0") ) reject('inpEventReject');
+            else resolve(inpEvent);
+        }),
+        new Promise(resolve => setTimeout(() => resolve(3), 1000))  // 3
+      ])
+      .then(res => {
+        console.log(res);
+        // return new Promise((resolve, reject) => {
+        //     let checkErr = res.find(item => item.status == 'rejected')
+        //     if (checkErr) {
+        //         reject('fuck');
+        //     } else {
+        //         resolve(0);
+        //     }
+        // });
+      })
+      .then(res => console.log(res));
+
+
+
+
+    if (errorsArr.length == 0) {
+        let eventsOfDay;
+        let inpDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
+        if (LOC_STOR.getItem(inpDate.value)) {
+            eventsOfDay = JSON.parse(LOC_STOR.getItem(inpDate.value));
+            if (inpEvent in eventsOfDay) {
+                eventsOfDay[inpEvent] += totalMins;
+            } else {
+                eventsOfDay[inpEvent] = totalMins;
+            }
+            eventsOfDay["freeTime"] -= totalMins;
+        } else {
+            eventsOfDay = {};
+            eventsOfDay[inpEvent] = totalMins;
+            eventsOfDay["freeTime"] = 1440 - totalMins;
+        }
+        eventsOfDay["localDate"] = inpDateLocal;
+        LOC_STOR.setItem(inpDate.value, JSON.stringify(eventsOfDay));
+        hideElement("errorMessage");
+        loadData(LOC_STOR)
+            .then(() => setEventListenersForLabels());
+        return true;
+    } else {
+        let errorMessage = document.getElementById("errorMessage");
+        errorMessage.style.display = "block";
+        errorMessage.innerHTML = "";
+        for (let i = 0; i < errorsArr.length; i++) {
+            errorMessage.innerHTML += `${errorsArr[i]}<br>`;
+        }
+        return false;
+    } 
 }
 
 function loadData(inpData) {
@@ -403,49 +486,6 @@ function newEvent() {
 
         dialogEventCreater.close();
     }
-}
-
-function saveToLocStor() { 
-    let inputEvent = document.getElementById("inputEvent");
-    let inpDate = document.getElementById("inputDate");
-    let inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
-    let inpTime = document.getElementById("inputTime");
-
-    let [inpHours, inpMins]  = validTimeValues(inpTime.value.split(":"));
-    let totalMins = inpMins + inpHours * 60;
-    let errorsArr = getErrorsArray(inpDate.value, inpEvent, totalMins);
-
-    if (errorsArr.length == 0) {
-        let eventsOfDay;
-        let inpDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
-        if (LOC_STOR.getItem(inpDate.value)) {
-            eventsOfDay = JSON.parse(LOC_STOR.getItem(inpDate.value));
-            if (inpEvent in eventsOfDay) {
-                eventsOfDay[inpEvent] += totalMins;
-            } else {
-                eventsOfDay[inpEvent] = totalMins;
-            }
-            eventsOfDay["freeTime"] -= totalMins;
-        } else {
-            eventsOfDay = {};
-            eventsOfDay[inpEvent] = totalMins;
-            eventsOfDay["freeTime"] = 1440 - totalMins;
-        }
-        eventsOfDay["localDate"] = inpDateLocal;
-        LOC_STOR.setItem(inpDate.value, JSON.stringify(eventsOfDay));
-        hideElement("errorMessage");
-        loadData(LOC_STOR)
-            .then(() => setEventListenersForLabels());
-        return true;
-    } else {
-        let errorMessage = document.getElementById("errorMessage");
-        errorMessage.style.display = "block";
-        errorMessage.innerHTML = "";
-        for (let i = 0; i < errorsArr.length; i++) {
-            errorMessage.innerHTML += `${errorsArr[i]}<br>`;
-        }
-        return false;
-    } 
 }
 
 function openStat() {
