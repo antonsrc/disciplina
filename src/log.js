@@ -196,11 +196,6 @@ function getArrayOfKeys(inpData) {
 
 
 
-
-
-
-
-
 function getErrorsArray(date, events, mins) {
     let errorsArr = [];
 
@@ -234,23 +229,28 @@ function saveToLocStor() {
     let [inpHours, inpMins]  = validTimeValues(inpTime.value.split(":"));
     let totalMins = inpMins + inpHours * 60;
 
-
-    let errorsArr = getErrorsArray(inpDate.value, inpEvent, totalMins);
-
-
-
     Promise.allSettled([
         new Promise((resolve, reject) => {
             if (inpDate.value == "") reject('inpDateReject');
             else resolve(inpDate.value);
-        }), // 1
+        }),
         new Promise((resolve, reject) => {
             if ( (inpEvent == "") || (inpEvent == "0") ) reject('inpEventReject');
             else resolve(inpEvent);
         }),
-        new Promise(resolve => setTimeout(() => resolve(3), 1000))  // 3
-      ])
-      .then(res => {
+        new Promise((resolve, reject) => {
+            if (totalMins == 0) {
+                reject('totalMinsZero');
+            } else if (LOC_STOR.getItem(inpDate.value)) {
+                let freeTime = JSON.parse(LOC_STOR.getItem(inpDate.value))["freeTime"];
+                if (Number(freeTime) - totalMins < 0) {
+                    reject('totalMinsOverflow');
+                }
+            }
+            else resolve(totalMins);
+        })
+    ])
+    .then(res => {
         console.log(res);
         // return new Promise((resolve, reject) => {
         //     let checkErr = res.find(item => item.status == 'rejected')
@@ -260,11 +260,11 @@ function saveToLocStor() {
         //         resolve(0);
         //     }
         // });
-      })
-      .then(res => console.log(res));
+    })
+    .then(res => console.log(res));
 
 
-
+    let errorsArr = getErrorsArray(inpDate.value, inpEvent, totalMins);
 
     if (errorsArr.length == 0) {
         let eventsOfDay;
@@ -298,6 +298,10 @@ function saveToLocStor() {
         return false;
     } 
 }
+
+
+
+
 
 function loadData(inpData) {
     return new Promise((resolve, reject) => {
@@ -471,10 +475,7 @@ function newEvent() {
         if(allEvents[inpNewEvent]) {
             inpEvent.textContent = inpNewEvent;
         } else {
-            let optionEv = document.createElement('option');
-            optionEv.value = newId;
-            optionEv.textContent = inpNewEvent;
-            optionEv.selected = true;
+            let optionEv = new Option(inpNewEvent, newId, true, true);
             inpEvent.append(optionEv);
         }
 
