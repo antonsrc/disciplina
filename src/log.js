@@ -30,10 +30,12 @@ let inputDate = document.getElementById("inputDate");
 let inputEvent = document.getElementById("inputEvent");
 let inputTime = document.getElementById("inputTime");
 let errorMessage = document.getElementById("errorMessage");
+let progressLines = document.getElementById("progressLines");
 
 window.addEventListener('load', () => {
     loadData(LOC_STOR)
-        .then(() => setEventListenersForLabels());
+        .then(() => setEventListenersForLabels())
+        .then(() => setEventListenersForDays());
 });
 
 document.querySelectorAll('.closeDialog').forEach(item => {
@@ -64,7 +66,8 @@ addEvent.addEventListener('click', () => {
             } else {
                 saveToLocalSorage(res)
                     .then(() => loadData(LOC_STOR))
-                    .then(() => setEventListenersForLabels());
+                    .then(() => setEventListenersForLabels())
+                    .then(() => setEventListenersForDays());
                 hideElement("errorMessage");
                 dialogEventAdder.close();
             }
@@ -84,14 +87,16 @@ stat.addEventListener('click', () => openStat());
 removeDay.addEventListener('click', () => {
     removeDayFromLocStor(dialogDayEditor.dataset.day)
         .then(() => loadData(LOC_STOR))
-        .then(() => setEventListenersForLabels());
+        .then(() => setEventListenersForLabels())
+        .then(() => setEventListenersForDays());
 });
 
 changeLabel.addEventListener('click', () => {
     changeLabelInLocStor()
         .then(() => dialogLabelEditor.close())
         .then(() => loadData(LOC_STOR))
-        .then(() => setEventListenersForLabels());
+        .then(() => setEventListenersForLabels())
+        .then(() => setEventListenersForDays());
 });
 
 foldLabelsWrapper.addEventListener('click', () => {
@@ -127,7 +132,8 @@ function clearLocStor() {
     if (answer) {
         LOC_STOR.clear();
         loadData(LOC_STOR)
-            .then(() => setEventListenersForLabels());
+            .then(() => setEventListenersForLabels())
+            .then(() => setEventListenersForDays());
     }
 }
 
@@ -260,23 +266,22 @@ function checkTime(inpTime, inpDate) {
 function showErrors(arr) {
     errorMessage.style.display = "block";
     errorMessage.innerHTML = "";
+    arr = arr.filter(item => item.reason);
     for (let errorType of arr) {
-        if (errorType.hasOwnProperty('reason')) {
-            switch(errorType.reason) {
-                case 'inputDateReject':
-                    errorMessage.innerHTML += 'Выберите дату<br>';
-                    break;
-                case 'inputEventReject':
-                    errorMessage.innerHTML += 'Выберите или введите событие<br>';
-                    break;
-                case 'totalMinsZero':
-                    errorMessage.innerHTML += 'Введите время<br>';
-                    break;
-                case 'totalMinsOverflow':
-                    let freeTime = JSON.parse(LOC_STOR.getItem(arr[0].value))["freeTime"];
-                    errorMessage.innerHTML += `Свободного времени осталось ${freeTime} мин<br>`;
-                    break;
-            }
+        switch(errorType.reason) {
+            case 'inputDateReject':
+                errorMessage.innerHTML += 'Выберите дату<br>';
+                break;
+            case 'inputEventReject':
+                errorMessage.innerHTML += 'Выберите или введите событие<br>';
+                break;
+            case 'totalMinsZero':
+                errorMessage.innerHTML += 'Введите время<br>';
+                break;
+            case 'totalMinsOverflow':
+                let freeTime = JSON.parse(LOC_STOR.getItem(arr[0].value))["freeTime"];
+                errorMessage.innerHTML += `Свободного времени осталось ${freeTime} мин<br>`;
+                break;
         }
     }
 }
@@ -284,31 +289,42 @@ function showErrors(arr) {
 function saveToLocalSorage(arr) {
     return new Promise((resolve, reject) => {
         let eventsOfDay;
-        let [date, ev, minutes] = arr;
-        let inDate = date.value;
-        let inEvent = ev.value;
-        let totMins = minutes.value;
+        let [date, ev, minutes] = arr.map(item => item.value);
         let inputDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
-        if (LOC_STOR.getItem(inDate)) {
-            eventsOfDay = JSON.parse(LOC_STOR.getItem(inDate));
-            if (inEvent in eventsOfDay) {
-                eventsOfDay[inEvent] += totMins;
+        if (LOC_STOR.getItem(date)) {
+            eventsOfDay = JSON.parse(LOC_STOR.getItem(date));
+            if (ev in eventsOfDay) {
+                eventsOfDay[ev] += minutes;
             } else {
-                eventsOfDay[inEvent] = totMins;
+                eventsOfDay[ev] = minutes;
             }
-            eventsOfDay["freeTime"] -= totMins;
+            eventsOfDay["freeTime"] -= minutes;
         } else {
             eventsOfDay = {};
-            eventsOfDay[inEvent] = totMins;
-            eventsOfDay["freeTime"] = 1440 - totMins;
+            eventsOfDay[ev] = minutes;
+            eventsOfDay["freeTime"] = 1440 - minutes;
         }
         eventsOfDay["localDate"] = inputDateLocal;
-        LOC_STOR.setItem(inDate, JSON.stringify(eventsOfDay));
+        LOC_STOR.setItem(date, JSON.stringify(eventsOfDay));
         resolve(0);
     });
 }
 
+function changeTextColorIfWeekend(day, textDay) {
+    let weekDay = new Date(day).getDay();
+    if (weekDay == 0 || weekDay == 6) {
+        textDay.style.color = 'rgb(45, 170, 13)';
+    }
+}
 
+function setEventListenersForDays() {
+    document.querySelectorAll('.Date').forEach(item => {
+        item.addEventListener('click', e => {
+            let day = e.target.id.split('_')[1];
+            openDayEditor(day);
+        });
+    });
+}
 
 
 
@@ -316,9 +332,11 @@ function loadData(inpData) {
     return new Promise((resolve, reject) => {
         let arrDates = getArrayOfKeys(inpData);
         arrDates.sort().reverse();
-    
-        let progressBarLines = document.getElementById("progressBarLines");
-        progressBarLines.innerHTML = '';
+        
+
+
+
+        progressLines.innerHTML = '';
         let mapEvents = new Map();
         let allEvents = JSON.parse(inpData.getItem("allEvents"));
         let tempBarWidth = 0;
@@ -326,28 +344,23 @@ function loadData(inpData) {
         for (let day of arrDates) {
             let eventsOfDay = JSON.parse(inpData.getItem(day));
     
-            let dayDiv = document.createElement('div');
-            dayDiv.classList.add("Progress");
-            dayDiv.id = day;
-            progressBarLines.append(dayDiv);
+            let dayLine = document.createElement('div');
+            dayLine.classList.add("Progress");
+            progressLines.append(dayLine);
     
             let dayP = document.createElement('p');
             dayP.classList.add("Date");
+            dayP.id = 'date_' + day;
             dayP.textContent = eventsOfDay["localDate"];
-            let weekDay = new Date(day).getDay();
-            if (weekDay == 0 || weekDay == 6) {
-                dayP.style.color = 'rgb(45, 170, 13)';
-            }
+            changeTextColorIfWeekend(day, dayP);
+            dayLine.append(dayP);
     
-            dayP.addEventListener('click', function() {
-                openDayEditor(day);
-            });
-            dayDiv.append(dayP);
-    
+
+            
             let eventP = document.createElement('p');
             eventP.classList.add("common2");
             eventP.id = day + 'prog';
-            dayDiv.append(eventP);
+            dayLine.append(eventP);
     
             let comTime = 0;
     
@@ -389,7 +402,6 @@ function loadData(inpData) {
         let eventColors = {};
         legend.innerHTML = '';
         for (let s of mapEvents.keys()) {
-    
             let optionEv = document.createElement('option');
             optionEv.value = s;
             optionEv.textContent = allEvents[s].name;
@@ -410,6 +422,11 @@ function loadData(inpData) {
         resolve(0);
     });
 }
+
+
+
+
+
 
 function openDayEditor(day) {
     let barsOfDay = document.getElementById("barsOfDay");
@@ -454,7 +471,8 @@ function openDayEditor(day) {
         aEv.addEventListener('click', function() {
             removeEventFromDay(day, ev)
                 .then(() => loadData(LOC_STOR))
-                .then(() => setEventListenersForLabels());
+                .then(() => setEventListenersForLabels())
+                .then(() => setEventListenersForDays());
         });
         spanEv3.append(aEv);
     }
@@ -534,20 +552,20 @@ function loadStatData(inpData, dateFrom, dateTo) {
     for (let day of arrDatesRanged) {
         let eventsOfDay = JSON.parse(inpData.getItem(day));
 
-        let dayDiv = document.createElement('div');
-        dayDiv.classList.add("Progress");
-        dayDiv.id = day;
-        progressBarStat.append(dayDiv);
+        let dayLine = document.createElement('div');
+        dayLine.classList.add("Progress");
+        // dayLine.id = day;
+        progressBarStat.append(dayLine);
 
         let dayP = document.createElement('p');
         dayP.classList.add("DateStat");
         dayP.textContent = eventsOfDay["localDate"];
-        dayDiv.append(dayP);
+        dayLine.append(dayP);
 
         let eventP = document.createElement('p');
         eventP.classList.add("common2");
         eventP.id = day + 'prog';
-        dayDiv.append(eventP);
+        dayLine.append(eventP);
 
         for (let ev in eventsOfDay) {
             if (ev == "freeTime" || ev == "localDate") {
@@ -670,37 +688,11 @@ function readFile(input) {
             }
         }
         loadData(LOC_STOR)
-            .then(() => setEventListenersForLabels());
+            .then(() => setEventListenersForLabels())
+            .then(() => setEventListenersForDays());
         document.getElementById('importJson').value = null;
     };
     reader.onerror = function() {
         console.log(reader.error);
     };
 }
-
-function themeToggler() {
-    let main = document.getElementById('main');
-    let date = document.getElementsByClassName('Date');
-    let aText = document.querySelectorAll('.Date > a');
-    if (main.classList.contains('mainDay')) {
-        main.classList.add("mainNight");
-        main.classList.remove("mainDay");
-        for (let elem of date) {
-            elem.style.backgroundColor = "#444d68";
-        }
-        for (let elem of aText) {
-            elem.style.color = "white";
-        }
-    } else {
-        main.classList.add("mainDay");
-        main.classList.remove("mainNight");
-        document.getElementsByClassName('Date')[0].style.backgroundColor = "#d6ebc6";
-        for (let elem of date) {
-            elem.style.backgroundColor = "#d6ebc6";
-        }
-        for (let elem of aText) {
-            elem.style.color = "inherit";
-        }
-    }
-}
-

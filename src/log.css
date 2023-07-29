@@ -112,7 +112,7 @@ a {
     backdrop-filter: blur(10px);
 }
 
-#progressBarLines {
+#progressLines {
     width: 100%;
     padding-top: 1.5rem;
 }
@@ -210,11 +210,6 @@ a {
     font-size: 1rem;
     justify-content: flex-end;
 }
-
-/* #togglerTheme {
-    background: rgb(96, 140, 147);
-    order: 3;
-} */
 
 #dialogEventCreaterGrid {
     display: grid;
