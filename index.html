@@ -2,19 +2,19 @@
 <html lang="ru">
 <head>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" charset="UTF-8">
-    <link rel="stylesheet" href="./src/log.css">
-    <title>log</title>
-    <script src="./src/log.js" defer></script>
+    <link rel="stylesheet" href="./src/style.css">
+    <title>disciplina</title>
+    <script src="./src/main.js" defer></script>
 </head>
 <body>
     <div id="container">
         <div id='main' class="mainDay">
-            <div id="header">disciplina v.0.6.5</div>
+            <div id="header">disciplina v.0.6.7</div>
             <div id="progressLines"></div>
             <dialog id="dialogDayEditor">
                 <div id="dialogDayEditorGrid">
                     <svg class="closeDialog" id="closeDayEditor" viewBox="0 0 28 28" width="100%" height="100%">       
-                        <image href="./cross45.svg" />
+                        <image href="./data/cross45.svg" />
                     </svg>
                     <div id="headDay"></div>
                     <div id="barsOfDay"></div>
@@ -27,7 +27,7 @@
                 <div id="dialogLabelEditorGrid">
                     <div class="nameLabel">Изменить событие</div>
                     <svg class="closeDialog" id="closeLabelEditor" viewBox="0 0 28 28" width="100%" height="100%">       
-                        <image href="./cross45.svg" />
+                        <image href="./data/cross45.svg" />
                     </svg>
                     <label for="inputNewLabel" id="inputNewLabelL">Название: </label>
                     <input type="text" name="inputNewLabel" id="inputNewLabel">
@@ -40,7 +40,7 @@
                 <div id="dialogStatGrid">
                     <div id="headStat">Статистика</div>
                     <svg class="closeDialog" id="closeStat" viewBox="0 0 28 28" width="100%" height="100%">       
-                        <image href="./cross45.svg" />
+                        <image href="./data/cross45.svg" />
                     </svg>
                     <div id="inpFrom">
                         <label for="inputDateFrom">От:</label>
@@ -62,7 +62,7 @@
             <dialog id="dialogEventAdder">
                 <div id="dialogEventAdderGrid">
                     <svg class="closeDialog" id="closeEventAdder" viewBox="0 0 28 28" width="100%" height="100%">       
-                        <image href="./cross45.svg" />
+                        <image href="./data/cross45.svg" />
                     </svg>
                     <div id="headEvent">Добавьте событие</div>
                     <label id="inputDateL" for="inputDate">Дата: </label>
@@ -86,7 +86,7 @@
                             <input type="color" id="inputColor" name="inputColor" value="#ff0000">
                             <div id="addNewEvent">Добавить</div>
                             <svg class="closeDialog" id="closeEventCreater" viewBox="0 0 28 28" width="100%" height="100%">       
-                                <image href="./cross45.svg" />
+                                <image href="./data/cross45.svg" />
                             </svg>
                         </div>
                     </dialog>
@@ -114,7 +114,7 @@
                     <div id="togglerContact"><span>2023 | Anton Moshnyakov</span></div>
                     <div id="closeTogglerWrapper">
                         <svg id="closeToggler" viewBox="0 0 28 28" width="100%" height="100%">       
-                            <image href="./cross45.svg" />
+                            <image href="./data/cross45.svg" />
                         </svg>
                     </div>
                 </div>
@@ -123,19 +123,19 @@
         <div id="footer">
             <div id="footerAddEvent">
                 <svg id="openEventAdder" viewBox="0 0 28 28" width="100%" height="100%">       
-                    <image href="./cross90.svg" />
+                    <image href="./data/cross90.svg" />
                 </svg>
             </div>
             <div id="legend">
                 <div id="labels"></div>
                 <div id="foldLabelsWrapper">
                     <svg id="foldLabels" viewBox="0 0 28 28" width="100%" height="100%">       
-                        <image id="foldSVG" href="./dots.svg" />
+                        <image id="foldSVG" href="./data/dots.svg" />
                     </svg>
                 </div>
                 <div id="showTogglerWrapper">
                     <svg id="showToggler" viewBox="0 0 28 28" width="100%" height="100%">       
-                        <image href="./menu.svg" />
+                        <image href="./data/menu.svg" />
                     </svg>
                 </div>
             </div>

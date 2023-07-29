@@ -100,14 +100,14 @@ changeLabel.addEventListener('click', () => {
 });
 
 foldLabelsWrapper.addEventListener('click', () => {
-    if (foldSVG.href.baseVal == "./dots.svg") {
+    if (foldSVG.href.baseVal == "./data/dots.svg") {
         labels.style.height = "fit-content";
         legend.style.height = "fit-content";
-        foldSVG.href.baseVal = "./cross45.svg";
+        foldSVG.href.baseVal = "./data/cross45.svg";
     } else {
         labels.style.height = "2rem";
         legend.style.height = "2rem";
-        foldSVG.href.baseVal = "./dots.svg";
+        foldSVG.href.baseVal = "./data/dots.svg";
     }
 });
 
@@ -356,7 +356,7 @@ function loadData(inpData) {
             dayLine.append(dayP);
     
 
-            
+
             let eventP = document.createElement('p');
             eventP.classList.add("common2");
             eventP.id = day + 'prog';
