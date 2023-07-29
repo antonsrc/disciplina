@@ -7,7 +7,6 @@ let dialogEventAdder = document.getElementById("dialogEventAdder");
 let dialogEventCreater = document.getElementById("dialogEventCreater");
 let dialogLabelEditor = document.getElementById("dialogLabelEditor");
 let dialogDayEditor = document.getElementById("dialogDayEditor");
-let inputDate = document.getElementById("inputDate");
 let addEvent = document.getElementById("addEvent");
 let addNewEvent = document.getElementById("addNewEvent");
 let openNewEventCreater = document.getElementById("openNewEventCreater");
@@ -27,6 +26,10 @@ let removeDay = document.getElementById("removeDay");
 let headDay = document.getElementById("headDay");
 let exportJson = document.getElementById("exportJson");
 let stat = document.getElementById("stat");
+let inputDate = document.getElementById("inputDate");
+let inputEvent = document.getElementById("inputEvent");
+let inputTime = document.getElementById("inputTime");
+let errorMessage = document.getElementById("errorMessage");
 
 window.addEventListener('load', () => {
     loadData(LOC_STOR)
@@ -49,9 +52,23 @@ openEventAdder.addEventListener('click', () => {
 });
 
 addEvent.addEventListener('click', () => {
-    if(saveToLocStor()) {
-        dialogEventAdder.close();
-    }
+    Promise.allSettled([
+        checkDate(inputDate),
+        checkEvent(inputEvent),
+        checkTime(inputTime, inputDate)
+    ])
+        .then(res => {
+            let errorChecking = res.find(item => item.status == 'rejected');
+            if (errorChecking) {
+                showErrors(res);
+            } else {
+                saveToLocalSorage(res)
+                    .then(() => loadData(LOC_STOR))
+                    .then(() => setEventListenersForLabels());
+                hideElement("errorMessage");
+                dialogEventAdder.close();
+            }
+        });
 });
 
 openNewEventCreater.addEventListener('click', () => dialogEventCreater.showModal());
@@ -177,7 +194,10 @@ function exportToJsonFile(inpData) {
     let filename = `log_backup_${year}_${month}_${day}.json`;
     let jsonStr = JSON.stringify(inpData);
 
-    exportJson.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(jsonStr));
+    exportJson.setAttribute(
+        'href',
+        'data:application/json;charset=utf-8,' + encodeURIComponent(jsonStr)
+    );
     exportJson.setAttribute('download', filename);
 }
 
@@ -193,110 +213,99 @@ function getArrayOfKeys(inpData) {
     return arr;
 }
 
-
-
-
-function getErrorsArray(date, events, mins) {
-    let errorsArr = [];
-
-    if (date == "") {
-        errorsArr.push("Выберите дату");
-    }
-
-    if ( (events == "") || (events == "0") ) {
-        errorsArr.push("Выберите или введите событие");
-    } 
-
-    if (mins == 0) {
-        errorsArr.push("Введите время");
-    } else if (LOC_STOR.getItem(date)) {
-        let freeTime = JSON.parse(LOC_STOR.getItem(date))["freeTime"];
-        if (Number(freeTime) - mins < 0) {
-            errorsArr.push(`Свободного времени осталось ${freeTime} мин`);
+function checkDate(inpDate) {
+    let date = inpDate.value;
+    return new Promise((resolve, reject) => {
+        if (date == "") {
+            reject('inputDateReject');
         }
-    }
-
-    return errorsArr;
+        else
+        {
+            resolve(date);
+        }
+    });
 }
 
-function saveToLocStor() { 
-    let inpDate = document.getElementById("inputDate");
+function checkEvent(inpEvent) {
+    let ev = inpEvent.options[inpEvent.selectedIndex].value;
+    return new Promise((resolve, reject) => {
+        if ( (ev == "") || (ev == "0") ) {
+            reject('inputEventReject');
+        }
+        else {
+            resolve(ev);
+        }
+    });
+}
 
-    let inputEvent = document.getElementById("inputEvent");
-    let inpEvent = inputEvent.options[inputEvent.selectedIndex].value;
-
-    let inpTime = document.getElementById("inputTime");
+function checkTime(inpTime, inpDate) {
     let [inpHours, inpMins]  = validTimeValues(inpTime.value.split(":"));
     let totalMins = inpMins + inpHours * 60;
-
-    Promise.allSettled([
-        new Promise((resolve, reject) => {
-            if (inpDate.value == "") reject('inpDateReject');
-            else resolve(inpDate.value);
-        }),
-        new Promise((resolve, reject) => {
-            if ( (inpEvent == "") || (inpEvent == "0") ) reject('inpEventReject');
-            else resolve(inpEvent);
-        }),
-        new Promise((resolve, reject) => {
-            if (totalMins == 0) {
-                reject('totalMinsZero');
-            } else if (LOC_STOR.getItem(inpDate.value)) {
-                let freeTime = JSON.parse(LOC_STOR.getItem(inpDate.value))["freeTime"];
-                if (Number(freeTime) - totalMins < 0) {
-                    reject('totalMinsOverflow');
-                }
-            }
-            else resolve(totalMins);
-        })
-    ])
-    .then(res => {
-        console.log(res);
-        // return new Promise((resolve, reject) => {
-        //     let checkErr = res.find(item => item.status == 'rejected')
-        //     if (checkErr) {
-        //         reject('fuck');
-        //     } else {
-        //         resolve(0);
-        //     }
-        // });
-    })
-    .then(res => console.log(res));
-
-
-    let errorsArr = getErrorsArray(inpDate.value, inpEvent, totalMins);
-
-    if (errorsArr.length == 0) {
-        let eventsOfDay;
-        let inpDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
-        if (LOC_STOR.getItem(inpDate.value)) {
-            eventsOfDay = JSON.parse(LOC_STOR.getItem(inpDate.value));
-            if (inpEvent in eventsOfDay) {
-                eventsOfDay[inpEvent] += totalMins;
+    return new Promise((resolve, reject) => {
+        if (totalMins == 0) {
+            reject('totalMinsZero');
+        } else if (LOC_STOR.getItem(inpDate.value)) {
+            let freeTime = JSON.parse(LOC_STOR.getItem(inpDate.value))["freeTime"];
+            if (Number(freeTime) - totalMins < 0) {
+                reject('totalMinsOverflow');
             } else {
-                eventsOfDay[inpEvent] = totalMins;
+                resolve(totalMins);
             }
-            eventsOfDay["freeTime"] -= totalMins;
+        } else {
+            resolve(totalMins);
+        }
+    });
+}
+
+function showErrors(arr) {
+    errorMessage.style.display = "block";
+    errorMessage.innerHTML = "";
+    for (let errorType of arr) {
+        if (errorType.hasOwnProperty('reason')) {
+            switch(errorType.reason) {
+                case 'inputDateReject':
+                    errorMessage.innerHTML += 'Выберите дату<br>';
+                    break;
+                case 'inputEventReject':
+                    errorMessage.innerHTML += 'Выберите или введите событие<br>';
+                    break;
+                case 'totalMinsZero':
+                    errorMessage.innerHTML += 'Введите время<br>';
+                    break;
+                case 'totalMinsOverflow':
+                    let freeTime = JSON.parse(LOC_STOR.getItem(arr[0].value))["freeTime"];
+                    errorMessage.innerHTML += `Свободного времени осталось ${freeTime} мин<br>`;
+                    break;
+            }
+        }
+    }
+}
+
+function saveToLocalSorage(arr) {
+    return new Promise((resolve, reject) => {
+        let eventsOfDay;
+        let [date, ev, minutes] = arr;
+        let inDate = date.value;
+        let inEvent = ev.value;
+        let totMins = minutes.value;
+        let inputDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
+        if (LOC_STOR.getItem(inDate)) {
+            eventsOfDay = JSON.parse(LOC_STOR.getItem(inDate));
+            if (inEvent in eventsOfDay) {
+                eventsOfDay[inEvent] += totMins;
+            } else {
+                eventsOfDay[inEvent] = totMins;
+            }
+            eventsOfDay["freeTime"] -= totMins;
         } else {
             eventsOfDay = {};
-            eventsOfDay[inpEvent] = totalMins;
-            eventsOfDay["freeTime"] = 1440 - totalMins;
+            eventsOfDay[inEvent] = totMins;
+            eventsOfDay["freeTime"] = 1440 - totMins;
         }
-        eventsOfDay["localDate"] = inpDateLocal;
-        LOC_STOR.setItem(inpDate.value, JSON.stringify(eventsOfDay));
-        hideElement("errorMessage");
-        loadData(LOC_STOR)
-            .then(() => setEventListenersForLabels());
-        return true;
-    } else {
-        let errorMessage = document.getElementById("errorMessage");
-        errorMessage.style.display = "block";
-        errorMessage.innerHTML = "";
-        for (let i = 0; i < errorsArr.length; i++) {
-            errorMessage.innerHTML += `${errorsArr[i]}<br>`;
-        }
-        return false;
-    } 
+        eventsOfDay["localDate"] = inputDateLocal;
+        LOC_STOR.setItem(inDate, JSON.stringify(eventsOfDay));
+        resolve(0);
+    });
 }
 
 
@@ -453,13 +462,11 @@ function openDayEditor(day) {
 
 function newEvent() {
     let inpNewEvent = document.getElementById("inputNewEvent").value;
-    
     if (inpNewEvent != "") {
         let inpColor = document.getElementById("inputColor").value;
         let inpEvent = document.getElementById("inputEvent");
         let allEvents = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
 
-        
         let newId;
         if (Object.keys(allEvents).length == undefined) {
             newId = 'id0';
@@ -503,7 +510,6 @@ function openStat() {
 
     let inputDateFrom = document.getElementById("inputDateFrom");
     let inputDateTo = document.getElementById("inputDateTo");
-
 
     let btnShowDateRange = document.getElementById("btnShowDateRange");
     btnShowDateRange.addEventListener('click', function() {
@@ -697,3 +703,4 @@ function themeToggler() {
         }
     }
 }
+
