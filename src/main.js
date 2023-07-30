@@ -326,6 +326,51 @@ function setEventListenersForDays() {
     });
 }
 
+function loadProgressLines(dates, inpData, linesTag) {
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
+    linesTag.innerHTML = '';
+    let tempProgressBarWidth = 0;
+    for (let day of dates) {
+        let comTime = 0;
+        let eventsOfDay = JSON.parse(inpData.getItem(day));
+
+        let dayLine = document.createElement('div');
+        dayLine.classList.add("Progress");
+        linesTag.append(dayLine);
+
+        let dayP = document.createElement('p');
+        dayP.classList.add("Date");
+        dayP.id = 'date_' + day;
+        dayP.textContent = eventsOfDay["localDate"];
+        changeTextColorIfWeekend(day, dayP);
+        dayLine.append(dayP);
+
+        let eventsP = document.createElement('p');
+        eventsP.classList.add("eventsLines");
+        dayLine.append(eventsP);
+        for (let ev in eventsOfDay) {
+            if (ev == "freeTime" || ev == "localDate") {
+                continue;
+            }
+            let time = Number(eventsOfDay[ev]) * (100/1440);
+            comTime += time;
+
+            let eventSpan = document.createElement('span');
+            eventSpan.classList.add("line");
+            eventSpan.style.backgroundColor = allEvents[ev].color;
+            eventSpan.style.width = time + "%";
+            eventsP.append(eventSpan);
+        }
+        if (comTime >= tempProgressBarWidth) {
+            tempProgressBarWidth = comTime;
+        }
+    }
+    for (let i of document.getElementsByClassName("line")) {
+        i.style.width = parseFloat(i.style.width)*(100/tempProgressBarWidth) + '%';
+    }
+}
+
+
 
 
 function loadData(inpData) {
@@ -333,64 +378,10 @@ function loadData(inpData) {
         let arrDates = getArrayOfKeys(inpData);
         arrDates.sort().reverse();
         
-
-
-
-        progressLines.innerHTML = '';
-        let mapEvents = new Map();
         let allEvents = JSON.parse(inpData.getItem("allEvents"));
-        let tempBarWidth = 0;
-    
-        for (let day of arrDates) {
-            let eventsOfDay = JSON.parse(inpData.getItem(day));
-    
-            let dayLine = document.createElement('div');
-            dayLine.classList.add("Progress");
-            progressLines.append(dayLine);
-    
-            let dayP = document.createElement('p');
-            dayP.classList.add("Date");
-            dayP.id = 'date_' + day;
-            dayP.textContent = eventsOfDay["localDate"];
-            changeTextColorIfWeekend(day, dayP);
-            dayLine.append(dayP);
-    
 
+        loadProgressLines(arrDates, inpData, progressLines);
 
-            let eventP = document.createElement('p');
-            eventP.classList.add("common2");
-            eventP.id = day + 'prog';
-            dayLine.append(eventP);
-    
-            let comTime = 0;
-    
-            for (let ev in eventsOfDay) {
-                if (ev == "freeTime" || ev == "localDate") {
-                    continue;
-                }
-                mapEvents.set(ev, allEvents[ev]);
-                let eventIdName = eventsOfDay["localDate"] + ev;
-    
-                let eventSpan = document.createElement('span');
-                eventSpan.classList.add("common");
-                eventSpan.id = encodeURI(eventIdName);
-                eventSpan.style.backgroundColor = allEvents[ev].color;
-    
-                let time = Number(eventsOfDay[ev]) * (100/1440);
-                eventSpan.style.width = time + "%";
-                eventP.append(eventSpan);
-                comTime += time;
-            }
-            
-            if (comTime >= tempBarWidth) {
-                tempBarWidth = comTime;
-            }
-        }
-    
-        for (let i of document.getElementsByClassName("common")) {
-            i.style.width = parseFloat(i.style.width)*(100/tempBarWidth) + '%';
-        }
-    
         let inpEv = document.getElementById("inputEvent");
         inpEv.innerHTML = '';   // чистка
         let optionEv = document.createElement('option');
@@ -401,7 +392,7 @@ function loadData(inpData) {
         let legend = document.getElementById("labels");
         let eventColors = {};
         legend.innerHTML = '';
-        for (let s of mapEvents.keys()) {
+        for (let s in allEvents) {
             let optionEv = document.createElement('option');
             optionEv.value = s;
             optionEv.textContent = allEvents[s].name;
@@ -409,16 +400,14 @@ function loadData(inpData) {
     
             let divEvLavel = document.createElement('div');
             divEvLavel.classList.add("eventLabel");
-            divEvLavel.style.background = mapEvents.get(s).color;
+            divEvLavel.style.background = allEvents[s].color;
             divEvLavel.textContent = allEvents[s].name;
             divEvLavel.id = 'legend_'+s;
             legend.append(divEvLavel);
     
-            eventColors[s] = mapEvents.get(s);
+            eventColors[s] = allEvents[s];
         }
-    
         inpData.setItem("allEvents", JSON.stringify(eventColors));
-
         resolve(0);
     });
 }
@@ -562,10 +551,10 @@ function loadStatData(inpData, dateFrom, dateTo) {
         dayP.textContent = eventsOfDay["localDate"];
         dayLine.append(dayP);
 
-        let eventP = document.createElement('p');
-        eventP.classList.add("common2");
-        eventP.id = day + 'prog';
-        dayLine.append(eventP);
+        let eventsP = document.createElement('p');
+        eventsP.classList.add("eventsLines");
+        eventsP.id = day + 'prog';
+        dayLine.append(eventsP);
 
         for (let ev in eventsOfDay) {
             if (ev == "freeTime" || ev == "localDate") {
@@ -573,12 +562,12 @@ function loadStatData(inpData, dateFrom, dateTo) {
             }
             let eventIdName = eventsOfDay["localDate"] + ev;
             let eventSpan = document.createElement('span');
-            eventSpan.classList.add("common");
+            eventSpan.classList.add("line");
             eventSpan.id = encodeURI(eventIdName);
             eventSpan.style.backgroundColor = allEvents[ev].color;
             let time = Number(eventsOfDay[ev]) * (100/1440);
             eventSpan.style.width = time + "%";
-            eventP.append(eventSpan);
+            eventsP.append(eventSpan);
 
             if (mapEvents.has(ev)) {
                 let sum = Number(mapEvents.get(ev)[1]) + Number(eventsOfDay[ev]);
