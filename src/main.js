@@ -326,14 +326,53 @@ function setEventListenersForDays() {
     });
 }
 
-function loadProgressLines(dates, inpData, linesTag) {
+function loadLineOfDay(events, appendTo, inpData, dataWidth) {
+    let widthOfDay = 0;
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
-    linesTag.innerHTML = '';
-    let tempProgressBarWidth = 0;
-    for (let day of dates) {
-        let comTime = 0;
-        let eventsOfDay = JSON.parse(inpData.getItem(day));
+    for (let ev in events) {
+        if (ev == "freeTime" || ev == "localDate") {
+            continue;
+        }
+        let time = Number(events[ev]) * (100/1440);
+        widthOfDay += time;
 
+        let eventSpan = document.createElement('span');
+        eventSpan.classList.add("line");
+        eventSpan.style.backgroundColor = allEvents[ev].color;
+        eventSpan.style.width = time + "%";
+        appendTo.append(eventSpan);
+    }
+    if (widthOfDay >= dataWidth) {
+        dataWidth = widthOfDay;
+    }
+    return dataWidth;
+}
+
+function updAllEvents(dates, inpData) {
+    let newAllEvents = {};
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
+    for (let day of dates) {
+        let eventsOfDay = JSON.parse(inpData.getItem(day));
+        for (let ev in eventsOfDay) {
+            newAllEvents[ev] = allEvents[ev];
+        }
+    }
+    inpData.setItem("allEvents", JSON.stringify(newAllEvents));
+}
+
+function resizeAllLines(className, dataWidth) {
+    for (let i of document.getElementsByClassName("line")) {
+        i.style.width = parseFloat(i.style.width)*(100/dataWidth) + '%';
+    }
+}
+
+function loadProgressLines(inpData, linesTag) {
+    let arrDates = getArrayOfKeys(inpData);
+    arrDates.sort().reverse();
+    linesTag.innerHTML = '';
+    let tempMaxWidth = 0;
+    for (let day of arrDates) {
+        let eventsOfDay = JSON.parse(inpData.getItem(day));
         let dayLine = document.createElement('div');
         dayLine.classList.add("Progress");
         linesTag.append(dayLine);
@@ -348,66 +387,45 @@ function loadProgressLines(dates, inpData, linesTag) {
         let eventsP = document.createElement('p');
         eventsP.classList.add("eventsLines");
         dayLine.append(eventsP);
-        for (let ev in eventsOfDay) {
-            if (ev == "freeTime" || ev == "localDate") {
-                continue;
-            }
-            let time = Number(eventsOfDay[ev]) * (100/1440);
-            comTime += time;
-
-            let eventSpan = document.createElement('span');
-            eventSpan.classList.add("line");
-            eventSpan.style.backgroundColor = allEvents[ev].color;
-            eventSpan.style.width = time + "%";
-            eventsP.append(eventSpan);
-        }
-        if (comTime >= tempProgressBarWidth) {
-            tempProgressBarWidth = comTime;
-        }
+        tempMaxWidth = loadLineOfDay(eventsOfDay, eventsP, inpData, tempMaxWidth);
     }
-    for (let i of document.getElementsByClassName("line")) {
-        i.style.width = parseFloat(i.style.width)*(100/tempProgressBarWidth) + '%';
+    updAllEvents(arrDates, inpData);
+    resizeAllLines("line", tempMaxWidth);
+}
+
+function loadSelectionMenu(selectTag, inpData) {
+    selectTag.innerHTML = '';   // clean menu
+    let mainOptionEv = document.createElement('option');
+    mainOptionEv.value = '0';
+    mainOptionEv.textContent = 'Выберите событие';
+    selectTag.append(mainOptionEv);
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
+    for (let ev in allEvents) {
+        let optionEv = document.createElement('option');
+        optionEv.value = ev;
+        optionEv.textContent = allEvents[ev].name;
+        selectTag.append(optionEv);
     }
 }
 
-
-
+function loadLabels(inpData, labelsTag) {
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
+    labelsTag.innerHTML = '';
+    for (let ev in allEvents) {
+        let divEvLavel = document.createElement('div');
+        divEvLavel.classList.add("eventLabel");
+        divEvLavel.style.background = allEvents[ev].color;
+        divEvLavel.textContent = allEvents[ev].name;
+        divEvLavel.id = 'legend_'+ev;
+        labelsTag.append(divEvLavel);
+    }
+}
 
 function loadData(inpData) {
     return new Promise((resolve, reject) => {
-        let arrDates = getArrayOfKeys(inpData);
-        arrDates.sort().reverse();
-        
-        let allEvents = JSON.parse(inpData.getItem("allEvents"));
-
-        loadProgressLines(arrDates, inpData, progressLines);
-
-        let inpEv = document.getElementById("inputEvent");
-        inpEv.innerHTML = '';   // чистка
-        let optionEv = document.createElement('option');
-        optionEv.value = '0';
-        optionEv.textContent = 'Выберите событие';
-        inpEv.append(optionEv);
-    
-        let legend = document.getElementById("labels");
-        let eventColors = {};
-        legend.innerHTML = '';
-        for (let s in allEvents) {
-            let optionEv = document.createElement('option');
-            optionEv.value = s;
-            optionEv.textContent = allEvents[s].name;
-            inpEv.append(optionEv);
-    
-            let divEvLavel = document.createElement('div');
-            divEvLavel.classList.add("eventLabel");
-            divEvLavel.style.background = allEvents[s].color;
-            divEvLavel.textContent = allEvents[s].name;
-            divEvLavel.id = 'legend_'+s;
-            legend.append(divEvLavel);
-    
-            eventColors[s] = allEvents[s];
-        }
-        inpData.setItem("allEvents", JSON.stringify(eventColors));
+        loadProgressLines(inpData, progressLines);
+        loadSelectionMenu(inputEvent, inpData);
+        loadLabels(inpData, labels);
         resolve(0);
     });
 }
@@ -415,7 +433,75 @@ function loadData(inpData) {
 
 
 
+function loadStatData(inpData, dateFrom, dateTo) {
+    let arrDates = getArrayOfKeys(inpData);
+    arrDates.sort();
+    let arrDatesRanged = getRange(dateFrom, dateTo, arrDates);
+    let mapEvents = new Map();
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
+    let progressBarStat = document.getElementById("progressBarStat");
+    for (let day of arrDatesRanged) {
+        let eventsOfDay = JSON.parse(inpData.getItem(day));
 
+        let dayLine = document.createElement('div');
+        dayLine.classList.add("Progress");
+        // dayLine.id = day;
+        progressBarStat.append(dayLine);
+
+        let dayP = document.createElement('p');
+        dayP.classList.add("DateStat");
+        dayP.textContent = eventsOfDay["localDate"];
+        dayLine.append(dayP);
+
+        let eventsP = document.createElement('p');
+        eventsP.classList.add("eventsLines");
+        eventsP.id = day + 'prog';
+        dayLine.append(eventsP);
+
+        for (let ev in eventsOfDay) {
+            if (ev == "freeTime" || ev == "localDate") {
+                continue;
+            }
+            let eventIdName = eventsOfDay["localDate"] + ev;
+            let eventSpan = document.createElement('span');
+            eventSpan.classList.add("line");
+            eventSpan.id = encodeURI(eventIdName);
+            eventSpan.style.backgroundColor = allEvents[ev].color;
+            let time = Number(eventsOfDay[ev]) * (100/1440);
+            eventSpan.style.width = time + "%";
+            eventsP.append(eventSpan);
+
+            if (mapEvents.has(ev)) {
+                let sum = Number(mapEvents.get(ev)[1]) + Number(eventsOfDay[ev]);
+                mapEvents.set(ev, [allEvents[ev], sum]);
+            } else {
+                mapEvents.set(ev, [allEvents[ev], Number(eventsOfDay[ev])]);
+            }
+        }
+
+        let sortedmapEvents = new Map(Array.from(mapEvents).sort((a, b) => b[1][1] - a[1][1]));
+
+        let legend = document.getElementById("legendStat");
+        legend.innerHTML = '';
+        for (let s of sortedmapEvents.entries()) {
+            let pEvLavel = document.createElement('p');
+            pEvLavel.id = s[0] + 'stat';
+            legend.append(pEvLavel);
+
+            let spanEv2 = document.createElement('span');
+            spanEv2.classList.add('legendLabelDaySt');
+            spanEv2.style.backgroundColor = s[1][0].color;
+            spanEv2.textContent = s[1][0].name;
+            pEvLavel.append(spanEv2);
+
+            let spanEv = document.createElement('span');
+            spanEv.textContent = ' ' + s[1][1] + ' мин ';
+            pEvLavel.append(spanEv);
+
+        }
+    }
+
+}
 
 function openDayEditor(day) {
     let barsOfDay = document.getElementById("barsOfDay");
@@ -529,76 +615,6 @@ function openStat() {
 
         loadStatData(LOC_STOR, inpDateFrom, inpDateTo);
     });
-}
-
-function loadStatData(inpData, dateFrom, dateTo) {
-    let arrDates = getArrayOfKeys(inpData);
-    arrDates.sort();
-    let arrDatesRanged = getRange(dateFrom, dateTo, arrDates);
-    let mapEvents = new Map();
-    let allEvents = JSON.parse(inpData.getItem("allEvents"));
-    let progressBarStat = document.getElementById("progressBarStat");
-    for (let day of arrDatesRanged) {
-        let eventsOfDay = JSON.parse(inpData.getItem(day));
-
-        let dayLine = document.createElement('div');
-        dayLine.classList.add("Progress");
-        // dayLine.id = day;
-        progressBarStat.append(dayLine);
-
-        let dayP = document.createElement('p');
-        dayP.classList.add("DateStat");
-        dayP.textContent = eventsOfDay["localDate"];
-        dayLine.append(dayP);
-
-        let eventsP = document.createElement('p');
-        eventsP.classList.add("eventsLines");
-        eventsP.id = day + 'prog';
-        dayLine.append(eventsP);
-
-        for (let ev in eventsOfDay) {
-            if (ev == "freeTime" || ev == "localDate") {
-                continue;
-            }
-            let eventIdName = eventsOfDay["localDate"] + ev;
-            let eventSpan = document.createElement('span');
-            eventSpan.classList.add("line");
-            eventSpan.id = encodeURI(eventIdName);
-            eventSpan.style.backgroundColor = allEvents[ev].color;
-            let time = Number(eventsOfDay[ev]) * (100/1440);
-            eventSpan.style.width = time + "%";
-            eventsP.append(eventSpan);
-
-            if (mapEvents.has(ev)) {
-                let sum = Number(mapEvents.get(ev)[1]) + Number(eventsOfDay[ev]);
-                mapEvents.set(ev, [allEvents[ev], sum]);
-            } else {
-                mapEvents.set(ev, [allEvents[ev], Number(eventsOfDay[ev])]);
-            }
-        }
-
-        let sortedmapEvents = new Map(Array.from(mapEvents).sort((a, b) => b[1][1] - a[1][1]));
-
-        let legend = document.getElementById("legendStat");
-        legend.innerHTML = '';
-        for (let s of sortedmapEvents.entries()) {
-            let pEvLavel = document.createElement('p');
-            pEvLavel.id = s[0] + 'stat';
-            legend.append(pEvLavel);
-
-            let spanEv2 = document.createElement('span');
-            spanEv2.classList.add('legendLabelDaySt');
-            spanEv2.style.backgroundColor = s[1][0].color;
-            spanEv2.textContent = s[1][0].name;
-            pEvLavel.append(spanEv2);
-
-            let spanEv = document.createElement('span');
-            spanEv.textContent = ' ' + s[1][1] + ' мин ';
-            pEvLavel.append(spanEv);
-
-        }
-    }
-
 }
 
 function getRange(fromDate, toDate, arr) {
