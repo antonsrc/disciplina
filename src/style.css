@@ -705,19 +705,6 @@ a {
     background-color: rgb(148, 254, 144);
 }
 
-.DateStat {
-    background-color:#ffffff;
-    color: #505050;
-    height: 30px;
-    align-items: center;
-    justify-content:center;
-    margin: 1px 0px;
-    padding-left: 20px;
-    padding-right: 10px;
-    display: flex;
-    flex-direction: column;
-}
-
 .legendLabelDaySt {
     padding: 4px 10px;
     margin: 1px;
@@ -733,17 +720,25 @@ a {
     height: 32px;
 }
 
-.Date {
+.Date, .DateStat {
     background-color:#ffffff;
     color: #505050;
     align-items: center;
     justify-content:center;
     margin: 1px 0px;
-    padding-left: 10px;
     padding-right: 10px;
-    cursor: pointer;
     display: flex;
     flex-direction: column;
+}
+
+.DateStat {
+    height: 30px;
+    padding-left: 20px;
+}
+
+.Date {
+    padding-left: 10px;
+    cursor: pointer;
 }
 
 .Date:focus, .Date:hover {
