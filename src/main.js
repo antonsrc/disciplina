@@ -349,10 +349,10 @@ function loadLineOfDay(events, appendTo, inpData, dataWidth) {
     return dataWidth;
 }
 
-function updAllEvents(dates, inpData) {
+function updAllEvents(inpData, arrOfDays) {
     let newAllEvents = {};
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
-    for (let day of dates) {
+    for (let day of arrOfDays) {
         let eventsOfDay = JSON.parse(inpData.getItem(day));
         for (let ev in eventsOfDay) {
             newAllEvents[ev] = allEvents[ev];
@@ -367,19 +367,17 @@ function resizeAllLines(className, dataWidth, progressLinesTag) {
     }
 }
 
-function loadProgressLines(inpData, linesTag, arrDays) {
-    // let arrDates = getArrayOfKeys(inpData);
-    // arrDates.sort().reverse();
+function loadProgressLines(inpData, linesTag, arrDates, dateClassStyle) {
     linesTag.innerHTML = '';
     let tempMaxWidth = 0;
-    for (let day of arrDays) {
+    for (let day of arrDates) {
         let eventsOfDay = JSON.parse(inpData.getItem(day));
         let dayLine = document.createElement('div');
         dayLine.classList.add("Progress");
         linesTag.append(dayLine);
 
         let dayP = document.createElement('p');
-        dayP.classList.add("Date");
+        dayP.classList.add(dateClassStyle);
         dayP.id = 'date_' + day;
         dayP.textContent = eventsOfDay["localDate"];
         changeTextColorIfWeekend(day, dayP);
@@ -390,8 +388,7 @@ function loadProgressLines(inpData, linesTag, arrDays) {
         dayLine.append(eventsP);
         tempMaxWidth = loadLineOfDay(eventsOfDay, eventsP, inpData, tempMaxWidth);
     }
-    updAllEvents(arrDays, inpData);
-    resizeAllLines("line", tempMaxWidth, progressLines);
+    resizeAllLines("line", tempMaxWidth, linesTag);
 }
 
 function loadSelectionMenu(selectTag, inpData) {
@@ -424,9 +421,10 @@ function loadLabels(inpData, labelsTag) {
 
 function loadData(inpData, dateFrom = '', dateTo = '') {
     return new Promise((resolve, reject) => {
-        let arrDates = getArrayOfKeys(inpData);
-        arrDates.sort().reverse();
-        loadProgressLines(inpData, progressLines, arrDates);
+        let dates = getRange(dateFrom, dateTo, inpData);
+        dates.sort().reverse();
+        updAllEvents(inpData, dates);
+        loadProgressLines(inpData, progressLines, dates, "Date");
         loadSelectionMenu(inputEvent, inpData);
         loadLabels(inpData, labels);
         resolve(0);
@@ -438,33 +436,14 @@ function loadData(inpData, dateFrom = '', dateTo = '') {
 
 function loadStatData(inpData, dateFrom = '', dateTo = '') {
     return new Promise((resolve, reject) => {
-        let arrDates = getArrayOfKeys(inpData);
-        arrDates.sort();
-        let arrDatesRanged = getRange(dateFrom, dateTo, arrDates);
+        let dates = getRange(dateFrom, dateTo, inpData);
+        loadProgressLines(inpData, progressLinesStat, dates, "DateStat");
+
 
         let mapEvents = new Map();
         let allEvents = JSON.parse(inpData.getItem("allEvents"));
-        
-
-        progressLinesStat.innerHTML = '';   ////////
-        let tempMaxWidth = 0;
-        for (let day of arrDatesRanged) {   /////////
-            let eventsOfDay = JSON.parse(inpData.getItem(day));
-            let dayLine = document.createElement('div');
-            dayLine.classList.add("Progress");
-            progressLinesStat.append(dayLine);
-
-            let dayP = document.createElement('p');
-            dayP.classList.add("DateStat");     ///////////
-            dayP.textContent = eventsOfDay["localDate"];
-            changeTextColorIfWeekend(day, dayP);
-            dayLine.append(dayP);
-
-            let eventsP = document.createElement('p');
-            eventsP.classList.add("eventsLines");
-            dayLine.append(eventsP);
-            tempMaxWidth = loadLineOfDay(eventsOfDay, eventsP, inpData, tempMaxWidth);
-            
+        for (let day of dates) {
+            let eventsOfDay = JSON.parse(inpData.getItem(day));    
             for (let ev in eventsOfDay) {
                 if (ev == "freeTime" || ev == "localDate") {
                     continue;
@@ -500,7 +479,6 @@ function loadStatData(inpData, dateFrom = '', dateTo = '') {
             }
            
         }
-        resizeAllLines("line", tempMaxWidth, progressLinesStat);
         resolve(0);
     });
 }
@@ -618,7 +596,11 @@ function openStat() {
     });
 }
 
-function getRange(fromDate, toDate, arr) {
+function getRange(fromDate = '', toDate = '', inpData) {
+    let arr = getArrayOfKeys(inpData);
+    arr.sort();
+
+
     let inpFrom = new Date(fromDate);
     inpFrom = inpFrom.getTime();
     let inpTo = new Date(toDate);
