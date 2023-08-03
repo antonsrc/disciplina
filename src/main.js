@@ -1,6 +1,7 @@
 "use strict"
 
 const LOC_STOR = window.localStorage;
+const ALL_EVENTS = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
 
 let openEventAdder = document.getElementById("openEventAdder");
 let dialogEventAdder = document.getElementById("dialogEventAdder");
@@ -32,6 +33,8 @@ let inputTime = document.getElementById("inputTime");
 let errorMessage = document.getElementById("errorMessage");
 let progressLines = document.getElementById("progressLines");
 let progressLinesStat = document.getElementById("progressLinesStat");
+let legendStat = document.getElementById("legendStat");
+let eventsDay = document.getElementById("eventsDay");
 
 window.addEventListener('load', () => {
     loadData(LOC_STOR)
@@ -153,22 +156,20 @@ function setEventListenersForLabels() {
 }
 
 function openLabelEditor(idLabel) {
-        let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
         dialogLabelEditor.dataset.id = idLabel;
-        document.getElementById("inputNewLabel").value = allEvents[idLabel].name;
-        document.getElementById("inputNewColor").value = allEvents[idLabel].color;
+        document.getElementById("inputNewLabel").value = ALL_EVENTS[idLabel].name;
+        document.getElementById("inputNewColor").value = ALL_EVENTS[idLabel].color;
         dialogLabelEditor.showModal();
 }
 
 function changeLabelInLocStor() {
     return new Promise((resolve, reject) => {
-        let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
         let eventId = dialogLabelEditor.dataset.id;
-        allEvents[eventId] = {
+        ALL_EVENTS[eventId] = {
             color: inpNewLabelColor.value,
             name: inpNewLabelName.value,
         }
-        LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
+        LOC_STOR.setItem("allEvents", JSON.stringify(ALL_EVENTS));
         resolve(0);
     });
 }
@@ -327,9 +328,8 @@ function setEventListenersForDays() {
     });
 }
 
-function loadLineOfDay(events, appendTo, inpData, dataWidth) {
+function loadLineOfDay(events, appendTo, dataWidth) {
     let widthOfDay = 0;
-    let allEvents = JSON.parse(inpData.getItem("allEvents"));
     for (let ev in events) {
         if (ev == "freeTime" || ev == "localDate") {
             continue;
@@ -339,7 +339,7 @@ function loadLineOfDay(events, appendTo, inpData, dataWidth) {
 
         let eventSpan = document.createElement('span');
         eventSpan.classList.add("line");
-        eventSpan.style.backgroundColor = allEvents[ev].color;
+        eventSpan.style.backgroundColor = ALL_EVENTS[ev].color;
         eventSpan.style.width = time + "%";
         appendTo.append(eventSpan);
     }
@@ -351,11 +351,13 @@ function loadLineOfDay(events, appendTo, inpData, dataWidth) {
 
 function updAllEvents(inpData, arrOfDays) {
     let newAllEvents = {};
-    let allEvents = JSON.parse(inpData.getItem("allEvents"));
     for (let day of arrOfDays) {
         let eventsOfDay = JSON.parse(inpData.getItem(day));
         for (let ev in eventsOfDay) {
-            newAllEvents[ev] = allEvents[ev];
+            if (ev == "freeTime" || ev == "localDate") {
+                continue;
+            }
+            newAllEvents[ev] = ALL_EVENTS[ev];
         }
     }
     inpData.setItem("allEvents", JSON.stringify(newAllEvents));
@@ -386,34 +388,32 @@ function loadProgressLines(inpData, linesTag, arrDates, dateClassStyle) {
         let eventsP = document.createElement('p');
         eventsP.classList.add("eventsLines");
         dayLine.append(eventsP);
-        tempMaxWidth = loadLineOfDay(eventsOfDay, eventsP, inpData, tempMaxWidth);
+        tempMaxWidth = loadLineOfDay(eventsOfDay, eventsP, tempMaxWidth);
     }
     resizeAllLines("line", tempMaxWidth, linesTag);
 }
 
-function loadSelectionMenu(selectTag, inpData) {
+function loadSelectionMenu(selectTag) {
     selectTag.innerHTML = '';   // clean menu
     let mainOptionEv = document.createElement('option');
     mainOptionEv.value = '0';
     mainOptionEv.textContent = 'Выберите событие';
     selectTag.append(mainOptionEv);
-    let allEvents = JSON.parse(inpData.getItem("allEvents"));
-    for (let ev in allEvents) {
+    for (let ev in ALL_EVENTS) {
         let optionEv = document.createElement('option');
         optionEv.value = ev;
-        optionEv.textContent = allEvents[ev].name;
+        optionEv.textContent = ALL_EVENTS[ev].name;
         selectTag.append(optionEv);
     }
 }
 
-function loadLabels(inpData, labelsTag) {
-    let allEvents = JSON.parse(inpData.getItem("allEvents"));
+function loadLabels(labelsTag) {
     labelsTag.innerHTML = '';
-    for (let ev in allEvents) {
+    for (let ev in ALL_EVENTS) {
         let divEvLavel = document.createElement('div');
         divEvLavel.classList.add("eventLabel");
-        divEvLavel.style.background = allEvents[ev].color;
-        divEvLavel.textContent = allEvents[ev].name;
+        divEvLavel.style.background = ALL_EVENTS[ev].color;
+        divEvLavel.textContent = ALL_EVENTS[ev].name;
         divEvLavel.id = 'legend_'+ev;
         labelsTag.append(divEvLavel);
     }
@@ -425,72 +425,67 @@ function loadData(inpData, dateFrom = '', dateTo = '') {
         dates.sort().reverse();
         updAllEvents(inpData, dates);
         loadProgressLines(inpData, progressLines, dates, "Date");
-        loadSelectionMenu(inputEvent, inpData);
-        loadLabels(inpData, labels);
+        loadSelectionMenu(inputEvent);
+        loadLabels(labels);
         resolve(0);
     });
 }
 
+function getMinutesSumOfEvents(days, inpData) {
+    let objEvents = {};
+    for (let day of days) {
+        let eventsOfDay = JSON.parse(inpData.getItem(day));    
+        for (let ev in eventsOfDay) {
+            if (ev == "freeTime" || ev == "localDate") {
+                continue;
+            }
+            if(ev in objEvents) {
+                objEvents[ev] += eventsOfDay[ev];
+            } else {
+                objEvents[ev] = eventsOfDay[ev];
+            }
+        }
+    }
+    return objEvents;
+}
 
+function loadLabelsStat(sortedEvents) {
+    legendStat.innerHTML = '';
+    for (let ev of sortedEvents) {
+        let pLabel = document.createElement('p');
+        legendStat.append(pLabel);
 
+        let eventLabel = document.createElement('span');
+        eventLabel.classList.add('eventLabelStat');
+        eventLabel.style.backgroundColor = ALL_EVENTS[ev[0]].color;
+        eventLabel.textContent = ALL_EVENTS[ev[0]].name;
+        pLabel.append(eventLabel);
+
+        let eventMinutes = document.createElement('span');
+        eventMinutes.textContent = ' ' + ev[1] + ' мин ';
+        pLabel.append(eventMinutes);
+    }
+}
 
 function loadStatData(inpData, dateFrom = '', dateTo = '') {
     return new Promise((resolve, reject) => {
-        let dates = getRange(dateFrom, dateTo, inpData);
-        loadProgressLines(inpData, progressLinesStat, dates, "DateStat");
-
-
-        let mapEvents = new Map();
-        let allEvents = JSON.parse(inpData.getItem("allEvents"));
-        for (let day of dates) {
-            let eventsOfDay = JSON.parse(inpData.getItem(day));    
-            for (let ev in eventsOfDay) {
-                if (ev == "freeTime" || ev == "localDate") {
-                    continue;
-                }
-                if (mapEvents.has(ev)) {
-                    let sum = Number(mapEvents.get(ev)[1]) + Number(eventsOfDay[ev]);
-                    mapEvents.set(ev, [allEvents[ev], sum]);
-                } else {
-                    mapEvents.set(ev, [allEvents[ev], Number(eventsOfDay[ev])]);
-                }
-            }
-
-
-            let sortedmapEvents = new Map(Array.from(mapEvents).sort((a, b) => b[1][1] - a[1][1]));
-
-            let legend = document.getElementById("legendStat");
-            legend.innerHTML = '';
-            for (let s of sortedmapEvents.entries()) {
-                let pEvLavel = document.createElement('p');
-                pEvLavel.id = s[0] + 'stat';
-                legend.append(pEvLavel);
-
-                let spanEv2 = document.createElement('span');
-                spanEv2.classList.add('legendLabelDaySt');
-                spanEv2.style.backgroundColor = s[1][0].color;
-                spanEv2.textContent = s[1][0].name;
-                pEvLavel.append(spanEv2);
-
-                let spanEv = document.createElement('span');
-                spanEv.textContent = ' ' + s[1][1] + ' мин ';
-                pEvLavel.append(spanEv);
-
-            }
-           
-        }
+        let arrOfDays = getRange(dateFrom, dateTo, inpData);
+        loadProgressLines(inpData, progressLinesStat, arrOfDays, "DateStat");
+        let objEvents = getMinutesSumOfEvents(arrOfDays, inpData);
+        let sortedObjEvents = Object.entries(objEvents).sort((a, b) => b[1] - a[1]);
+        loadLabelsStat(sortedObjEvents); 
         resolve(0);
     });
 }
 
+
+
+
+
 function openDayEditor(day) {
-    let barsOfDay = document.getElementById("barsOfDay");
     dialogDayEditor.showModal();
-    barsOfDay.innerHTML = '';
-
+    eventsDay.innerHTML = '';
     let eventsOfDay = loadDayData(LOC_STOR, day);
-    let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
-
     headDay.textContent = eventsOfDay["localDate"];
     dialogDayEditor.dataset.day = day;
 
@@ -503,21 +498,21 @@ function openDayEditor(day) {
         pEv.id = ev + '_day';
         pEv.style.marginBottom = '1rem';
         pEv.style.marginTop = '1rem';
-        barsOfDay.append(pEv);
+        eventsDay.append(pEv);
 
-        let spanEv2 = document.createElement('span');
-        spanEv2.classList.add('legendLabelDay');
-        spanEv2.style.backgroundColor = allEvents[ev].color;
-        spanEv2.textContent = allEvents[ev].name;
-        pEv.append(spanEv2);
+        let eventLabel = document.createElement('span');
+        eventLabel.classList.add('legendLabelDay');
+        eventLabel.style.backgroundColor = ALL_EVENTS[ev].color;
+        eventLabel.textContent = ALL_EVENTS[ev].name;
+        pEv.append(eventLabel);
 
-        let spanEv = document.createElement('span');
-        spanEv.textContent = ' ' + eventsOfDay[ev] + ' мин ';
-        pEv.append(spanEv);
+        let eventMinutes = document.createElement('span');
+        eventMinutes.textContent = ' ' + eventsOfDay[ev] + ' мин ';
+        pEv.append(eventMinutes);
 
-        let spanEv3 = document.createElement('span');
-        spanEv3.classList.add('clDayEv');
-        pEv.append(spanEv3);
+        let eventMinutes3 = document.createElement('span');
+        eventMinutes3.classList.add('clDayEv');
+        pEv.append(eventMinutes3);
 
         let aEv = document.createElement('a');
         aEv.href = '#';
@@ -529,7 +524,7 @@ function openDayEditor(day) {
                 .then(() => setEventListenersForLabels())
                 .then(() => setEventListenersForDays());
         });
-        spanEv3.append(aEv);
+        eventMinutes3.append(aEv);
     }
 }
 
@@ -537,33 +532,31 @@ function newEvent() {
     let inpNewEvent = document.getElementById("inputNewEvent").value;
     if (inpNewEvent != "") {
         let inpColor = document.getElementById("inputColor").value;
-        let inpEvent = document.getElementById("inputEvent");
-        let allEvents = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
 
         let newId;
-        if (Object.keys(allEvents).length == undefined) {
+        if (Object.keys(ALL_EVENTS).length == undefined) {
             newId = 'id0';
         }
         else {
-            let idNum = Object.keys(allEvents).length;
-            while (allEvents.hasOwnProperty('id' + String(idNum))) {
+            let idNum = Object.keys(ALL_EVENTS).length;
+            while (ALL_EVENTS.hasOwnProperty('id' + String(idNum))) {
                 console.log('dfd');
                 idNum++;
             }
             newId = 'id' + String(idNum);
         }
-        if(allEvents[inpNewEvent]) {
-            inpEvent.textContent = inpNewEvent;
+        if(ALL_EVENTS[inpNewEvent]) {
+            inputEvent.textContent = inpNewEvent;
         } else {
             let optionEv = new Option(inpNewEvent, newId, true, true);
-            inpEvent.append(optionEv);
+            inputEvent.append(optionEv);
         }
 
-        allEvents[newId] = {
+        ALL_EVENTS[newId] = {
             color: inpColor,
             name: inpNewEvent,
         }
-        LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
+        LOC_STOR.setItem("allEvents", JSON.stringify(ALL_EVENTS));
 
         dialogEventCreater.close();
     }

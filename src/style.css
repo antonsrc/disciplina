@@ -405,7 +405,7 @@ a {
     height: 1.5rem;
 }
 
-#barsOfDay {
+#eventsDay {
     grid-column: 2/4;
     grid-row: 2;
     align-self: self-start;
@@ -705,14 +705,6 @@ a {
     background-color: rgb(148, 254, 144);
 }
 
-.legendLabelDaySt {
-    padding: 4px 10px;
-    margin: 1px;
-    border-radius: 10px;
-    font-size: 1rem;
-    margin-left: 20px;
-}
-
 .Progress {
     width: 100%;
     display: flex;
@@ -755,12 +747,19 @@ a {
     height: 30px;
 }
 
-.eventLabel {
-    cursor: pointer;
+.eventLabel, .eventLabelStat {
     padding: 4px 10px;
     margin: 1px;
     border-radius: 10px;
     font-size: 1rem;
+}
+
+.eventLabelStat {
+    margin-left: 20px;
+}
+
+.eventLabel {
+    cursor: pointer;
 }
 
 .eventLabel:focus, .eventLabel:hover{
