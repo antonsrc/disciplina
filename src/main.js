@@ -1,7 +1,7 @@
 "use strict"
 
 const LOC_STOR = window.localStorage;
-const ALL_EVENTS = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
+// const ALL_EVENTS = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
 
 let openEventAdder = document.getElementById("openEventAdder");
 let dialogEventAdder = document.getElementById("dialogEventAdder");
@@ -156,20 +156,22 @@ function setEventListenersForLabels() {
 }
 
 function openLabelEditor(idLabel) {
+        let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
         dialogLabelEditor.dataset.id = idLabel;
-        document.getElementById("inputNewLabel").value = ALL_EVENTS[idLabel].name;
-        document.getElementById("inputNewColor").value = ALL_EVENTS[idLabel].color;
+        document.getElementById("inputNewLabel").value = allEvents[idLabel].name;
+        document.getElementById("inputNewColor").value = allEvents[idLabel].color;
         dialogLabelEditor.showModal();
 }
 
 function changeLabelInLocStor() {
     return new Promise((resolve, reject) => {
+        let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"));
         let eventId = dialogLabelEditor.dataset.id;
-        ALL_EVENTS[eventId] = {
+        allEvents[eventId] = {
             color: inpNewLabelColor.value,
             name: inpNewLabelName.value,
         }
-        LOC_STOR.setItem("allEvents", JSON.stringify(ALL_EVENTS));
+        LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
         resolve(0);
     });
 }
@@ -328,8 +330,9 @@ function setEventListenersForDays() {
     });
 }
 
-function loadLineOfDay(events, appendTo, dataWidth) {
+function loadLineOfDay(events, appendTo, inpData, dataWidth) {
     let widthOfDay = 0;
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
     for (let ev in events) {
         if (ev == "freeTime" || ev == "localDate") {
             continue;
@@ -339,7 +342,7 @@ function loadLineOfDay(events, appendTo, dataWidth) {
 
         let eventSpan = document.createElement('span');
         eventSpan.classList.add("line");
-        eventSpan.style.backgroundColor = ALL_EVENTS[ev].color;
+        eventSpan.style.backgroundColor = allEvents[ev].color;
         eventSpan.style.width = time + "%";
         appendTo.append(eventSpan);
     }
@@ -351,13 +354,14 @@ function loadLineOfDay(events, appendTo, dataWidth) {
 
 function updAllEvents(inpData, arrOfDays) {
     let newAllEvents = {};
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
     for (let day of arrOfDays) {
         let eventsOfDay = JSON.parse(inpData.getItem(day));
         for (let ev in eventsOfDay) {
             if (ev == "freeTime" || ev == "localDate") {
                 continue;
             }
-            newAllEvents[ev] = ALL_EVENTS[ev];
+            newAllEvents[ev] = allEvents[ev];
         }
     }
     inpData.setItem("allEvents", JSON.stringify(newAllEvents));
@@ -388,32 +392,34 @@ function loadProgressLines(inpData, linesTag, arrDates, dateClassStyle) {
         let eventsP = document.createElement('p');
         eventsP.classList.add("eventsLines");
         dayLine.append(eventsP);
-        tempMaxWidth = loadLineOfDay(eventsOfDay, eventsP, tempMaxWidth);
+        tempMaxWidth = loadLineOfDay(eventsOfDay, eventsP, inpData, tempMaxWidth);
     }
     resizeAllLines("line", tempMaxWidth, linesTag);
 }
 
-function loadSelectionMenu(selectTag) {
+function loadSelectionMenu(selectTag, inpData) {
     selectTag.innerHTML = '';   // clean menu
     let mainOptionEv = document.createElement('option');
     mainOptionEv.value = '0';
     mainOptionEv.textContent = 'Выберите событие';
     selectTag.append(mainOptionEv);
-    for (let ev in ALL_EVENTS) {
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
+    for (let ev in allEvents) {
         let optionEv = document.createElement('option');
         optionEv.value = ev;
-        optionEv.textContent = ALL_EVENTS[ev].name;
+        optionEv.textContent = allEvents[ev].name;
         selectTag.append(optionEv);
     }
 }
 
-function loadLabels(labelsTag) {
+function loadLabels(inpData, labelsTag) {
     labelsTag.innerHTML = '';
-    for (let ev in ALL_EVENTS) {
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
+    for (let ev in allEvents) {
         let divEvLavel = document.createElement('div');
         divEvLavel.classList.add("eventLabel");
-        divEvLavel.style.background = ALL_EVENTS[ev].color;
-        divEvLavel.textContent = ALL_EVENTS[ev].name;
+        divEvLavel.style.background = allEvents[ev].color;
+        divEvLavel.textContent = allEvents[ev].name;
         divEvLavel.id = 'legend_'+ev;
         labelsTag.append(divEvLavel);
     }
@@ -425,8 +431,8 @@ function loadData(inpData, dateFrom = '', dateTo = '') {
         dates.sort().reverse();
         updAllEvents(inpData, dates);
         loadProgressLines(inpData, progressLines, dates, "Date");
-        loadSelectionMenu(inputEvent);
-        loadLabels(labels);
+        loadSelectionMenu(inputEvent, inpData);
+        loadLabels(inpData, labels);
         resolve(0);
     });
 }
@@ -449,16 +455,17 @@ function getMinutesSumOfEvents(days, inpData) {
     return objEvents;
 }
 
-function loadLabelsStat(sortedEvents) {
+function loadLabelsStat(sortedEvents, inpData) {
     legendStat.innerHTML = '';
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
     for (let ev of sortedEvents) {
         let pLabel = document.createElement('p');
         legendStat.append(pLabel);
 
         let eventLabel = document.createElement('span');
         eventLabel.classList.add('eventLabelStat');
-        eventLabel.style.backgroundColor = ALL_EVENTS[ev[0]].color;
-        eventLabel.textContent = ALL_EVENTS[ev[0]].name;
+        eventLabel.style.backgroundColor = allEvents[ev[0]].color;
+        eventLabel.textContent = allEvents[ev[0]].name;
         pLabel.append(eventLabel);
 
         let eventMinutes = document.createElement('span');
@@ -473,7 +480,7 @@ function loadStatData(inpData, dateFrom = '', dateTo = '') {
         loadProgressLines(inpData, progressLinesStat, arrOfDays, "DateStat");
         let objEvents = getMinutesSumOfEvents(arrOfDays, inpData);
         let sortedObjEvents = Object.entries(objEvents).sort((a, b) => b[1] - a[1]);
-        loadLabelsStat(sortedObjEvents); 
+        loadLabelsStat(sortedObjEvents, inpData); 
         resolve(0);
     });
 }
@@ -488,6 +495,7 @@ function openDayEditor(day) {
     let eventsOfDay = loadDayData(LOC_STOR, day);
     headDay.textContent = eventsOfDay["localDate"];
     dialogDayEditor.dataset.day = day;
+    let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"));
 
     for (let ev in eventsOfDay) {
         if (ev == "freeTime" || ev == "localDate") {
@@ -502,8 +510,8 @@ function openDayEditor(day) {
 
         let eventLabel = document.createElement('span');
         eventLabel.classList.add('legendLabelDay');
-        eventLabel.style.backgroundColor = ALL_EVENTS[ev].color;
-        eventLabel.textContent = ALL_EVENTS[ev].name;
+        eventLabel.style.backgroundColor = allEvents[ev].color;
+        eventLabel.textContent = allEvents[ev].name;
         pEv.append(eventLabel);
 
         let eventMinutes = document.createElement('span');
@@ -532,31 +540,32 @@ function newEvent() {
     let inpNewEvent = document.getElementById("inputNewEvent").value;
     if (inpNewEvent != "") {
         let inpColor = document.getElementById("inputColor").value;
+        let allEvents = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
 
         let newId;
-        if (Object.keys(ALL_EVENTS).length == undefined) {
+        if (Object.keys(allEvents).length == undefined) {
             newId = 'id0';
         }
         else {
-            let idNum = Object.keys(ALL_EVENTS).length;
-            while (ALL_EVENTS.hasOwnProperty('id' + String(idNum))) {
+            let idNum = Object.keys(allEvents).length;
+            while (allEvents.hasOwnProperty('id' + String(idNum))) {
                 console.log('dfd');
                 idNum++;
             }
             newId = 'id' + String(idNum);
         }
-        if(ALL_EVENTS[inpNewEvent]) {
+        if(allEvents[inpNewEvent]) {
             inputEvent.textContent = inpNewEvent;
         } else {
             let optionEv = new Option(inpNewEvent, newId, true, true);
             inputEvent.append(optionEv);
         }
 
-        ALL_EVENTS[newId] = {
+        allEvents[newId] = {
             color: inpColor,
             name: inpNewEvent,
         }
-        LOC_STOR.setItem("allEvents", JSON.stringify(ALL_EVENTS));
+        LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
 
         dialogEventCreater.close();
     }
