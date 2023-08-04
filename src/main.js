@@ -1,7 +1,6 @@
 "use strict"
 
 const LOC_STOR = window.localStorage;
-// const ALL_EVENTS = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
 
 let openEventAdder = document.getElementById("openEventAdder");
 let dialogEventAdder = document.getElementById("dialogEventAdder");
