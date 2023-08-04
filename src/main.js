@@ -34,6 +34,7 @@ let progressLines = document.getElementById("progressLines");
 let progressLinesStat = document.getElementById("progressLinesStat");
 let legendStat = document.getElementById("legendStat");
 let eventsDay = document.getElementById("eventsDay");
+let dialogStat = document.getElementById("dialogStat");
 
 window.addEventListener('load', () => {
     loadData(LOC_STOR)
@@ -146,10 +147,23 @@ function hideElement(elemId) {
 }
 
 function setEventListenersForLabels() {
-    document.querySelectorAll('.eventLabel').forEach(item => {
+    document.querySelectorAll('.EventLabelLink').forEach(item => {
         item.addEventListener('click', e => {
             let idLabel = e.target.id.split('_')[1];
             openLabelEditor(idLabel);
+        });
+    });
+}
+
+function setEventListenersForEventRemove() {
+    document.querySelectorAll('.DayEventRemoveA').forEach(item => {
+        item.addEventListener('click', e => {
+            let idLabel = e.target.parentNode.parentNode.id.split('_')[0];
+            let parentDialog = e.target.closest('dialog').dataset.day;
+            removeEventFromDay(parentDialog, idLabel)
+                .then(() => loadData(LOC_STOR))
+                .then(() => setEventListenersForLabels())
+                .then(() => setEventListenersForDays());
         });
     });
 }
@@ -177,7 +191,7 @@ function changeLabelInLocStor() {
 
 function removeEventFromDay(day, e) {
     return new Promise((resolve, reject) => {
-        let eventsOfDay = JSON.parse(LOC_STOR.getItem(day));
+        let eventsOfDay = loadDayData(LOC_STOR, day);
         eventsOfDay["freeTime"] += eventsOfDay[e];
         delete eventsOfDay[e];
         document.getElementById(e + '_day').remove();
@@ -292,10 +306,10 @@ function showErrors(arr) {
 function saveToLocalSorage(arr) {
     return new Promise((resolve, reject) => {
         let eventsOfDay;
-        let [date, ev, minutes] = arr.map(item => item.value);
+        let [day, ev, minutes] = arr.map(item => item.value);
         let inputDateLocal = document.getElementById("inputDate").valueAsDate.toLocaleDateString();
-        if (LOC_STOR.getItem(date)) {
-            eventsOfDay = JSON.parse(LOC_STOR.getItem(date));
+        if (LOC_STOR.getItem(day)) {
+            eventsOfDay = loadDayData(LOC_STOR, day);
             if (ev in eventsOfDay) {
                 eventsOfDay[ev] += minutes;
             } else {
@@ -308,7 +322,7 @@ function saveToLocalSorage(arr) {
             eventsOfDay["freeTime"] = 1440 - minutes;
         }
         eventsOfDay["localDate"] = inputDateLocal;
-        LOC_STOR.setItem(date, JSON.stringify(eventsOfDay));
+        LOC_STOR.setItem(day, JSON.stringify(eventsOfDay));
         resolve(0);
     });
 }
@@ -355,7 +369,7 @@ function updAllEvents(inpData, arrOfDays) {
     let newAllEvents = {};
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
     for (let day of arrOfDays) {
-        let eventsOfDay = JSON.parse(inpData.getItem(day));
+        let eventsOfDay = loadDayData(inpData, day);
         for (let ev in eventsOfDay) {
             if (ev == "freeTime" || ev == "localDate") {
                 continue;
@@ -376,7 +390,7 @@ function loadProgressLines(inpData, linesTag, arrDates, dateClassStyle) {
     linesTag.innerHTML = '';
     let tempMaxWidth = 0;
     for (let day of arrDates) {
-        let eventsOfDay = JSON.parse(inpData.getItem(day));
+        let eventsOfDay = loadDayData(inpData, day);
         let dayLine = document.createElement('div');
         dayLine.classList.add("Progress");
         linesTag.append(dayLine);
@@ -416,7 +430,7 @@ function loadLabels(inpData, labelsTag) {
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
     for (let ev in allEvents) {
         let divEvLavel = document.createElement('div');
-        divEvLavel.classList.add("eventLabel");
+        divEvLavel.classList.add("EventLabelLink");
         divEvLavel.style.background = allEvents[ev].color;
         divEvLavel.textContent = allEvents[ev].name;
         divEvLavel.id = 'legend_'+ev;
@@ -439,7 +453,7 @@ function loadData(inpData, dateFrom = '', dateTo = '') {
 function getMinutesSumOfEvents(days, inpData) {
     let objEvents = {};
     for (let day of days) {
-        let eventsOfDay = JSON.parse(inpData.getItem(day));    
+        let eventsOfDay = loadDayData(inpData, day);   
         for (let ev in eventsOfDay) {
             if (ev == "freeTime" || ev == "localDate") {
                 continue;
@@ -462,7 +476,7 @@ function loadLabelsStat(sortedEvents, inpData) {
         legendStat.append(pLabel);
 
         let eventLabel = document.createElement('span');
-        eventLabel.classList.add('eventLabelStat');
+        eventLabel.classList.add('EventLabel');
         eventLabel.style.backgroundColor = allEvents[ev[0]].color;
         eventLabel.textContent = allEvents[ev[0]].name;
         pLabel.append(eventLabel);
@@ -484,31 +498,17 @@ function loadStatData(inpData, dateFrom = '', dateTo = '') {
     });
 }
 
-
-
-
-
-function openDayEditor(day) {
-    dialogDayEditor.showModal();
-    eventsDay.innerHTML = '';
-    let eventsOfDay = loadDayData(LOC_STOR, day);
-    headDay.textContent = eventsOfDay["localDate"];
-    dialogDayEditor.dataset.day = day;
-    let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"));
-
+function loadProgressLinesOfDay(eventsOfDay, allEvents) {
     for (let ev in eventsOfDay) {
         if (ev == "freeTime" || ev == "localDate") {
             continue;
         }
-        
         let pEv = document.createElement('p');
         pEv.id = ev + '_day';
-        pEv.style.marginBottom = '1rem';
-        pEv.style.marginTop = '1rem';
         eventsDay.append(pEv);
 
         let eventLabel = document.createElement('span');
-        eventLabel.classList.add('legendLabelDay');
+        eventLabel.classList.add('EventLabel');
         eventLabel.style.backgroundColor = allEvents[ev].color;
         eventLabel.textContent = allEvents[ev].name;
         pEv.append(eventLabel);
@@ -517,23 +517,32 @@ function openDayEditor(day) {
         eventMinutes.textContent = ' ' + eventsOfDay[ev] + ' мин ';
         pEv.append(eventMinutes);
 
-        let eventMinutes3 = document.createElement('span');
-        eventMinutes3.classList.add('clDayEv');
-        pEv.append(eventMinutes3);
+        let spanEventRemove = document.createElement('span');
+        spanEventRemove.classList.add('DayEventRemove');
+        pEv.append(spanEventRemove);
 
         let aEv = document.createElement('a');
         aEv.href = '#';
         aEv.textContent = '[удалить]';
-        aEv.classList.add('clDayEvA');
-        aEv.addEventListener('click', function() {
-            removeEventFromDay(day, ev)
-                .then(() => loadData(LOC_STOR))
-                .then(() => setEventListenersForLabels())
-                .then(() => setEventListenersForDays());
-        });
-        eventMinutes3.append(aEv);
+        aEv.classList.add('DayEventRemoveA');
+        spanEventRemove.append(aEv);
     }
 }
+
+function openDayEditor(day) {
+    dialogDayEditor.showModal();
+    eventsDay.innerHTML = '';
+    let eventsOfDay = loadDayData(LOC_STOR, day);
+    headDay.textContent = eventsOfDay["localDate"];
+    dialogDayEditor.dataset.day = day;
+    let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"));
+    loadProgressLinesOfDay(eventsOfDay, allEvents);
+    setEventListenersForEventRemove();
+}
+
+
+
+
 
 function newEvent() {
     let inpNewEvent = document.getElementById("inputNewEvent").value;
@@ -548,7 +557,6 @@ function newEvent() {
         else {
             let idNum = Object.keys(allEvents).length;
             while (allEvents.hasOwnProperty('id' + String(idNum))) {
-                console.log('dfd');
                 idNum++;
             }
             newId = 'id' + String(idNum);
@@ -571,7 +579,7 @@ function newEvent() {
 }
 
 function openStat() {
-    let dialogStat = document.getElementById("dialogStat");
+    
     dialogStat.style.height = 'fit-content';
     let divWithScroll = document.getElementById("divWithScroll");
     divWithScroll.style.height = '0vh';
