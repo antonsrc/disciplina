@@ -35,6 +35,8 @@ let progressLinesStat = document.getElementById("progressLinesStat");
 let legendStat = document.getElementById("legendStat");
 let eventsDay = document.getElementById("eventsDay");
 let dialogStat = document.getElementById("dialogStat");
+let inputNewEvent = document.getElementById("inputNewEvent");
+let inputColor = document.getElementById("inputColor");
 
 window.addEventListener('load', () => {
     loadData(LOC_STOR)
@@ -232,7 +234,8 @@ function validTimeValues(time) {
 }
 
 function getArrayOfKeys(inpData) {
-    let arr = Object.keys(inpData).filter(item => item != 'allEvents');
+    let arr = Object.keys(inpData)
+                .filter(item => (item != 'allEvents') && (item != 'idLength'));
     return arr;
 }
 
@@ -418,6 +421,9 @@ function loadSelectionMenu(selectTag, inpData) {
     selectTag.append(mainOptionEv);
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
     for (let ev in allEvents) {
+        if (ev == 'idLength') {
+            continue;
+        }
         let optionEv = document.createElement('option');
         optionEv.value = ev;
         optionEv.textContent = allEvents[ev].name;
@@ -429,6 +435,9 @@ function loadLabels(inpData, labelsTag) {
     labelsTag.innerHTML = '';
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
     for (let ev in allEvents) {
+        if (ev == 'idLength') {
+            continue;
+        }
         let divEvLavel = document.createElement('div');
         divEvLavel.classList.add("EventLabelLink");
         divEvLavel.style.background = allEvents[ev].color;
@@ -540,27 +549,32 @@ function openDayEditor(day) {
     setEventListenersForEventRemove();
 }
 
+function setNewId(allEvents) {
+    // в if`е времянка для тех пользователей которые уже используют
+    // приложение, когда еще не была была введена idLength  
+    if (!LOC_STOR.getItem("idLength")) {
+        let tempId = 0;
+        for (let ev in allEvents) {
+            ev = Number(ev.replace('id',''));
+            if (ev >= tempId) {
+                tempId = ev;
+            }
+        }
+        LOC_STOR.setItem("idLength", tempId);
+    }
 
-
-
+    let idNum = Number(LOC_STOR.getItem("idLength")) + 1;
+    return idNum;
+}
 
 function newEvent() {
-    let inpNewEvent = document.getElementById("inputNewEvent").value;
+    let inpColor = inputColor.value;
+    let inpNewEvent = inputNewEvent.value;
     if (inpNewEvent != "") {
-        let inpColor = document.getElementById("inputColor").value;
         let allEvents = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
+        let newIdNum = setNewId(allEvents);
+        let newId = 'id' + String(newIdNum);
 
-        let newId;
-        if (Object.keys(allEvents).length == undefined) {
-            newId = 'id0';
-        }
-        else {
-            let idNum = Object.keys(allEvents).length;
-            while (allEvents.hasOwnProperty('id' + String(idNum))) {
-                idNum++;
-            }
-            newId = 'id' + String(idNum);
-        }
         if(allEvents[inpNewEvent]) {
             inputEvent.textContent = inpNewEvent;
         } else {
@@ -572,11 +586,16 @@ function newEvent() {
             color: inpColor,
             name: inpNewEvent,
         }
-        LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
 
+        LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
+        LOC_STOR.setItem("idLength", newIdNum);
         dialogEventCreater.close();
     }
 }
+
+
+
+
 
 function openStat() {
     
