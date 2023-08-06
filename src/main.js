@@ -632,7 +632,7 @@ function getLastIndex(inpTo, arr, indStop) {
         if(i == inpTo) {
             return i;
         } else if (i < inpTo) {
-            return i + 1;
+            return i - 1;
         }
         });
     }
@@ -660,7 +660,7 @@ function getRange(fromDate = '', toDate = '', inpData) {
 
     indStart = getFirstIndex(inpFrom, arrTS, indStart);
     indStop = getLastIndex(inpTo, arrTS, indStop);
-    return arr.slice(indStart, indStop);
+    return arr.slice(indStart, indStop + 1);
 }
 
 
