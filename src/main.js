@@ -611,61 +611,61 @@ function openStat() {
     });
 }
 
+function getArrayOfKeysTimeStamp(arr) {
+    let arrTS = arr.map((i) => {
+        let date = new Date(i);
+        return date.getTime();
+    });
+    return arrTS;
+}
 
+function getFirstIndex(inpFrom, arr, indStart) {
+    if (inpFrom > arr[indStart]) {
+        indStart = arr.findIndex(i => i >= inpFrom);
+    }
+    return indStart;
+}
 
-
-
+function getLastIndex(inpTo, arr, indStop) {
+    if (inpTo < arr[indStop]) {
+        indStop = arr.findLastIndex(i => {
+        if(i == inpTo) {
+            return i;
+        } else if (i < inpTo) {
+            return i + 1;
+        }
+        });
+    }
+    return indStop;
+}
 
 function getRange(fromDate = '', toDate = '', inpData) {
     let arr = getArrayOfKeys(inpData);
     arr.sort();
-
+    let arrTS = getArrayOfKeysTimeStamp(arr);
 
     let inpFrom = new Date(fromDate);
     inpFrom = inpFrom.getTime();
     let inpTo = new Date(toDate);
     inpTo = inpTo.getTime();
-    let arrFirst = new Date(arr[0]);
-    let arrLast = new Date(arr[arr.length - 1]);
-    let indexStart;
-    let indexStop;
+
+    let indStart = 0;
+    let indStop = arrTS.length - 1;
 
     if (inpTo < inpFrom ||
-        inpFrom > arrLast ||
-        inpTo < arrFirst) {
+        inpFrom > arrTS[indStop] ||
+        inpTo < arrTS[indStart]) {
         return [];
     }
 
-    if (inpFrom < arrFirst || fromDate == '') {
-        indexStart = 0;
-    } else {
-        for (let i = 0; i < arr.length; i++) {
-            let arrDate = new Date(arr[i]);
-            arrDate = arrDate.getTime();
-            if (arrDate >= inpFrom) {
-                indexStart = i;
-                break;
-            }
-        }
-    }
-
-    if (inpTo > arrLast || toDate == '') {
-        indexStop = arr.length - 1;
-    } else {
-        for (let i = indexStart; i < arr.length; i++) {
-            let arrDate = new Date(arr[i]);
-            arrDate = arrDate.getTime();
-            if (inpTo < arrDate) {
-                indexStop = i - 1;
-                break;
-            } else if (inpTo == arrDate) {
-                indexStop = i;
-                break;
-            }
-        }
-    }
-    return arr.slice(indexStart,indexStop + 1);
+    indStart = getFirstIndex(inpFrom, arrTS, indStart);
+    indStop = getLastIndex(inpTo, arrTS, indStop);
+    return arr.slice(indStart, indStop);
 }
+
+
+
+
 
 function readFile(input) {
     if (input.type && !input.type.startsWith('application/json')) { // Check if the file is an JSON
