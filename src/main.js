@@ -37,6 +37,10 @@ let eventsDay = document.getElementById("eventsDay");
 let dialogStat = document.getElementById("dialogStat");
 let inputNewEvent = document.getElementById("inputNewEvent");
 let inputColor = document.getElementById("inputColor");
+let divWithScroll = document.getElementById("divWithScroll");
+let inputDateFrom = document.getElementById("inputDateFrom");
+let inputDateTo = document.getElementById("inputDateTo");
+let btnShowDateRange = document.getElementById("btnShowDateRange");
 
 window.addEventListener('load', () => {
     loadData(LOC_STOR)
@@ -593,36 +597,24 @@ function newEvent() {
     }
 }
 
-
-
-
-
 function openStat() {
-    
-    dialogStat.style.height = 'fit-content';
-    let divWithScroll = document.getElementById("divWithScroll");
     divWithScroll.style.height = '0vh';
+    legendStat.innerHTML = '';
+    progressLinesStat.innerHTML = '';
     dialogStat.showModal();
 
-    let progressLinesStat = document.getElementById("progressLinesStat");
-    let legend = document.getElementById("legendStat");
-    legend.innerHTML = '';
-    progressLinesStat.innerHTML = '';
-
-    let inputDateFrom = document.getElementById("inputDateFrom");
-    let inputDateTo = document.getElementById("inputDateTo");
-
-    let btnShowDateRange = document.getElementById("btnShowDateRange");
     btnShowDateRange.addEventListener('click', function() {
-        legend.innerHTML = '';
         let inpDateFrom = inputDateFrom.value;
         let inpDateTo = inputDateTo.value;
-
         divWithScroll.style.height = '50vh';
-
         loadStatData(LOC_STOR, inpDateFrom, inpDateTo);
     });
 }
+
+
+
+
+
 
 function getRange(fromDate = '', toDate = '', inpData) {
     let arr = getArrayOfKeys(inpData);

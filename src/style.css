@@ -717,7 +717,6 @@ a {
 
 .DateStat {
     height: 30px;
-    padding-left: 20px;
 }
 
 .Date {
@@ -776,4 +775,8 @@ a {
 
 #importJson + label {
 	cursor: pointer;
+}
+
+#dialogStat {
+    height: fit-content;
 }
