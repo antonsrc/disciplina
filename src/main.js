@@ -663,44 +663,38 @@ function getRange(fromDate = '', toDate = '', inpData) {
     return arr.slice(indStart, indStop + 1);
 }
 
-
-
-
+function addJsonFileToLocStor(jsonData, allEvents) {
+    let allEventsFromFile = JSON.parse(jsonData['allEvents']);
+    let arr = getArrayOfKeys(jsonData);
+    for (let day of arr) {
+        if (LOC_STOR.getItem(day)) {
+            continue;
+        }
+        LOC_STOR.setItem(day, jsonData[day]);
+    }
+    for (let ev in allEventsFromFile) {
+        if (allEvents[ev]) {
+            continue;
+        }
+        allEvents[ev] = allEventsFromFile[ev];
+    }
+    LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
+}
 
 function readFile(input) {
-    if (input.type && !input.type.startsWith('application/json')) { // Check if the file is an JSON
+    if (input.type && !input.type.startsWith('application/json')) {
         return;
     }
-
     let reader = new FileReader();
     reader.readAsText(input);
-  
-    reader.onload = function() {
+    reader.addEventListener('load', () => {
         let jsonFileStr = reader.result;
-        let jsonFile = JSON.parse(jsonFileStr);
-        let allEventsFile = JSON.parse(jsonFile['allEvents']);
-        let allEventsLoc = JSON.parse(LOC_STOR.getItem("allEvents"));
-        for (let day in jsonFile) {
-            if (!LOC_STOR.getItem(day)) {
-                LOC_STOR.setItem(day, `${jsonFile[day]}`);
-               
-                let dayEvents = JSON.parse(jsonFile[day]);
-                for (let ev in dayEvents) {
-                    if (ev == 'freeTime' || ev == 'localDate') {
-                        continue;
-                    } else if (!allEventsLoc[ev]) {
-                        allEventsLoc[ev] = allEventsFile[ev];
-                        LOC_STOR.setItem("allEvents", JSON.stringify(allEventsLoc));
-                    }
-                }
-            }
-        }
+        let jsonData = JSON.parse(jsonFileStr);
+        let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"));
+        addJsonFileToLocStor(jsonData, allEvents);
         loadData(LOC_STOR)
             .then(() => setEventListenersForLabels())
             .then(() => setEventListenersForDays());
         document.getElementById('importJson').value = null;
-    };
-    reader.onerror = function() {
-        console.log(reader.error);
-    };
+    });
 }
