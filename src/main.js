@@ -20,8 +20,8 @@ let foldSVG = document.getElementById("foldSVG");
 let toggler = document.getElementById("toggler");
 let closeTogglerWrapper = document.getElementById("closeTogglerWrapper");
 let importJson = document.getElementById('importJson');
-let inpNewLabelName = document.getElementById("inputNewLabel");
-let inpNewLabelColor = document.getElementById("inputNewColor");
+let inputNewLabelName = document.getElementById("inputNewLabelName");
+let inputNewLabelColor = document.getElementById("inputNewLabelColor");
 let removeDay = document.getElementById("removeDay");
 let headDay = document.getElementById("headDay");
 let exportJson = document.getElementById("exportJson");
@@ -177,8 +177,8 @@ function setEventListenersForEventRemove() {
 function openLabelEditor(idLabel) {
         let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
         dialogLabelEditor.dataset.id = idLabel;
-        document.getElementById("inputNewLabel").value = allEvents[idLabel].name;
-        document.getElementById("inputNewColor").value = allEvents[idLabel].color;
+        inputNewLabelName.value = decodeURIComponent(allEvents[idLabel].name);
+        inputNewLabelColor.value = allEvents[idLabel].color;
         dialogLabelEditor.showModal();
 }
 
@@ -187,8 +187,8 @@ function changeLabelInLocStor() {
         let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"));
         let eventId = dialogLabelEditor.dataset.id;
         allEvents[eventId] = {
-            color: inpNewLabelColor.value,
-            name: inpNewLabelName.value,
+            color: inputNewLabelColor.value,
+            name: encodeURIComponent(inputNewLabelName.value),
         }
         LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
         resolve(0);
@@ -430,7 +430,7 @@ function loadSelectionMenu(selectTag, inpData) {
         }
         let optionEv = document.createElement('option');
         optionEv.value = ev;
-        optionEv.textContent = allEvents[ev].name;
+        optionEv.textContent = decodeURIComponent(allEvents[ev].name);
         selectTag.append(optionEv);
     }
 }
@@ -445,7 +445,7 @@ function loadLabels(inpData, labelsTag) {
         let divEvLavel = document.createElement('div');
         divEvLavel.classList.add("EventLabelLink");
         divEvLavel.style.background = allEvents[ev].color;
-        divEvLavel.textContent = allEvents[ev].name;
+        divEvLavel.textContent = decodeURIComponent(allEvents[ev].name);
         divEvLavel.id = 'legend_'+ev;
         labelsTag.append(divEvLavel);
     }
@@ -491,7 +491,7 @@ function loadLabelsStat(sortedEvents, inpData) {
         let eventLabel = document.createElement('span');
         eventLabel.classList.add('EventLabel');
         eventLabel.style.backgroundColor = allEvents[ev[0]].color;
-        eventLabel.textContent = allEvents[ev[0]].name;
+        eventLabel.textContent = decodeURIComponent(allEvents[ev[0]].name);
         pLabel.append(eventLabel);
 
         let eventMinutes = document.createElement('span');
@@ -523,7 +523,7 @@ function loadProgressLinesOfDay(eventsOfDay, allEvents) {
         let eventLabel = document.createElement('span');
         eventLabel.classList.add('EventLabel');
         eventLabel.style.backgroundColor = allEvents[ev].color;
-        eventLabel.textContent = allEvents[ev].name;
+        eventLabel.textContent = decodeURIComponent(allEvents[ev].name);
         pEv.append(eventLabel);
 
         let eventMinutes = document.createElement('span');
@@ -588,7 +588,7 @@ function newEvent() {
 
         allEvents[newId] = {
             color: inpColor,
-            name: inpNewEvent,
+            name: encodeURIComponent(inpNewEvent),
         }
 
         LOC_STOR.setItem("allEvents", JSON.stringify(allEvents));
