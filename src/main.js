@@ -41,11 +41,21 @@ let divWithScroll = document.getElementById("divWithScroll");
 let inputDateFrom = document.getElementById("inputDateFrom");
 let inputDateTo = document.getElementById("inputDateTo");
 let btnShowDateRange = document.getElementById("btnShowDateRange");
+let exampleDiv = document.getElementById("exampleDiv");
 
 window.addEventListener('load', () => {
-    loadData(LOC_STOR)
-        .then(() => setEventListenersForLabels())
-        .then(() => setEventListenersForDays());
+    if (LOC_STOR.length == 0) {
+        loadExampleIfEmpty(LOC_STOR);
+        LOC_STOR.setItem("example", JSON.stringify(0));
+    } else {
+        loadData(LOC_STOR)
+            .then(() => setEventListenersForLabels())
+            .then(() => setEventListenersForDays());
+    }
+    if (LOC_STOR.getItem("example")) {
+        setExampleEnvironment();
+    }
+
 });
 
 document.querySelectorAll('.closeDialog').forEach(item => {
@@ -132,6 +142,30 @@ closeTogglerWrapper.addEventListener('click', () => {
 importJson.addEventListener('change', (e) => {
     readFile(e.target.files[0]);
 });
+
+exampleDiv.addEventListener('click', () => {
+    header.style.background = '';
+    exampleDiv.style.display = '';
+    LOC_STOR.removeItem("example");
+});
+
+function loadExampleIfEmpty(inpData) {
+    return fetch("./data/example.json")
+        .then(res => res.json())
+        .then(json => {
+            let allEvents = (inpData.getItem("allEvents")) ? JSON.parse(inpData.getItem("allEvents")) : {};
+            addJsonFileToLocStor(json, allEvents);
+            loadData(inpData)
+                .then(() => setEventListenersForLabels())
+                .then(() => setEventListenersForDays());
+            return json;
+        });
+}
+
+function setExampleEnvironment() {
+    header.style.background = 'red';
+    exampleDiv.style.display = 'block';
+}
 
 function loadDayData(data, day) {
     return JSON.parse(data.getItem(day));
@@ -239,7 +273,7 @@ function validTimeValues(time) {
 
 function getArrayOfKeys(inpData) {
     let arr = Object.keys(inpData)
-                .filter(item => (item != 'allEvents') && (item != 'idLength'));
+                .filter(item => (item != 'allEvents') && (item != 'idLength') && (item != 'example'));
     return arr;
 }
 
@@ -373,8 +407,12 @@ function loadLineOfDay(events, appendTo, inpData, dataWidth) {
 }
 
 function updAllEvents(inpData, arrOfDays) {
+    if (!arrOfDays.length) {
+        return;
+    }
     let newAllEvents = {};
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
+    
     for (let day of arrOfDays) {
         let eventsOfDay = loadDayData(inpData, day);
         for (let ev in eventsOfDay) {
@@ -690,7 +728,7 @@ function readFile(input) {
     reader.addEventListener('load', () => {
         let jsonFileStr = reader.result;
         let jsonData = JSON.parse(jsonFileStr);
-        let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"));
+        let allEvents = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
         addJsonFileToLocStor(jsonData, allEvents);
         loadData(LOC_STOR)
             .then(() => setEventListenersForLabels())

@@ -107,6 +107,21 @@ a {
     backdrop-filter: blur(10px);
 }
 
+#exampleDiv {
+    display: none;
+    position: fixed;
+    bottom: 3rem;
+    right: 3rem;
+    border: 3px rgb(255, 0, 0) solid;
+    text-align: center;
+    background: #d77979;
+    color: red;
+    padding: 0.5rem;
+    width: 15rem;
+    cursor: pointer;
+    z-index: 100;
+}
+
 #progressLines {
     width: 100%;
     padding-top: 1.5rem;
@@ -578,7 +593,6 @@ a {
 #divWithScroll {
     overflow: auto;
     width: 100%;
-
     grid-column: 2/4;
     grid-row: 4;
     justify-self: center;
