@@ -90,6 +90,21 @@ a {
     }
 }
 
+@keyframes headerBlink {
+    from {
+        background: rgba(255, 255, 255, 0);
+        color: rgba(0, 0, 0, 0);
+    }
+    50% {
+        background: rgba(255, 0, 0, 0.5);
+        color: rgb(255, 255, 255);
+    }
+    to {
+        background: rgba(255, 255, 255, 0);
+        color: rgba(0, 0, 0, 0);
+    }
+}
+
 #header {
     padding-right: 0.5rem;
     order: 1;
@@ -110,16 +125,20 @@ a {
 #exampleDiv {
     display: none;
     position: fixed;
-    bottom: 3rem;
-    right: 3rem;
-    border: 3px rgb(255, 0, 0) solid;
+    top: 2rem;
+    right: 0.5rem;
     text-align: center;
-    background: #d77979;
-    color: red;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.6);
     padding: 0.5rem;
-    width: 15rem;
+    width: 12rem;
     cursor: pointer;
     z-index: 100;
+    font-size: 0.9rem;
+}
+
+#exampleDiv:focus, #exampleDiv:hover {
+    background-color: rgba(176, 202, 255, 0.6);
 }
 
 #progressLines {

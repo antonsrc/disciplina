@@ -1,5 +1,6 @@
 "use strict"
 
+const VERSION = '0.7.4';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -44,6 +45,7 @@ let btnShowDateRange = document.getElementById("btnShowDateRange");
 let exampleDiv = document.getElementById("exampleDiv");
 
 window.addEventListener('load', () => {
+    header.textContent = `disciplina v.${VERSION}`;
     if (LOC_STOR.length == 0) {
         loadExampleIfEmpty(LOC_STOR);
         LOC_STOR.setItem("example", JSON.stringify(0));
@@ -146,7 +148,18 @@ importJson.addEventListener('change', (e) => {
 exampleDiv.addEventListener('click', () => {
     header.style.background = '';
     exampleDiv.style.display = '';
-    LOC_STOR.removeItem("example");
+    
+
+    header.textContent = `disciplina v.${VERSION}`;;
+    header.style.animationName = '';
+    header.style.animationDuration = '';
+    header.style.animationTimingFunction = '';
+    header.style.animationIterationCount = '';
+
+    LOC_STOR.clear();
+    loadData(LOC_STOR)
+        .then(() => setEventListenersForLabels())
+        .then(() => setEventListenersForDays());
 });
 
 function loadExampleIfEmpty(inpData) {
@@ -163,7 +176,11 @@ function loadExampleIfEmpty(inpData) {
 }
 
 function setExampleEnvironment() {
-    header.style.background = 'red';
+    header.innerHTML = '<b>DEMO!</b> disciplina';
+    header.style.animationName = 'headerBlink';
+    header.style.animationDuration = '4s';
+    header.style.animationTimingFunction = 'linear';
+    header.style.animationIterationCount = 'infinite';
     exampleDiv.style.display = 'block';
 }
 
@@ -324,8 +341,8 @@ function checkTime(inpTime, inpDate) {
 function showErrors(arr) {
     errorMessage.style.display = "block";
     errorMessage.innerHTML = "";
-    arr = arr.filter(item => item.reason);
-    for (let errorType of arr) {
+    let arrFilter = arr.filter(item => item.reason);
+    for (let errorType of arrFilter) {
         switch(errorType.reason) {
             case 'inputDateReject':
                 errorMessage.innerHTML += 'Выберите дату<br>';
@@ -722,6 +739,9 @@ function addJsonFileToLocStor(jsonData, allEvents) {
 function readFile(input) {
     if (input.type && !input.type.startsWith('application/json')) {
         return;
+    }
+    if (LOC_STOR.getItem("example")) {
+        LOC_STOR.clear();
     }
     let reader = new FileReader();
     reader.readAsText(input);
