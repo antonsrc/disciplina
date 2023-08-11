@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.7.5';
+const VERSION = '0.7.6';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -342,7 +342,7 @@ function showErrors(arr) {
     errorMessage.style.display = "block";
     errorMessage.innerHTML = "";
     let arrFilter = arr.filter(item => item.reason);
-    for (let errorType of arrFilter) {
+    arrFilter.forEach(errorType => {
         switch(errorType.reason) {
             case 'inputDateReject':
                 errorMessage.innerHTML += 'Выберите дату<br>';
@@ -358,7 +358,7 @@ function showErrors(arr) {
                 errorMessage.innerHTML += `Свободного времени осталось ${freeTime} мин<br>`;
                 break;
         }
-    }
+    });
 }
 
 function saveToLocalSorage(arr) {
@@ -429,8 +429,7 @@ function updAllEvents(inpData, arrOfDays) {
     }
     let newAllEvents = {};
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
-    
-    for (let day of arrOfDays) {
+    arrOfDays.forEach(day => {
         let eventsOfDay = loadDayData(inpData, day);
         for (let ev in eventsOfDay) {
             if (ev == "freeTime" || ev == "localDate") {
@@ -438,7 +437,7 @@ function updAllEvents(inpData, arrOfDays) {
             }
             newAllEvents[ev] = allEvents[ev];
         }
-    }
+    });
     inpData.setItem("allEvents", JSON.stringify(newAllEvents));
 }
 
@@ -451,7 +450,7 @@ function resizeAllLines(className, dataWidth, progressLinesTag) {
 function loadProgressLines(inpData, linesTag, arrDates, dateClassStyle) {
     linesTag.innerHTML = '';
     let tempMaxWidth = 0;
-    for (let day of arrDates) {
+    arrDates.forEach(day => {
         let eventsOfDay = loadDayData(inpData, day);
         let dayLine = document.createElement('div');
         dayLine.classList.add("Progress");
@@ -468,7 +467,7 @@ function loadProgressLines(inpData, linesTag, arrDates, dateClassStyle) {
         eventsP.classList.add("eventsLines");
         dayLine.append(eventsP);
         tempMaxWidth = loadLineOfDay(eventsOfDay, eventsP, inpData, tempMaxWidth);
-    }
+    });
     resizeAllLines("line", tempMaxWidth, linesTag);
 }
 
@@ -520,7 +519,7 @@ function loadData(inpData, dateFrom = '', dateTo = '') {
 
 function getMinutesSumOfEvents(days, inpData) {
     let objEvents = {};
-    for (let day of days) {
+    days.forEach(day => {
         let eventsOfDay = loadDayData(inpData, day);   
         for (let ev in eventsOfDay) {
             if (ev == "freeTime" || ev == "localDate") {
@@ -532,14 +531,14 @@ function getMinutesSumOfEvents(days, inpData) {
                 objEvents[ev] = eventsOfDay[ev];
             }
         }
-    }
+    });
     return objEvents;
 }
 
 function loadLabelsStat(sortedEvents, inpData) {
     legendStat.innerHTML = '';
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
-    for (let ev of sortedEvents) {
+    sortedEvents.forEach(ev => {
         let pLabel = document.createElement('p');
         legendStat.append(pLabel);
 
@@ -552,7 +551,7 @@ function loadLabelsStat(sortedEvents, inpData) {
         let eventMinutes = document.createElement('span');
         eventMinutes.textContent = ' ' + ev[1] + ' мин ';
         pLabel.append(eventMinutes);
-    }
+    });
 }
 
 function loadStatData(inpData, dateFrom = '', dateTo = '') {
