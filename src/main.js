@@ -148,14 +148,11 @@ importJson.addEventListener('change', (e) => {
 exampleDiv.addEventListener('click', () => {
     header.style.background = '';
     exampleDiv.style.display = '';
-    
-
     header.textContent = `disciplina v.${VERSION}`;;
     header.style.animationName = '';
     header.style.animationDuration = '';
     header.style.animationTimingFunction = '';
     header.style.animationIterationCount = '';
-
     LOC_STOR.clear();
     loadData(LOC_STOR)
         .then(() => setEventListenersForLabels())
