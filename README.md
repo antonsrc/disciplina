@@ -7,9 +7,9 @@
 
 Веб-приложение для ежедневного журналирования событий.
 
-![disciplina desktop screen](demo/desktop.png)
-
 ### Особенности:
 - приложение на "чистом" JavaScript'е;
 - данные записываются в localStorage;
 - возможность экспорта и импорта с JSON-файла.
+
+![disciplina desktop screen](/demo/img/desktop.png)

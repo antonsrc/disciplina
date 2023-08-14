@@ -7,9 +7,9 @@
 
 Web application for daily event logging.
 
-![disciplina desktop screen](demo/desktop.png)
-
 ### Features:
 - Application on "pure" JavaScript;
 - data is written to localStorage;
 - ability to export to a JSON file and import from a JSON file.
+
+![disciplina desktop screen](/demo/img/desktop.png)
