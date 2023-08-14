@@ -128,7 +128,7 @@ foldLabelsWrapper.addEventListener('click', () => {
         foldSVG.href.baseVal = "./data/cross45.svg";
     } else {
         labels.style.height = "2rem";
-        legend.style.height = "3rem";
+        legend.style.height = "var(--legend-height)";
         foldSVG.href.baseVal = "./data/dots.svg";
     }
 });
