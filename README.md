@@ -10,6 +10,6 @@
 ### Особенности:
 - приложение на "чистом" JavaScript'е;
 - данные записываются в localStorage;
-- возможность экспорта и импорта с JSON-файла.
+- возможность экспорта в JSON-файл и импорта с JSON-файла.
 
 ![disciplina desktop screen](/demo/img/desktop.png)
