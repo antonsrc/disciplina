@@ -13,9 +13,9 @@ let addNewEvent = document.getElementById("addNewEvent");
 let openNewEventCreater = document.getElementById("openNewEventCreater");
 let changeLabel = document.getElementById("changeLabel");
 let clearLocStorage = document.getElementById("clearLocStorage");
-let foldLabelsWrapper = document.getElementById("foldLabelsWrapper");
+let foldLabels = document.getElementById("foldLabels");
 let legend = document.getElementById("legend");
-let showTogglerWrapper = document.getElementById("showTogglerWrapper");
+let showToggler = document.getElementById("showToggler");
 let labels = document.getElementById("labels");
 let foldSVG = document.getElementById("foldSVG");
 let toggler = document.getElementById("toggler");
@@ -121,7 +121,7 @@ changeLabel.addEventListener('click', () => {
         .then(() => setEventListenersForDays());
 });
 
-foldLabelsWrapper.addEventListener('click', () => {
+foldLabels.addEventListener('click', () => {
     if (foldSVG.href.baseVal == "./data/dots.svg") {
         labels.style.height = "fit-content";
         legend.style.height = "fit-content";
@@ -133,7 +133,7 @@ foldLabelsWrapper.addEventListener('click', () => {
     }
 });
 
-showTogglerWrapper.addEventListener('click', () => {
+showToggler.addEventListener('click', () => {
     toggler.style.display = 'flex';
 });
 
