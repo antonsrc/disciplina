@@ -281,6 +281,7 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: fit-content;
 }
 
 .standardButton:focus, .standardButton:hover {
@@ -341,10 +342,16 @@ a {
     justify-self: end;
 }
 
+#inputEvent {
+    width: 100%;
+}
+
 #inputEventNew {
     grid-column: 2;
     grid-row: 3;
     justify-self: start;
+    width: 95%;
+    text-align: left;
 }
 
 #inputTimeL {
