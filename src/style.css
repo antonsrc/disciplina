@@ -459,20 +459,19 @@ a {
 #dialogStatGrid {
     text-align: left;
     display: grid;
-    grid-template-columns: 20px 1fr 1fr 20px;
+    grid-template-columns: 1rem 1fr 1rem 1fr 1rem;
     justify-items: center;
-    column-gap: 1rem;
     row-gap: 1.3rem;
     padding-bottom: 1rem;
 }
 
 #closeStat {
-    grid-column: 4;
+    grid-column: 5;
     grid-row: 1;
 }
 
 #headStat {
-    grid-column: 1/5;
+    grid-column: 1/6;
     grid-row: 1;
 }
 
@@ -485,7 +484,7 @@ a {
 }
 
 #inpTo {
-    grid-column: 3;
+    grid-column: 4;
     grid-row: 2;
     align-self: self-end;
     justify-self: start;
@@ -493,14 +492,14 @@ a {
 }
 
 #btnShowDateRange {
-    grid-column: 1/5;
+    grid-column: 1/6;
     grid-row: 3;
 }
 
 #divWithScroll {
     overflow: auto;
     width: 100%;
-    grid-column: 2/4;
+    grid-column: 2/5;
     grid-row: 4;
     justify-self: center;
 }
