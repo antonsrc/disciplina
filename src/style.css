@@ -410,7 +410,7 @@ a {
 
 .MinutesDiv {
     font-size: 1rem;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     padding: 0.7rem 0.3rem 0.3rem 0.3rem;
 }
 
@@ -693,6 +693,7 @@ a {
     flex-direction: row;
     flex-grow: 1;
     height: calc(var(--legend-height) - 0.1rem);
+    width: 100%;
 }
 
 .EventLabelLink {
