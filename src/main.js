@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.7.8';
+const VERSION = '0.7.9';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -408,7 +408,7 @@ function loadLineOfDay(events, appendTo, inpData, dataWidth) {
         let time = Number(events[ev]) * (100/1440);
         widthOfDay += time;
 
-        let eventSpan = document.createElement('span');
+        let eventSpan = document.createElement('div');
         eventSpan.classList.add("line");
         eventSpan.style.backgroundColor = allEvents[ev].color;
         eventSpan.style.width = time + "%";
@@ -536,16 +536,18 @@ function loadLabelsStat(sortedEvents, inpData) {
     legendStat.innerHTML = '';
     let allEvents = JSON.parse(inpData.getItem("allEvents"));
     sortedEvents.forEach(ev => {
-        let pLabel = document.createElement('p');
+        let pLabel = document.createElement('div');
+        pLabel.classList.add('EventDay');
         legendStat.append(pLabel);
 
-        let eventLabel = document.createElement('span');
+        let eventLabel = document.createElement('div');
         eventLabel.classList.add('EventLabel');
         eventLabel.style.backgroundColor = allEvents[ev[0]].color;
         eventLabel.textContent = decodeURIComponent(allEvents[ev[0]].name);
         pLabel.append(eventLabel);
 
-        let eventMinutes = document.createElement('span');
+        let eventMinutes = document.createElement('div');
+        eventMinutes.classList.add('MinutesDiv');
         eventMinutes.textContent = ' ' + ev[1] + ' мин ';
         pLabel.append(eventMinutes);
     });
@@ -567,21 +569,23 @@ function loadProgressLinesOfDay(eventsOfDay, allEvents) {
         if (ev == "freeTime" || ev == "localDate") {
             continue;
         }
-        let pEv = document.createElement('p');
+        let pEv = document.createElement('div');
+        pEv.classList.add('EventDay');
         pEv.id = ev + '_day';
         eventsDay.append(pEv);
 
-        let eventLabel = document.createElement('span');
+        let eventLabel = document.createElement('div');
         eventLabel.classList.add('EventLabel');
         eventLabel.style.backgroundColor = allEvents[ev].color;
         eventLabel.textContent = decodeURIComponent(allEvents[ev].name);
         pEv.append(eventLabel);
 
-        let eventMinutes = document.createElement('span');
+        let eventMinutes = document.createElement('div');
+        eventMinutes.classList.add('MinutesDiv');
         eventMinutes.textContent = ' ' + eventsOfDay[ev] + ' мин ';
         pEv.append(eventMinutes);
 
-        let spanEventRemove = document.createElement('span');
+        let spanEventRemove = document.createElement('div');
         spanEventRemove.classList.add('DayEventRemove');
         pEv.append(spanEventRemove);
 
