@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.7.17';
+const VERSION = '0.7.18';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
