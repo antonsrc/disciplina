@@ -412,6 +412,7 @@ a {
     font-size: 1rem;
     /* white-space: nowrap; */
     padding: 0.7rem 0.3rem 0.3rem 0.3rem;
+    flex-shrink: 0;
 }
 
 .DayEventRemove {
@@ -419,6 +420,7 @@ a {
     justify-self: start;
     font-size: 0.8rem;
     padding: 1rem 0.3rem 0rem 0.3rem;
+    flex-shrink: 0;
 }
 
 .DayEventRemoveA:focus, .DayEventRemoveA:hover {
@@ -685,6 +687,7 @@ a {
     overflow: hidden;
     width: fit-content;
     height: calc(var(--legend-height) - 0.2rem);
+    flex-shrink: 1;
 }
 
 .EventDay {
