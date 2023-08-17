@@ -684,9 +684,12 @@ a {
     margin: 0.1rem 0.05rem;
     border-radius: 10px;
     font-size: 1rem;
-    overflow: hidden;
     width: fit-content;
     height: calc(var(--legend-height) - 0.2rem);
+}
+
+.EventLabel {
+    overflow: hidden;
     flex-shrink: 1;
 }
 
