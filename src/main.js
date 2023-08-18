@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.7.19';
+const VERSION = '0.8.1';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -127,7 +127,7 @@ foldLabels.addEventListener('click', () => {
         legend.style.height = "fit-content";
         foldSVG.href.baseVal = "./data/cross45.svg";
     } else {
-        labels.style.height = "2rem";
+        labels.style.height = "calc(var(--legend-height) - 0.1rem)";
         legend.style.height = "var(--legend-height)";
         foldSVG.href.baseVal = "./data/dots.svg";
     }
@@ -499,6 +499,18 @@ function loadLabels(inpData, labelsTag) {
         divEvLavel.textContent = decodeURIComponent(allEvents[ev].name);
         divEvLavel.id = 'legend_'+ev;
         labelsTag.append(divEvLavel);
+        hideEndOfElement(divEvLavel);
+    }
+}
+
+function hideEndOfElement(divElement) {
+    if (divElement.scrollWidth > divElement.clientWidth) {
+        let content = divElement.textContent;
+        divElement.textContent = '';
+        let innerDiv = document.createElement('div');
+        innerDiv.classList.add("HideEnd");
+        innerDiv.textContent = content;
+        divElement.append(innerDiv);
     }
 }
 
@@ -545,6 +557,7 @@ function loadLabelsStat(sortedEvents, inpData) {
         eventLabel.style.backgroundColor = allEvents[ev[0]].color;
         eventLabel.textContent = decodeURIComponent(allEvents[ev[0]].name);
         pLabel.append(eventLabel);
+        hideEndOfElement(eventLabel);
 
         let eventMinutes = document.createElement('div');
         eventMinutes.classList.add('MinutesDiv');
@@ -579,6 +592,7 @@ function loadProgressLinesOfDay(eventsOfDay, allEvents) {
         eventLabel.style.backgroundColor = allEvents[ev].color;
         eventLabel.textContent = decodeURIComponent(allEvents[ev].name);
         pEv.append(eventLabel);
+        hideEndOfElement(eventLabel);
 
         let eventMinutes = document.createElement('div');
         eventMinutes.classList.add('MinutesDiv');
