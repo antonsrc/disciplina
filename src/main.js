@@ -509,6 +509,7 @@ function hideEndOfElement(divElement) {
         divElement.textContent = '';
         let innerDiv = document.createElement('div');
         innerDiv.classList.add("HideEnd");
+        innerDiv.id = `lgnd_${divElement.id.split('_')[1]}`
         innerDiv.textContent = content;
         divElement.append(innerDiv);
     }
