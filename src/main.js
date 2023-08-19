@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.8.2';
+const VERSION = '0.8.3';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -564,7 +564,15 @@ function loadLabelsStat(sortedEvents, inpData) {
         eventMinutes.classList.add('MinutesDiv');
         eventMinutes.textContent = ' ' + ev[1] + ' мин ';
         pLabel.append(eventMinutes);
+
+        // if (eventLabel.clientHeight > 1.9.rem) {
+
+        //     console.log(pLabel.clientHeight, eventLabel.clientHeight)
+        // }
+        
     });
+
+    
 }
 
 function loadStatData(inpData, dateFrom = '', dateTo = '') {
