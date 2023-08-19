@@ -702,6 +702,7 @@ a {
     border-radius: 10px;
     font-size: 1rem;
     width: fit-content;
+    white-space: nowrap;
     overflow: hidden;
 }
 
