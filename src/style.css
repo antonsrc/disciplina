@@ -410,6 +410,7 @@ a {
     flex-direction: row;
     flex-grow: 1;
     width: 100%;
+    height: var(--legend-height);
 }
 
 #removeDay {
@@ -427,7 +428,7 @@ a {
 
 .MinutesDiv {
     font-size: 1rem;
-    /* white-space: nowrap; */
+    white-space: nowrap;
     padding: 0.5rem 0.3rem 0.3rem 0.3rem;
     flex-shrink: 0;
 }
@@ -707,7 +708,7 @@ a {
 }
 
 .EventLabel {
-    flex-shrink: 1;
+    flex-shrink: 0;
 }
 
 .EventLabelLink {

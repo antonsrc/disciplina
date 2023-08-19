@@ -504,7 +504,7 @@ function loadLabels(inpData, labelsTag) {
 }
 
 function hideEndOfElement(divElement) {
-    if (divElement.scrollWidth > divElement.clientWidth) {
+    if (divElement.parentElement.scrollWidth > divElement.parentElement.clientWidth) {
         let content = divElement.textContent;
         divElement.textContent = '';
         let innerDiv = document.createElement('div');
@@ -512,6 +512,7 @@ function hideEndOfElement(divElement) {
         innerDiv.id = `lgnd_${divElement.id.split('_')[1]}`
         innerDiv.textContent = content;
         divElement.append(innerDiv);
+        divElement.style.flexShrink = '1';
     }
 }
 
@@ -558,21 +559,14 @@ function loadLabelsStat(sortedEvents, inpData) {
         eventLabel.style.backgroundColor = allEvents[ev[0]].color;
         eventLabel.textContent = decodeURIComponent(allEvents[ev[0]].name);
         pLabel.append(eventLabel);
-        hideEndOfElement(eventLabel);
-
+        
         let eventMinutes = document.createElement('div');
         eventMinutes.classList.add('MinutesDiv');
         eventMinutes.textContent = ' ' + ev[1] + ' мин ';
         pLabel.append(eventMinutes);
 
-        // if (eventLabel.clientHeight > 1.9.rem) {
-
-        //     console.log(pLabel.clientHeight, eventLabel.clientHeight)
-        // }
-        
+        hideEndOfElement(eventLabel);
     });
-
-    
 }
 
 function loadStatData(inpData, dateFrom = '', dateTo = '') {
@@ -601,8 +595,7 @@ function loadProgressLinesOfDay(eventsOfDay, allEvents) {
         eventLabel.style.backgroundColor = allEvents[ev].color;
         eventLabel.textContent = decodeURIComponent(allEvents[ev].name);
         pEv.append(eventLabel);
-        hideEndOfElement(eventLabel);
-
+        
         let eventMinutes = document.createElement('div');
         eventMinutes.classList.add('MinutesDiv');
         eventMinutes.textContent = ' ' + eventsOfDay[ev] + ' мин ';
@@ -617,6 +610,8 @@ function loadProgressLinesOfDay(eventsOfDay, allEvents) {
         aEv.textContent = '[удалить]';
         aEv.classList.add('DayEventRemoveA');
         spanEventRemove.append(aEv);
+
+        hideEndOfElement(eventLabel);
     }
 }
 
