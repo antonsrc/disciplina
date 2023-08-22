@@ -5,6 +5,8 @@
     --main-green-color: rgb(85, 195, 81);
     --main-green-light-color: rgb(141, 255, 137);
     --main-green-dark-color: rgb(48, 160, 38);
+    --main-yellow-color: rgb(255, 212, 42);
+    --main-red-color: rgb(255, 0, 0);
 }
 
 * {
@@ -225,7 +227,7 @@ a {
 
 #toggler {
     text-align: center;
-    background-color: rgb(255, 212, 42);
+    background-color: var(--main-yellow-color);
     position: fixed;
     bottom: 0;
     right: 0;
@@ -423,7 +425,7 @@ a {
 }
 
 #removeDay a:hover {
-    background-color: rgb(255, 0, 0);
+    background-color: var(--main-red-color);
 }
 
 .MinutesDiv {
@@ -442,7 +444,7 @@ a {
 }
 
 .DayEventRemoveA:focus, .DayEventRemoveA:hover {
-    background-color: rgb(255, 0, 0);
+    background-color: var(--main-red-color);
 }
 
 #dialogLabelEditorGrid {
@@ -547,11 +549,11 @@ a {
 }
 
 #errorMessage {
-    border: 3px rgb(255, 0, 0) solid;
-    background: rgb(255, 234, 151);
+    border: 3px var(--main-red-color) solid;
+    background: var(--main-yellow-color);
     display: none;
     text-align: center;
-    color: red;
+    color: var(--main-red-color);
     font-weight: bold;
     width: 95%;
     margin-left: auto;
@@ -629,7 +631,7 @@ a {
 }
 
 #clearLocStorage a:hover {
-    background-color: rgb(255, 0, 0);
+    background-color: var(--main-red-color);
     transition: background-color 0.1s linear;
 }
 

@@ -562,7 +562,9 @@ function loadLabelsStat(sortedEvents, inpData) {
         
         let eventMinutes = document.createElement('div');
         eventMinutes.classList.add('MinutesDiv');
-        eventMinutes.textContent = ' ' + ev[1] + ' мин ';
+        let totalMinutes = ev[1];
+        let hhMMString = Math.floor(totalMinutes / 60) + 'ч ' + totalMinutes % 60 + 'мин ';
+        eventMinutes.textContent = ' ' + hhMMString;
         pLabel.append(eventMinutes);
 
         hideEndOfElement(eventLabel);
@@ -598,7 +600,9 @@ function loadProgressLinesOfDay(eventsOfDay, allEvents) {
         
         let eventMinutes = document.createElement('div');
         eventMinutes.classList.add('MinutesDiv');
-        eventMinutes.textContent = ' ' + eventsOfDay[ev] + ' мин ';
+        let totalMinutes = eventsOfDay[ev];
+        let hhMMString = Math.floor(totalMinutes / 60) + 'ч ' + totalMinutes % 60 + 'мин ';
+        eventMinutes.textContent = ' ' + hhMMString;
         pEv.append(eventMinutes);
 
         let spanEventRemove = document.createElement('div');
