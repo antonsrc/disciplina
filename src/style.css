@@ -13,7 +13,8 @@
     box-sizing: border-box;
 }
 
-img, svg {
+img,
+svg {
     display: block;
 }
 
@@ -55,7 +56,8 @@ a {
     z-index: 50;
 }
 
-.closeDialog:focus, .closeDialog:hover {
+.closeDialog:focus,
+.closeDialog:hover {
     background-color: var(--main-green-light-color);
 }
 
@@ -122,7 +124,8 @@ a {
     height: 1.5rem;
 }
 
-#header, #legend {
+#header,
+#legend {
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
@@ -142,7 +145,8 @@ a {
     font-size: 0.9rem;
 }
 
-#exampleDiv:focus, #exampleDiv:hover {
+#exampleDiv:focus,
+#exampleDiv:hover {
     background-color: rgba(176, 202, 255, 0.7);
 }
 
@@ -154,12 +158,10 @@ a {
 #main {
     order: 2;
     width: 100%;
-    text-align: center;
     padding-bottom: calc(5rem + var(--legend-height) - 1px);  /* height of footer */
 }
 
 #footer {
-    text-align: center;
     position: fixed;
     bottom: 0;
     display: flex;
@@ -296,7 +298,8 @@ a {
     width: fit-content;
 }
 
-.standardButton:focus, .standardButton:hover {
+.standardButton:focus,
+.standardButton:hover {
     background-color: var(--main-green-color);
 }
 
@@ -364,7 +367,6 @@ a {
     grid-row: 3;
     justify-self: start;
     width: 95%;
-    text-align: left;
 }
 
 #inputTimeL {
@@ -380,7 +382,6 @@ a {
 }
 
 #dialogDayEditorGrid {
-    text-align: left;
     display: grid;
     grid-template-columns: 1rem 1fr 1rem;
     justify-items: center;
@@ -443,12 +444,12 @@ a {
     flex-shrink: 0;
 }
 
-.DayEventRemoveA:focus, .DayEventRemoveA:hover {
+.DayEventRemoveA:focus,
+.DayEventRemoveA:hover {
     background-color: var(--main-red-color);
 }
 
 #dialogLabelEditorGrid {
-    text-align: left;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     justify-items: center;
@@ -497,7 +498,6 @@ a {
 }
 
 #dialogStatGrid {
-    text-align: left;
     display: grid;
     grid-template-columns: 1rem 1fr 1rem 1fr 1rem;
     justify-items: center;
@@ -635,7 +635,8 @@ a {
     transition: background-color 0.1s linear;
 }
 
-#authorContacts a:focus, #authorContacts a:hover {
+#authorContacts a:focus,
+#authorContacts a:hover {
     background-color: var(--main-green-color)
 }
 
@@ -665,7 +666,8 @@ a {
     height: 32px;
 }
 
-.Date, .DateStat {
+.Date,
+.DateStat {
     background-color:rgb(255, 255, 255);
     color: #505050;
     align-items: center;
@@ -685,7 +687,8 @@ a {
     cursor: pointer;
 }
 
-.Date:focus, .Date:hover {
+.Date:focus,
+.Date:hover {
     background-color: rgb(230, 230, 230);
 }
 
@@ -699,7 +702,8 @@ a {
     height: 30px;
 }
 
-.EventLabelLink, .EventLabel {
+.EventLabelLink,
+.EventLabel {
     padding: 4px 10px;
     margin: 0.1rem 0.05rem;
     border-radius: 10px;
@@ -718,7 +722,8 @@ a {
     height: calc(var(--legend-height) - 0.1rem);
 }
 
-.EventLabelLink:focus, .EventLabelLink:hover{
+.EventLabelLink:focus,
+.EventLabelLink:hover{
     color: rgb(255, 255, 255);
 }
 
@@ -729,7 +734,8 @@ a {
     padding: 0.3rem;
 }
 
-.togglerLink:focus, .togglerLink:hover {
+.togglerLink:focus,
+.togglerLink:hover {
     background-color: var(--main-green-color)
 }
 

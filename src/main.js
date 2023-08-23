@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.8.3';
+const VERSION = '0.8.4';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -44,20 +44,14 @@ let inputDateTo = document.getElementById("inputDateTo");
 let btnShowDateRange = document.getElementById("btnShowDateRange");
 let exampleDiv = document.getElementById("exampleDiv");
 
-window.addEventListener('load', () => {
-    header.textContent = `disciplina v.${VERSION}`;
-    if (LOC_STOR.length == 0) {
-        loadExampleIfEmpty(LOC_STOR);
-        LOC_STOR.setItem("example", JSON.stringify(0));
-    } else {
-        loadData(LOC_STOR)
-            .then(() => setEventListenersForLabels())
-            .then(() => setEventListenersForDays());
-    }
-    if (LOC_STOR.getItem("example")) {
-        setExampleEnvironment();
-    }
+header.textContent = `disciplina v.${VERSION}`;
 
+window.addEventListener('DOMContentLoaded', () => {
+    if (LOC_STOR.length == 0) {
+        loadExampleDataIfEmpty(LOC_STOR);
+    } else {
+        loadData(LOC_STOR);
+    }
 });
 
 document.querySelectorAll('.closeDialog').forEach(item => {
@@ -87,9 +81,7 @@ addEvent.addEventListener('click', () => {
                 showErrors(res);
             } else {
                 saveToLocalSorage(res)
-                    .then(() => loadData(LOC_STOR))
-                    .then(() => setEventListenersForLabels())
-                    .then(() => setEventListenersForDays());
+                    .then(() => loadData(LOC_STOR));
                 hideElement("errorMessage");
                 dialogEventAdder.close();
             }
@@ -108,17 +100,13 @@ stat.addEventListener('click', () => openStat());
 
 removeDay.addEventListener('click', () => {
     removeDayFromLocStor(dialogDayEditor.dataset.day)
-        .then(() => loadData(LOC_STOR))
-        .then(() => setEventListenersForLabels())
-        .then(() => setEventListenersForDays());
+        .then(() => loadData(LOC_STOR));
 });
 
 changeLabel.addEventListener('click', () => {
     changeLabelInLocStor()
         .then(() => dialogLabelEditor.close())
-        .then(() => loadData(LOC_STOR))
-        .then(() => setEventListenersForLabels())
-        .then(() => setEventListenersForDays());
+        .then(() => loadData(LOC_STOR));
 });
 
 foldLabels.addEventListener('click', () => {
@@ -154,20 +142,18 @@ exampleDiv.addEventListener('click', () => {
     header.style.animationTimingFunction = '';
     header.style.animationIterationCount = '';
     LOC_STOR.clear();
-    loadData(LOC_STOR)
-        .then(() => setEventListenersForLabels())
-        .then(() => setEventListenersForDays());
+    loadData(LOC_STOR);
 });
 
-function loadExampleIfEmpty(inpData) {
+function loadExampleDataIfEmpty(inpData) {
+    inpData.setItem("example", JSON.stringify(0));
+    setExampleEnvironment();
     return fetch("./data/example.json")
         .then(res => res.json())
         .then(json => {
             let allEvents = (inpData.getItem("allEvents")) ? JSON.parse(inpData.getItem("allEvents")) : {};
             addJsonFileToLocStor(json, allEvents);
-            loadData(inpData)
-                .then(() => setEventListenersForLabels())
-                .then(() => setEventListenersForDays());
+            loadData(inpData);
             return json;
         });
 }
@@ -189,9 +175,7 @@ function clearLocStor() {
     let answer = confirm('Удалить все данные?');
     if (answer) {
         LOC_STOR.clear();
-        loadData(LOC_STOR)
-            .then(() => setEventListenersForLabels())
-            .then(() => setEventListenersForDays());
+        loadData(LOC_STOR);
     }
 }
 
@@ -215,9 +199,7 @@ function setEventListenersForEventRemove() {
             let idLabel = e.target.parentNode.parentNode.id.split('_')[0];
             let parentDialog = e.target.closest('dialog').dataset.day;
             removeEventFromDay(parentDialog, idLabel)
-                .then(() => loadData(LOC_STOR))
-                .then(() => setEventListenersForLabels())
-                .then(() => setEventListenersForDays());
+                .then(() => loadData(LOC_STOR));
         });
     });
 }
@@ -487,20 +469,23 @@ function loadSelectionMenu(selectTag, inpData) {
 }
 
 function loadLabels(inpData, labelsTag) {
-    labelsTag.innerHTML = '';
-    let allEvents = JSON.parse(inpData.getItem("allEvents"));
-    for (let ev in allEvents) {
-        if (ev == 'idLength') {
-            continue;
+    return new Promise((resolve, reject) => {
+        labelsTag.innerHTML = '';
+        let allEvents = JSON.parse(inpData.getItem("allEvents"));
+        for (let ev in allEvents) {
+            if (ev == 'idLength') {
+                continue;
+            }
+            let divEvLavel = document.createElement('div');
+            divEvLavel.classList.add("EventLabelLink");
+            divEvLavel.style.background = allEvents[ev].color;
+            divEvLavel.textContent = decodeURIComponent(allEvents[ev].name);
+            divEvLavel.id = 'legend_'+ev;
+            labelsTag.append(divEvLavel);
+            hideEndOfElement(divEvLavel);
         }
-        let divEvLavel = document.createElement('div');
-        divEvLavel.classList.add("EventLabelLink");
-        divEvLavel.style.background = allEvents[ev].color;
-        divEvLavel.textContent = decodeURIComponent(allEvents[ev].name);
-        divEvLavel.id = 'legend_'+ev;
-        labelsTag.append(divEvLavel);
-        hideEndOfElement(divEvLavel);
-    }
+        resolve(0);
+    });
 }
 
 function hideEndOfElement(divElement) {
@@ -517,15 +502,14 @@ function hideEndOfElement(divElement) {
 }
 
 function loadData(inpData, dateFrom = '', dateTo = '') {
-    return new Promise((resolve, reject) => {
-        let dates = getRange(dateFrom, dateTo, inpData);
-        dates.sort().reverse();
-        updAllEvents(inpData, dates);
-        loadProgressLines(inpData, progressLines, dates, "Date");
-        loadSelectionMenu(inputEvent, inpData);
-        loadLabels(inpData, labels);
-        resolve(0);
-    });
+    let sortDates = getRange(dateFrom, dateTo, inpData)
+        .then(dates => dates.sort().reverse());
+    sortDates.then(dates => updAllEvents(inpData, dates));
+    sortDates.then(dates => loadProgressLines(inpData, progressLines, dates, "Date"))
+        .then(() => setEventListenersForDays())
+        .then(() => loadSelectionMenu(inputEvent, inpData))
+        .then(() => loadLabels(inpData, labels))
+        .then(() => setEventListenersForLabels());
 }
 
 function getMinutesSumOfEvents(days, inpData) {
@@ -717,27 +701,30 @@ function getLastIndex(inpTo, arr, indStop) {
 }
 
 function getRange(fromDate = '', toDate = '', inpData) {
-    let arr = getArrayOfKeys(inpData);
-    arr.sort();
-    let arrTS = getArrayOfKeysTimeStamp(arr);
+    return new Promise((resolve, reject) => {
+        let arr = getArrayOfKeys(inpData);
+        arr.sort();
+        let arrTS = getArrayOfKeysTimeStamp(arr);
+    
+        let inpFrom = new Date(fromDate);
+        inpFrom = inpFrom.getTime();
+        let inpTo = new Date(toDate);
+        inpTo = inpTo.getTime();
+    
+        let indStart = 0;
+        let indStop = arrTS.length - 1;
+    
+        if (inpTo < inpFrom ||
+            inpFrom > arrTS[indStop] ||
+            inpTo < arrTS[indStart]) {
+            return [];
+        }
+    
+        indStart = getFirstIndex(inpFrom, arrTS, indStart);
+        indStop = getLastIndex(inpTo, arrTS, indStop);
+        resolve(arr.slice(indStart, indStop + 1));
+    });
 
-    let inpFrom = new Date(fromDate);
-    inpFrom = inpFrom.getTime();
-    let inpTo = new Date(toDate);
-    inpTo = inpTo.getTime();
-
-    let indStart = 0;
-    let indStop = arrTS.length - 1;
-
-    if (inpTo < inpFrom ||
-        inpFrom > arrTS[indStop] ||
-        inpTo < arrTS[indStart]) {
-        return [];
-    }
-
-    indStart = getFirstIndex(inpFrom, arrTS, indStart);
-    indStop = getLastIndex(inpTo, arrTS, indStop);
-    return arr.slice(indStart, indStop + 1);
 }
 
 function addJsonFileToLocStor(jsonData, allEvents) {
@@ -772,9 +759,7 @@ function readFile(input) {
         let jsonData = JSON.parse(jsonFileStr);
         let allEvents = (LOC_STOR.getItem("allEvents")) ? JSON.parse(LOC_STOR.getItem("allEvents")) : {};
         addJsonFileToLocStor(jsonData, allEvents);
-        loadData(LOC_STOR)
-            .then(() => setEventListenersForLabels())
-            .then(() => setEventListenersForDays());
+        loadData(LOC_STOR);
         document.getElementById('importJson').value = null;
     });
 }
