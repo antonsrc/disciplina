@@ -47,7 +47,7 @@ let exampleDiv = document.getElementById("exampleDiv");
 header.textContent = `disciplina v.${VERSION}`;
 
 window.addEventListener('DOMContentLoaded', () => {
-    if (LOC_STOR.length == 0) {
+    if (LOC_STOR.length == 0 || LOC_STOR.getItem("example")) {
         loadExampleDataIfEmpty(LOC_STOR);
     } else {
         loadData(LOC_STOR);
@@ -556,14 +556,11 @@ function loadLabelsStat(sortedEvents, inpData) {
 }
 
 function loadStatData(inpData, dateFrom = '', dateTo = '') {
-    return new Promise((resolve, reject) => {
-        let arrOfDays = getRange(dateFrom, dateTo, inpData);
-        loadProgressLines(inpData, progressLinesStat, arrOfDays, "DateStat");
-        let objEvents = getMinutesSumOfEvents(arrOfDays, inpData);
-        let sortedObjEvents = Object.entries(objEvents).sort((a, b) => b[1] - a[1]);
-        loadLabelsStat(sortedObjEvents, inpData); 
-        resolve(0);
-    });
+    let arrOfDays = getRange(dateFrom, dateTo, inpData);
+    arrOfDays.then(dates => loadProgressLines(inpData, progressLinesStat, dates, "DateStat"));
+    arrOfDays.then(dates => getMinutesSumOfEvents(dates, inpData))
+        .then(objEvents => Object.entries(objEvents).sort((a, b) => b[1] - a[1]))
+        .then(sortedObjEvents => loadLabelsStat(sortedObjEvents, inpData));
 }
 
 function loadProgressLinesOfDay(eventsOfDay, allEvents) {
