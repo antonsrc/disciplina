@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.8.4';
+const VERSION = '0.8.5';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -482,23 +482,23 @@ function loadLabels(inpData, labelsTag) {
             divEvLavel.textContent = decodeURIComponent(allEvents[ev].name);
             divEvLavel.id = 'legend_'+ev;
             labelsTag.append(divEvLavel);
-            hideEndOfElement(divEvLavel);
+            if (divEvLavel.scrollWidth > divEvLavel.clientWidth) {
+                hideEndOfElement(divEvLavel);
+            }
         }
         resolve(0);
     });
 }
 
 function hideEndOfElement(divElement) {
-    if (divElement.parentElement.scrollWidth > divElement.parentElement.clientWidth) {
-        let content = divElement.textContent;
-        divElement.textContent = '';
-        let innerDiv = document.createElement('div');
-        innerDiv.classList.add("HideEnd");
-        innerDiv.id = `lgnd_${divElement.id.split('_')[1]}`
-        innerDiv.textContent = content;
-        divElement.append(innerDiv);
-        divElement.style.flexShrink = '1';
-    }
+    let content = divElement.textContent;
+    divElement.textContent = '';
+    let innerDiv = document.createElement('div');
+    innerDiv.classList.add("HideEnd");
+    innerDiv.id = `lgnd_${divElement.id.split('_')[1]}`
+    innerDiv.textContent = content;
+    divElement.append(innerDiv);
+    divElement.style.flexShrink = '1';
 }
 
 function loadData(inpData, dateFrom = '', dateTo = '') {
@@ -550,8 +550,9 @@ function loadLabelsStat(sortedEvents, inpData) {
         let hhMMString = Math.floor(totalMinutes / 60) + 'ч ' + totalMinutes % 60 + 'мин ';
         eventMinutes.textContent = ' ' + hhMMString;
         pLabel.append(eventMinutes);
-
-        hideEndOfElement(eventLabel);
+        if (eventLabel.parentElement.scrollWidth > eventLabel.parentElement.clientWidth) {
+            hideEndOfElement(eventLabel);
+        }
     });
 }
 
@@ -596,7 +597,9 @@ function loadProgressLinesOfDay(eventsOfDay, allEvents) {
         aEv.classList.add('DayEventRemoveA');
         spanEventRemove.append(aEv);
 
-        hideEndOfElement(eventLabel);
+        if (eventLabel.parentElement.scrollWidth > eventLabel.parentElement.clientWidth) {
+            hideEndOfElement(eventLabel);
+        }
     }
 }
 
