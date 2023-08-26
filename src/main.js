@@ -73,8 +73,7 @@ addEvent.addEventListener('click', () => {
     Promise.allSettled([
         checkDate(inputDate),
         checkEvent(inputEvent),
-        checkTime(inputTime, inputDate)
-    ])
+        checkTime(inputTime, inputDate)])
         .then(res => {
             let errorChecking = res.find(item => item.status == 'rejected');
             if (errorChecking) {
@@ -469,25 +468,23 @@ function loadSelectionMenu(selectTag, inpData) {
 }
 
 function loadLabels(inpData, labelsTag) {
-    return new Promise((resolve, reject) => {
-        labelsTag.innerHTML = '';
-        let allEvents = JSON.parse(inpData.getItem("allEvents"));
-        for (let ev in allEvents) {
-            if (ev == 'idLength') {
-                continue;
-            }
-            let divEvLavel = document.createElement('div');
-            divEvLavel.classList.add("EventLabelLink");
-            divEvLavel.style.background = allEvents[ev].color;
-            divEvLavel.textContent = decodeURIComponent(allEvents[ev].name);
-            divEvLavel.id = 'legend_'+ev;
-            labelsTag.append(divEvLavel);
-            if (divEvLavel.scrollWidth > divEvLavel.clientWidth) {
-                hideEndOfElement(divEvLavel);
-            }
+    labelsTag.innerHTML = '';
+    let allEvents = JSON.parse(inpData.getItem("allEvents"));
+    for (let ev in allEvents) {
+        if (ev == 'idLength') {
+            continue;
         }
-        resolve(0);
-    });
+        let divEvLavel = document.createElement('div');
+        divEvLavel.classList.add("EventLabelLink");
+        divEvLavel.style.background = allEvents[ev].color;
+        divEvLavel.textContent = decodeURIComponent(allEvents[ev].name);
+        divEvLavel.id = 'legend_'+ev;
+        labelsTag.append(divEvLavel);
+        if (divEvLavel.scrollWidth > divEvLavel.clientWidth) {
+            hideEndOfElement(divEvLavel);
+        }
+    }
+    return 0;
 }
 
 function hideEndOfElement(divElement) {
