@@ -719,7 +719,7 @@ a {
 
 .EventLabelLink {
     cursor: pointer;
-    height: calc(var(--legend-height) - 0.1rem);
+    height: calc(var(--legend-height) - 0.2rem);
 }
 
 .EventLabelLink:focus,
