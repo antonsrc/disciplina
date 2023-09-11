@@ -705,7 +705,7 @@ a {
 .EventLabelLink,
 .EventLabel {
     padding: 4px 10px;
-    margin: 0.1rem 0.05rem 0rem;
+    margin: 0.1rem 0.05rem;
     border-radius: 10px;
     font-size: 1rem;
     width: fit-content;
