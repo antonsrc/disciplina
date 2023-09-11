@@ -674,6 +674,7 @@ a {
     justify-content:center;
     margin: 1px 0px;
     padding-right: 10px;
+    padding-left: 10px;
     display: flex;
     flex-direction: column;
 }
@@ -683,7 +684,6 @@ a {
 }
 
 .Date {
-    padding-left: 10px;
     cursor: pointer;
 }
 
@@ -705,7 +705,7 @@ a {
 .EventLabelLink,
 .EventLabel {
     padding: 4px 10px;
-    margin: 0.1rem 0.05rem;
+    margin: 0.1rem 0.05rem 0rem;
     border-radius: 10px;
     font-size: 1rem;
     width: fit-content;
