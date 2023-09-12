@@ -217,7 +217,7 @@ a {
 }
 
 .legendButton {
-    height: var(--legend-height);
+    height: calc(var(--legend-height) + 0.2rem);
     padding: 0 1rem;
     width: 3rem;
     background-color: rgba(0, 0, 0, 0);
