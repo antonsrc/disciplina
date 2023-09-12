@@ -567,7 +567,7 @@ a {
     flex-direction: row;
     width: 100%;
     margin: 0 auto;
-    height: var(--legend-height);
+    height: calc(var(--legend-height) + 0.2rem);
     align-items: stretch;
 }
 
@@ -578,9 +578,10 @@ a {
     flex-direction: row;
     align-items: center;
     overflow: hidden;
-    height: var(--legend-height);
+    height: calc(var(--legend-height) + 0.2rem);
     order: 0;
     flex-grow: 1;
+    margin: 0.1rem;
 }
 
 #statWrapper {
@@ -705,7 +706,7 @@ a {
 .EventLabelLink,
 .EventLabel {
     padding: 4px 10px;
-    margin: 0.1rem 0.05rem;
+    margin: 0.1rem 0.1rem;
     border-radius: 10px;
     font-size: 1rem;
     width: fit-content;

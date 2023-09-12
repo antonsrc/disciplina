@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.8.6';
+const VERSION = '0.8.7';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -114,8 +114,8 @@ foldLabels.addEventListener('click', () => {
         legend.style.height = "fit-content";
         foldSVG.href.baseVal = "./data/cross45.svg";
     } else {
-        labels.style.height = "calc(var(--legend-height) - 0.1rem)";
-        legend.style.height = "var(--legend-height)";
+        labels.style.height = "calc(var(--legend-height) + 0.2rem)";
+        legend.style.height = "calc(var(--legend-height) + 0.2rem)";
         foldSVG.href.baseVal = "./data/dots.svg";
     }
 });
