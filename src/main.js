@@ -204,11 +204,11 @@ function setEventListenersForEventRemove() {
 }
 
 function openLabelEditor(idLabel) {
-        let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"))
-        dialogLabelEditor.dataset.id = idLabel;
-        inputNewLabelName.value = decodeURIComponent(allEvents[idLabel].name);
-        inputNewLabelColor.value = allEvents[idLabel].color;
-        dialogLabelEditor.showModal();
+    let allEvents = JSON.parse(LOC_STOR.getItem("allEvents"));
+    dialogLabelEditor.dataset.id = idLabel;
+    inputNewLabelName.value = decodeURIComponent(allEvents[idLabel].name);
+    inputNewLabelColor.value = allEvents[idLabel].color;
+    dialogLabelEditor.showModal();
 }
 
 function changeLabelInLocStor() {
