@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.8.9';
+const VERSION = '0.8.10';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -66,7 +66,10 @@ document.querySelectorAll('.closeDialog').forEach(item => {
 openEventAdder.addEventListener('click', () => {
     inputDate.valueAsDate = new Date();
     hideElement("errorMessage");
+    dialogEventAdder.inert = true;
     dialogEventAdder.showModal();
+    dialogEventAdder.inert = false;
+
 });
 
 addEvent.addEventListener('click', () => {
@@ -87,7 +90,11 @@ addEvent.addEventListener('click', () => {
         });
 });
 
-openNewEventCreater.addEventListener('click', () => dialogEventCreater.showModal());
+openNewEventCreater.addEventListener('click', () => {
+    dialogEventCreater.inert = true;
+    dialogEventCreater.showModal();
+    dialogEventCreater.inert = false;
+});
 
 addNewEvent.addEventListener('click', () => newEvent());
 
@@ -208,7 +215,9 @@ function openLabelEditor(idLabel) {
     dialogLabelEditor.dataset.id = idLabel;
     inputNewLabelName.value = decodeURIComponent(allEvents[idLabel].name);
     inputNewLabelColor.value = allEvents[idLabel].color;
+    dialogLabelEditor.inert = true;
     dialogLabelEditor.showModal();
+    dialogLabelEditor.inert = false;
 }
 
 function changeLabelInLocStor() {
@@ -601,7 +610,10 @@ function loadProgressLinesOfDay(eventsOfDay, allEvents) {
 }
 
 function openDayEditor(day) {
+    dialogDayEditor.inert = true;
     dialogDayEditor.showModal();
+    dialogDayEditor.inert = false;
+
     eventsDay.innerHTML = '';
     let eventsOfDay = loadDayData(LOC_STOR, day);
     headDay.textContent = eventsOfDay["localDate"];
@@ -659,7 +671,9 @@ function openStat() {
     divWithScroll.style.height = '0vh';
     legendStat.innerHTML = '';
     progressLinesStat.innerHTML = '';
+    dialogStat.inert = true;
     dialogStat.showModal();
+    dialogStat.inert = false;
 
     btnShowDateRange.addEventListener('click', function() {
         let inpDateFrom = inputDateFrom.value;
