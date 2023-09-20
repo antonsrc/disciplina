@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.8.10';
+const VERSION = '0.8.11';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -43,6 +43,7 @@ let inputDateFrom = document.getElementById("inputDateFrom");
 let inputDateTo = document.getElementById("inputDateTo");
 let btnShowDateRange = document.getElementById("btnShowDateRange");
 let exampleDiv = document.getElementById("exampleDiv");
+let header = document.getElementById("header");
 
 header.textContent = `disciplina v.${VERSION}`;
 
@@ -191,11 +192,11 @@ function hideElement(elemId) {
 }
 
 function setEventListenersForLabels() {
-    document.querySelectorAll('.EventLabelLink').forEach(item => {
-        item.addEventListener('click', e => {
+    labels.addEventListener('click', e => {
+        if (e.target.className == 'EventLabelLink') {
             let idLabel = e.target.id.split('_')[1];
             openLabelEditor(idLabel);
-        });
+        }
     });
 }
 
@@ -380,11 +381,12 @@ function changeTextColorIfWeekend(day, textDay) {
 }
 
 function setEventListenersForDays() {
-    document.querySelectorAll('.Date').forEach(item => {
-        item.addEventListener('click', e => {
+    progressLines.addEventListener('click', e => {
+        if (e.target.className == 'Date') {
             let day = e.target.id.split('_')[1];
             openDayEditor(day);
-        });
+        }
+
     });
 }
 
