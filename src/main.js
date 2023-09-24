@@ -67,9 +67,9 @@ document.querySelectorAll('.closeDialog').forEach(item => {
 openEventAdder.addEventListener('click', () => {
     inputDate.valueAsDate = new Date();
     hideElement("errorMessage");
-    dialogEventAdder.inert = true;
+    // dialogEventAdder.inert = true;
     dialogEventAdder.showModal();
-    dialogEventAdder.inert = false;
+    // dialogEventAdder.inert = false;
 
 });
 
