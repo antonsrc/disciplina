@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.8.11';
+const VERSION = '0.8.12';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -65,11 +65,14 @@ document.querySelectorAll('.closeDialog').forEach(item => {
 });
 
 openEventAdder.addEventListener('click', () => {
+    dialogEventAdder.inert = true;
+    
     inputDate.valueAsDate = new Date();
     hideElement("errorMessage");
-    // dialogEventAdder.inert = true;
+    
     dialogEventAdder.showModal();
-    // dialogEventAdder.inert = false;
+
+    dialogEventAdder.inert = false;
 
 });
 
