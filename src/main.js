@@ -308,8 +308,8 @@ function checkEvent(inpEvent) {
 }
 
 function checkTime(inpTime, inpDate) {
-    let [inpHours, inpMins]  = validTimeValues(inpTime.value.split(":"));
-    let totalMins = inpMins + inpHours * 60;
+    let [inpHours, inpMins] = validTimeValues(inpTime.value.split(":"));
+    let totalMins = Number(inpMins) + Number(inpHours) * 60;
     return new Promise((resolve, reject) => {
         if (totalMins == 0) {
             reject('totalMinsZero');
