@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.8.12';
+const VERSION = '0.8.13';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -150,6 +150,10 @@ exampleDiv.addEventListener('click', () => {
     header.style.animationIterationCount = '';
     LOC_STOR.clear();
     loadData(LOC_STOR);
+});
+
+inputEvent.addEventListener('change', e => {
+    alert('changed');
 });
 
 function loadExampleDataIfEmpty(inpData) {
