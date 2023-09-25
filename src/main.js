@@ -156,7 +156,8 @@ let y = 0;
 inputEvent.addEventListener('change', e => {
     errorMessage.style.display = "block";
     // console.log(inputEvent.options[inputEvent.selectedIndex].text)
-    errorMessage.textContent= inputEvent.options[inputEvent.selectedIndex].text;
+    errorMessage.textContent= inputEvent.options[inputEvent.selectedIndex].text + '--';
+    inputEvent.blur();
 });
 
 function loadExampleDataIfEmpty(inpData) {
