@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.8.13';
+const VERSION = '0.8.12';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -68,9 +68,9 @@ openEventAdder.addEventListener('click', () => {
     inputDate.valueAsDate = new Date();
     hideElement("errorMessage");
     
-    // dialogEventAdder.inert = true;
+    dialogEventAdder.inert = true;
     dialogEventAdder.showModal();
-    // dialogEventAdder.inert = false;
+    dialogEventAdder.inert = false;
 });
 
 addEvent.addEventListener('click', () => {
@@ -152,9 +152,13 @@ exampleDiv.addEventListener('click', () => {
     loadData(LOC_STOR);
 });
 
-inputTime.addEventListener('focus', () => {
-    inputEvent.blur();
-});
+// inputTime.addEventListener('focus', () => {
+//     inputEvent.blur();
+// });
+
+// inputEvent.addEventListener('blur', () => {
+//     inputTime.focus();
+// });
 
 function loadExampleDataIfEmpty(inpData) {
     inpData.setItem("example", JSON.stringify(0));
