@@ -152,8 +152,10 @@ exampleDiv.addEventListener('click', () => {
     loadData(LOC_STOR);
 });
 
+let y = 0;
 inputEvent.addEventListener('change', e => {
-    alert('changed');
+    errorMessage.style.display = "block";
+    errorMessage.textContent= y++;
 });
 
 function loadExampleDataIfEmpty(inpData) {
