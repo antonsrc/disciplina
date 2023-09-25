@@ -154,9 +154,11 @@ exampleDiv.addEventListener('click', () => {
 
 inputEvent.addEventListener('blur', e => {
     // setTimeout(function(){}, 0)
-    console.log('dddd');
-    errorMessage.style.display = "block";
-    errorMessage.textContent= inputEvent.options[inputEvent.selectedIndex].text + '+';
+
+    // console.log('dddd');
+    // errorMessage.style.display = "block";
+    // errorMessage.textContent= inputEvent.options[inputEvent.selectedIndex].text + '+';
+    
     // inputEvent.blur();
 });
 
