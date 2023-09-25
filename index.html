@@ -65,7 +65,9 @@
                 </div>
             </dialog>
             <dialog id="dialogEventAdder">
+                <form>
                 <div id="dialogEventAdderGrid">
+                    
                     <svg class="closeDialog" id="closeEventAdder" viewBox="0 0 28 28" width="100%" height="100%">       
                         <image href="./data/cross45.svg" />
                     </svg>
@@ -81,8 +83,9 @@
                         <div id="openNewEventCreater" class="standardButton">Новое</div>
                     </div>
                     <input type="time" id="inputTime" name="inputTime" value="00:00">
-                    <input type="time" id="inputTime2" name="inputTime2">
+                    <input type="email" id="inputTime2" name="inputTime2">
                     <div id="addEvent" class="standardButton">Добавить</div>
+                    
                     <dialog id="dialogEventCreater">
                         <div id="dialogEventCreaterGrid">
                             <div id="headEventNew" class="dialogHeader">Новое событие</div>
@@ -97,6 +100,7 @@
                         </div>
                     </dialog>
                 </div>
+            </form>
                 <div id="errorMessage"></div>
             </dialog>
             <div id="toggler">
