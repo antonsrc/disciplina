@@ -152,14 +152,6 @@ exampleDiv.addEventListener('click', () => {
     loadData(LOC_STOR);
 });
 
-// inputTime.addEventListener('focus', () => {
-//     inputEvent.blur();
-// });
-
-// inputEvent.addEventListener('blur', () => {
-//     inputTime.focus();
-// });
-
 function loadExampleDataIfEmpty(inpData) {
     inpData.setItem("example", JSON.stringify(0));
     setExampleEnvironment();
