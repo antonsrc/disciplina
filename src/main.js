@@ -65,15 +65,12 @@ document.querySelectorAll('.closeDialog').forEach(item => {
 });
 
 openEventAdder.addEventListener('click', () => {
-    dialogEventAdder.inert = true;
-    
     inputDate.valueAsDate = new Date();
     hideElement("errorMessage");
     
+    dialogEventAdder.inert = true;
     dialogEventAdder.showModal();
-
     dialogEventAdder.inert = false;
-
 });
 
 addEvent.addEventListener('click', () => {
@@ -153,6 +150,10 @@ exampleDiv.addEventListener('click', () => {
     header.style.animationIterationCount = '';
     LOC_STOR.clear();
     loadData(LOC_STOR);
+});
+
+inputTime.addEventListener('focus', () => {
+    inputEvent.blur();
 });
 
 function loadExampleDataIfEmpty(inpData) {
