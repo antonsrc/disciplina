@@ -152,12 +152,12 @@ exampleDiv.addEventListener('click', () => {
     loadData(LOC_STOR);
 });
 
-let y = 0;
-inputEvent.addEventListener('change', e => {
+inputEvent.addEventListener('blur', e => {
+    // setTimeout(function(){}, 0)
+    console.log('dddd');
     errorMessage.style.display = "block";
-    // console.log(inputEvent.options[inputEvent.selectedIndex].text)
-    errorMessage.textContent= inputEvent.options[inputEvent.selectedIndex].text + '+--';
-    inputEvent.blur();
+    errorMessage.textContent= inputEvent.options[inputEvent.selectedIndex].text + '+';
+    // inputEvent.blur();
 });
 
 function loadExampleDataIfEmpty(inpData) {
