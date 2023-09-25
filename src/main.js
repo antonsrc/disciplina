@@ -155,7 +155,8 @@ exampleDiv.addEventListener('click', () => {
 let y = 0;
 inputEvent.addEventListener('change', e => {
     errorMessage.style.display = "block";
-    errorMessage.textContent= y++;
+    // console.log(inputEvent.options[inputEvent.selectedIndex].text)
+    errorMessage.textContent= inputEvent.options[inputEvent.selectedIndex].text;
 });
 
 function loadExampleDataIfEmpty(inpData) {
