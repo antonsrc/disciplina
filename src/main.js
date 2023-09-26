@@ -1,6 +1,6 @@
 "use strict"
 
-const VERSION = '0.8.13';
+const VERSION = '0.8.14';
 const LOC_STOR = window.localStorage;
 
 let openEventAdder = document.getElementById("openEventAdder");
@@ -152,19 +152,19 @@ exampleDiv.addEventListener('click', () => {
     loadData(LOC_STOR);
 });
 
-inputEvent.addEventListener('blur', e => {
+// inputEvent.addEventListener('blur', e => {
 
-    // console.log('dddd');
-    // errorMessage.style.display = "block";
-    // errorMessage.textContent= inputEvent.options[inputEvent.selectedIndex].text + '+';
+//     // console.log('dddd');
+//     // errorMessage.style.display = "block";
+//     // errorMessage.textContent= inputEvent.options[inputEvent.selectedIndex].text + '+';
     
-    // inputEvent.blur();
-    inputTime.disabled = false;
-});
-
-// inputEvent.addEventListener('focus', () => {
-//     inputTime.disabled = true;
+//     // inputEvent.blur();
+//     inputTime.disabled = false;
 // });
+
+inputEvent.addEventListener('focus', () => {
+    inputTime.disabled = true;
+});
 
 inputEvent.addEventListener('change', () => {
     inputTime.disabled = false;
