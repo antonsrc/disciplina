@@ -153,14 +153,24 @@ exampleDiv.addEventListener('click', () => {
 });
 
 inputEvent.addEventListener('blur', e => {
-    // setTimeout(function(){}, 0)
 
     // console.log('dddd');
     // errorMessage.style.display = "block";
     // errorMessage.textContent= inputEvent.options[inputEvent.selectedIndex].text + '+';
     
     // inputEvent.blur();
+    inputTime.disabled = false;
 });
+
+// inputEvent.addEventListener('focus', () => {
+//     inputTime.disabled = true;
+// });
+
+inputEvent.addEventListener('change', () => {
+    inputTime.disabled = false;
+});
+
+
 
 function loadExampleDataIfEmpty(inpData) {
     inpData.setItem("example", JSON.stringify(0));

@@ -762,3 +762,7 @@ a {
 #dialogStat {
     height: fit-content;
 }
+
+/* select:focus {
+    outline:none;
+} */
