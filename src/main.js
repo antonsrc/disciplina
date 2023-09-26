@@ -152,25 +152,16 @@ exampleDiv.addEventListener('click', () => {
     loadData(LOC_STOR);
 });
 
-// inputEvent.addEventListener('blur', e => {
-
-//     // console.log('dddd');
-//     // errorMessage.style.display = "block";
-//     // errorMessage.textContent= inputEvent.options[inputEvent.selectedIndex].text + '+';
-    
-//     // inputEvent.blur();
-//     inputTime.disabled = false;
-// });
-
+// добавил эти события потому что на safari после обновления ios 17
+// элемент select стал закрываться с задержкой
+inputEvent.addEventListener('blur', e => {
+    inputTime.disabled = false;
+    inputDate.disabled = false;
+});
 inputEvent.addEventListener('focus', () => {
     inputTime.disabled = true;
+    inputDate.disabled = true;
 });
-
-inputEvent.addEventListener('change', () => {
-    inputTime.disabled = false;
-});
-
-
 
 function loadExampleDataIfEmpty(inpData) {
     inpData.setItem("example", JSON.stringify(0));
